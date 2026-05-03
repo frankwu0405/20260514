@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -29,7 +28,7 @@
         .main-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
-            z-index: 1; opacity: 0; transition: opacity 1s ease;
+            z-index: 1; opacity: 0; transition: opacity 1.5s ease;
         }
         
         .global-flash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; z-index: 9999; opacity: 0; pointer-events: none; }
@@ -43,26 +42,53 @@
         }
 
         /* === 區塊 1：信封開場 === */
-        #landing-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; background: linear-gradient(135deg, #fdfdfd 0%, #f4e9ec 100%); transition: opacity 1.5s ease; }
-        .envelope-wrapper { position: relative; cursor: pointer; width: 300px; height: 200px; transition: transform 0.3s ease; }
-        .envelope-wrapper:hover { transform: translateY(-5px); }
-        .env-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #e6e6e6; border-radius: 4px; z-index: 1; }
-        .env-letter { position: absolute; bottom: 5px; left: 2.5%; width: 95%; height: 95%; background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%); border-radius: 4px; z-index: 2; transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), transform-origin 0s, width 1s, height 1s; transform-origin: bottom; }
-        .env-left { position: absolute; left: 0; border-top: 100px solid transparent; border-bottom: 100px solid transparent; border-left: 150px solid #f4f4f4; z-index: 3; transition: opacity 0.5s; }
-        .env-right { position: absolute; right: 0; border-top: 100px solid transparent; border-bottom: 100px solid transparent; border-right: 150px solid #f0f0f0; z-index: 4; transition: opacity 0.5s; }
-        .env-bottom { position: absolute; bottom: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-bottom: 105px solid #ececec; z-index: 5; transition: opacity 0.5s; }
-        .env-flap { position: absolute; top: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 115px solid #ffffff; transform-origin: top; transition: transform 0.8s ease, opacity 0.5s; z-index: 6; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.05));}
-        .seal { position: absolute; top: 110px; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #d1bfae; border-radius: 50%; z-index: 7; display: flex; justify-content: center; align-items: center; color: #fff; font-family: 'Cormorant Garamond', serif; font-style: italic; transition: opacity 0.4s, transform 0.4s; }
-        .hint-text { margin-top: 50px; color: #888; font-size: 13px; letter-spacing: 3px; animation: breathe 2s infinite ease-in-out; transition: opacity 0.4s; }
+        #landing-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; background: linear-gradient(135deg, #fdfdfd 0%, #f4e9ec 100%); transition: opacity 1s ease; }
+        .envelope-wrapper { position: relative; cursor: pointer; width: 300px; height: 200px; transition: transform 0.3s ease; filter: drop-shadow(0 15px 30px rgba(160, 140, 130, 0.2)); }
+        .envelope-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 22px 35px rgba(160, 140, 130, 0.25)); }
+        .env-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #e0d8d0; border-radius: 4px; z-index: 1; }
+        
+        /* 【核心修復】信封信紙抽出與放大動畫 */
+        .env-letter { 
+            position: absolute; bottom: 5px; left: 2.5%; width: 95%; height: 95%; 
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%); 
+            border-radius: 4px; z-index: 2; /* 初始待在底層 */
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 1s ease; 
+            transform-origin: center center; /* 讓縮放完美從中心等比展開 */
+        }
+        
+        .env-left { position: absolute; left: 0; border-top: 100px solid transparent; border-bottom: 100px solid transparent; border-left: 150px solid #fcfbf9; z-index: 3; transition: opacity 0.5s; }
+        .env-right { position: absolute; right: 0; border-top: 100px solid transparent; border-bottom: 100px solid transparent; border-right: 150px solid #f5f1eb; z-index: 4; transition: opacity 0.5s; }
+        .env-bottom { position: absolute; bottom: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-bottom: 105px solid #ece6df; z-index: 5; transition: opacity 0.5s; }
+        .env-flap { position: absolute; top: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 115px solid #ffffff; transform-origin: top; transition: transform 0.8s ease, opacity 0.5s; z-index: 6; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.08));}
+        
+        .seal { position: absolute; top: 110px; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #d1bfae; border-radius: 50%; z-index: 7; display: flex; justify-content: center; align-items: center; color: #fff; font-family: 'Cormorant Garamond', serif; font-style: italic; transition: opacity 0.4s, transform 0.4s; box-shadow: 0 4px 10px rgba(209, 191, 174, 0.4); }
+        .hint-text { margin-top: 60px; color: #888; font-size: 13px; letter-spacing: 3px; animation: breathe 2s infinite ease-in-out; transition: opacity 0.4s; font-family: 'Noto Sans TC', sans-serif;}
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
         .step-1-open .env-flap { transform: rotateX(180deg); z-index: 1; }
         .step-1-open .seal { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         .step-1-open .hint-text { opacity: 0; }
-        .step-2-pull .env-letter { transform: translateY(-130px); z-index: 10; }
-        .step-3-zoom .env-letter { transform: translateY(-130px) scale(15); border-radius: 0; }
-        .step-3-zoom .env-back, .step-3-zoom .env-left, .step-3-zoom .env-right, .step-3-zoom .env-bottom, .step-3-zoom .env-flap { opacity: 0; }
+        
+        /* 抽出階段：移除改變 z-index 的指令，讓它自然在夾縫中滑出 */
+        .step-2-pull .env-letter { 
+            transform: translateY(-110px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+        }
+        
+        /* 放大階段：大幅度放慢且使用電影級柔和曲線 (2.8s) */
+        .step-3-zoom .env-letter { 
+            transform: translateY(0px) scale(60); 
+            z-index: 10; 
+            border-radius: 0;
+            box-shadow: none;
+            transition: transform 2.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease; 
+        }
+        .step-3-zoom .env-back, .step-3-zoom .env-left, .step-3-zoom .env-right, .step-3-zoom .env-bottom, .step-3-zoom .env-flap { 
+            opacity: 0; 
+            transition: opacity 0.4s ease; 
+        }
 
-        /* === 滾動長軸 === */
+        /* === 滾動長軸：加快主畫面的淡入速度 === */
         #scroll-content { position: relative; width: 100%; opacity: 0; display: none; transition: opacity 1.5s ease; z-index: 10; }
 
         /* 區塊 2：計數器 */
@@ -72,15 +98,14 @@
         .days-label { font-size: 16px; color: #666; letter-spacing: 5px; margin-bottom: 50px; }
         .scroll-down-hint { font-size: 13px; color: #999; letter-spacing: 2px; margin-top: 40px; animation: breathe 2s infinite; }
 
-        /* 區塊 3：地球 Zoom In 緩衝區 (提供足夠空間讓滾動平滑) */
+        /* 區塊 3：地球 Zoom In 緩衝區 (台灣 -> 雪梨) */
         #globe-scroll-area { width: 100%; height: 250vh; pointer-events: none; }
 
-        /* 區塊 4：2022 年轉場 (向上提早淡入) */
+        /* 區塊 4：2022 年轉場 */
         .year-section { 
             width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
             opacity: 0; transform: translateY(60px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; 
-            margin-top: -60vh; /* 提早進入畫面 */
-            position: relative; z-index: 10;
+            margin-top: -60vh; position: relative; z-index: 10;
         }
         .year-section.is-visible { opacity: 1; transform: translateY(0); }
         .year-text { font-family: 'Cormorant Garamond', serif; font-size: 120px; font-weight: 300; color: #d1bfae; line-height: 1; margin-bottom: 15px; letter-spacing: 5px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); }
@@ -95,12 +120,17 @@
         .story-text { line-height: 2.2; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
         .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; }
 
+        /* === 3D 飛行動畫專用緩衝區 === */
+        .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
+        .flight-hint { position: sticky; top: 50vh; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; letter-spacing: 2px; opacity: 0; transition: opacity 0.5s; text-shadow: 0 2px 5px rgba(255,255,255,0.9); }
+
         /* --- UI 元件 --- */
         .stack-container { position: relative; width: 100%; height: 350px; perspective: 1000px; cursor: pointer; }
         .stack-card { position: absolute; top: 0; left: 50%; width: 280px; height: 320px; background: #fff; padding: 12px 12px 40px 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; overflow: hidden; }
         .stack-1 { transform: translateX(-50%) rotate(-3deg) translateY(0) scale(1); z-index: 3; }
         .stack-2 { transform: translateX(-50%) rotate(4deg) translateY(10px) scale(0.95); z-index: 2; opacity: 0.8; }
         .stack-3 { transform: translateX(-50%) rotate(-2deg) translateY(20px) scale(0.9); z-index: 1; opacity: 0.6; }
+        .card-note { position: absolute; bottom: 8px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 22px; color: #555; }
 
         .flip-container { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; }
@@ -234,10 +264,10 @@
             <div class="scroll-down-hint">SCROLL DOWN</div>
         </div>
 
-        <!-- 區塊 2：地球 Zoom-in 緩衝區 -->
+        <!-- 區塊 2：地球 Zoom-in 緩衝區 (Taiwan -> Syd) -->
         <div id="globe-scroll-area"></div>
 
-        <!-- 區塊 3：2022 轉場 (設定為提早淡入) -->
+        <!-- 區塊 3：2022 轉場 -->
         <div class="year-section chapter" id="year2022">
             <div class="year-text">2022</div>
             <div class="year-sub">Where our journey began...</div>
@@ -247,17 +277,28 @@
         <div class="journey-container" id="journeyContainer">
             <svg id="route-canvas" preserveAspectRatio="none"></svg>
 
+            <!-- Chapter 1 -->
             <div class="chapter" id="chap1">
                 <div class="time-badge">Jul, 2022</div>
                 <div class="story-text">故事的起點在澳洲。<br>那時的我們還不知道，彼此會成為生命中這麼重要的人。</div>
                 <div class="stack-container" onclick="shuffleStack()">
-                    <div class="stack-card stack-3" id="sc3"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"></div>
-                    <div class="stack-card stack-2" id="sc2"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"></div>
-                    <div class="stack-card stack-1" id="sc1"><img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"></div>
+                    <div class="stack-card stack-3" id="sc3">
+                        <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
+                        <div class="card-note">Bondi Beach</div>
+                    </div>
+                    <div class="stack-card stack-2" id="sc2">
+                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
+                        <div class="card-note">Darling Harbour</div>
+                    </div>
+                    <div class="stack-card stack-1" id="sc1">
+                        <img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
+                        <div class="card-note">The day we met</div>
+                    </div>
                 </div>
                 <span class="interactive-hint">Tap to shuffle photo 👆</span>
             </div>
 
+            <!-- Chapter 2: Syd to Per -->
             <div class="chapter" id="chap2">
                 <div class="time-badge">Jan, 2023</div>
                 <div class="story-text">妳去了 Perth，離開了我三天。<br>原本以為或許就此見不到了，但這三天的距離，反而讓我們更確信彼此。</div>
@@ -299,7 +340,60 @@
                 <span class="interactive-hint">Tap to flip ticket 👆</span>
             </div>
 
+            <!-- 全新：雪梨飛伯斯 動畫觸發區塊 (Phase 2) -->
+            <div id="flight-syd-per-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintSydPer">Flying to Perth... ✈️</div>
+            </div>
+
+            <!-- 全新：Chapter 3: Per to Syd -->
             <div class="chapter" id="chap3">
+                <div class="time-badge">Feb, 2023</div>
+                <div class="story-text">沒想到馬上就回來了。<br>原本以為要分開很久，結果驚喜來得這麼快。</div>
+                <div class="flip-container" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <div class="bp-left">
+                                <div class="bp-header">
+                                    <span class="bp-airline"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>F&S AIRWAYS</span>
+                                    <span class="bp-class">FIRST CLASS</span>
+                                </div>
+                                <div class="bp-row" style="margin-bottom: 4px;">
+                                    <div class="bp-col"><span class="bp-label">Name</span><span class="bp-data">SYDNEY</span></div>
+                                </div>
+                                <div class="bp-row bp-route">
+                                    <div class="bp-col"><span class="bp-label">From</span><span class="bp-data-large">PER</span></div>
+                                    <div class="bp-icon" style="transform: rotate(45deg);">✈</div>
+                                    <div class="bp-col"><span class="bp-label">To</span><span class="bp-data-large">SYD</span></div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data">A82</span></div>
+                                    <div class="bp-col"><span class="bp-label">Date</span><span class="bp-data">15FEB</span></div>
+                                    <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data">2A</span></div>
+                                    <div class="bp-col"><span class="bp-label">Boarding</span><span class="bp-data" style="color: #d1bfae;">14:30</span></div>
+                                </div>
+                            </div>
+                            <div class="bp-right">
+                                <div class="bp-col"><span class="bp-label">Name</span><span class="bp-data" style="font-size: 11px;">SYDNEY</span></div>
+                                <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data" style="font-size: 11px;">A82</span></div>
+                                <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data-large" style="font-size: 24px;">2A</span></div>
+                                <div class="bp-barcode"></div>
+                            </div>
+                        </div>
+                        <div class="flip-back">
+                            <div class="handwriting">呀比~可以回來見面了</div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">Tap to flip ticket 👆</span>
+            </div>
+
+            <!-- 全新：伯斯飛雪梨 動畫觸發區塊 (Phase 3) -->
+            <div id="flight-per-syd-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintPerSyd">Flying back to you... ✈️</div>
+            </div>
+
+            <!-- 後續故事推移編號 -->
+            <div class="chapter" id="chap4">
                 <div class="time-badge">May 14, 2023</div>
                 <div class="story-text">慢慢地相處，慢慢地靠近。<br>我們終於決定牽起彼此的手。經歷了風風雨雨，每天都很幸福。</div>
                 <div class="camera-wrapper" id="polaroidCamera" onclick="shootCamera(this)">
@@ -328,7 +422,7 @@
                 </div>
             </div>
 
-            <div class="chapter" id="chap4">
+            <div class="chapter" id="chap5">
                 <div class="time-badge">Jan - Jun, 2024</div>
                 <div class="story-text">
                     我畢業回台灣，緊接著的入伍讓我們連聯繫都變得奢侈。<br>
@@ -376,7 +470,7 @@
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
 
-            <div class="chapter" id="chap5">
+            <div class="chapter" id="chap6">
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
                 <div class="filmstrip-wrapper">
@@ -387,7 +481,7 @@
                 <span class="interactive-hint">Swipe to view memories 👈 👉</span>
             </div>
 
-            <div class="chapter" id="chap6">
+            <div class="chapter" id="chap7">
                 <div class="time-badge">2026 & Beyond</div>
                 <div class="story-text">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</div>
                 <div style="background: #fff; padding: 12px 12px 40px 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); transform: rotate(-1deg); border-radius: 4px;">
@@ -402,22 +496,49 @@
 
     <script>
         // ==========================================
-        // 1. 絕對鎖定的 Scroll-Synced 3D 地球 (台灣 -> 雪梨)
+        // 1. 3D Globe - 支援多重階段的滾動動畫 (Scrollytelling)
         // ==========================================
-        let scene, camera, renderer, globeGroup, sydneyPin, ringMesh;
+        let scene, camera, renderer, globeGroup;
+        let sydneyPin, sydneyRing;
+        let perthPin, perthRing;
+        let curveSydPer, curvePerSyd;
+        let lineSydPer, linePerSyd;
+        let planeSydPer, planePerSyd;
         
-        // 【關鍵變更 1：相機初始座標設定在台灣正上方】
+        const GLOBE_RADIUS = 25;
+        
+        // 台灣起點 (Phase 1)
         const TAIWAN_LAT = 23.6978;
         const TAIWAN_LON = 120.9605;
-        const GLOBE_RADIUS = 25;
-
-        // 計算台灣的 3D 座標，並加上距離得到相機位置
         const twPhi = THREE.MathUtils.degToRad(90 - TAIWAN_LAT);
         const twTheta = THREE.MathUtils.degToRad(TAIWAN_LON + 90);
         let initialCameraPos = new THREE.Vector3();
-        initialCameraPos.setFromSphericalCoords(GLOBE_RADIUS + 40, twPhi, twTheta); // 距離地球表面 40 單位
+        initialCameraPos.setFromSphericalCoords(GLOBE_RADIUS + 40, twPhi, twTheta); 
         
-        let targetCameraPos = new THREE.Vector3();
+        let targetCameraPosSyd = new THREE.Vector3();
+        let targetCameraPosFlight = new THREE.Vector3();
+
+        function createAirplaneSprite(direction) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.font = '60px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.translate(64, 64);
+            if (direction === 'west') {
+                ctx.rotate(-Math.PI * 0.75); // Syd -> Per (向西/左下)
+            } else {
+                ctx.rotate(Math.PI * 0.25);  // Per -> Syd (向東/右上)
+            }
+            ctx.fillText('✈️', 0, 0);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(4, 4, 1);
+            return sprite;
+        }
 
         function initGlobe() {
             if (typeof THREE === 'undefined') return;
@@ -444,9 +565,7 @@
             const earthAlpha = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg');
 
             const globeGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 64);
-            const globeMat = new THREE.MeshStandardMaterial({ 
-                color: 0xd1bfae, transparent: true, alphaMap: earthAlpha, opacity: 0.9, roughness: 0.5
-            });
+            const globeMat = new THREE.MeshStandardMaterial({ color: 0xd1bfae, transparent: true, alphaMap: earthAlpha, opacity: 0.9, roughness: 0.5 });
             const globeMesh = new THREE.Mesh(globeGeo, globeMat);
             globeGroup.add(globeMesh);
 
@@ -460,38 +579,71 @@
             const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
             globeGroup.add(wireMesh);
 
-            // 雪梨精準座標 
-            const lat = -33.86;
-            const lon = 151.20;
-            const spherical = new THREE.Spherical(
-                GLOBE_RADIUS, 
-                THREE.MathUtils.degToRad(90 - lat), 
-                THREE.MathUtils.degToRad(lon + 90) 
-            );
-
-            // 雪梨的光點
+            // 【座標定位】雪梨
+            const sydSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-33.86)), THREE.MathUtils.degToRad(151.20 + 90));
             const pinGeo = new THREE.SphereGeometry(0.5, 16, 16);
             const pinMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae });
             sydneyPin = new THREE.Mesh(pinGeo, pinMat);
-            sydneyPin.position.setFromSpherical(spherical);
+            sydneyPin.position.setFromSpherical(sydSpherical);
             globeGroup.add(sydneyPin);
 
-            // 雪梨的光環
             const ringGeo = new THREE.RingGeometry(0.8, 1.3, 32);
             const ringMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae, side: THREE.DoubleSide, transparent: true });
-            ringMesh = new THREE.Mesh(ringGeo, ringMat);
-            ringMesh.position.copy(sydneyPin.position);
-            ringMesh.lookAt(sydneyPin.position.clone().multiplyScalar(2)); 
-            globeGroup.add(ringMesh);
+            sydneyRing = new THREE.Mesh(ringGeo, ringMat);
+            sydneyRing.position.copy(sydneyPin.position);
+            sydneyRing.lookAt(sydneyPin.position.clone().multiplyScalar(2)); 
+            globeGroup.add(sydneyRing);
 
-            // 【關鍵變更 2：地球固定不旋轉】
+            // 【座標定位】伯斯
+            const perthSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-31.95)), THREE.MathUtils.degToRad(115.86 + 90));
+            perthPin = new THREE.Mesh(pinGeo, pinMat);
+            perthPin.position.setFromSpherical(perthSpherical);
+            perthPin.visible = false; 
+            globeGroup.add(perthPin);
+
+            perthRing = new THREE.Mesh(ringGeo, ringMat);
+            perthRing.position.copy(perthPin.position);
+            perthRing.lookAt(perthPin.position.clone().multiplyScalar(2));
+            perthRing.visible = false;
+            globeGroup.add(perthRing);
+
+            // 【建立航線曲線】
+            const vSyd = sydneyPin.position.clone();
+            const vPerth = perthPin.position.clone();
+            const vMid = vSyd.clone().add(vPerth).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 4);
+            
+            curveSydPer = new THREE.QuadraticBezierCurve3(vSyd, vMid, vPerth);
+            curvePerSyd = new THREE.QuadraticBezierCurve3(vPerth, vMid, vSyd);
+
+            const lineMatDashed = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.6, gapSize: 0.4 });
+            
+            lineSydPer = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveSydPer.getPoints(100)), lineMatDashed);
+            lineSydPer.computeLineDistances(); 
+            lineSydPer.geometry.setDrawRange(0, 0); 
+            globeGroup.add(lineSydPer);
+
+            linePerSyd = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curvePerSyd.getPoints(100)), lineMatDashed);
+            linePerSyd.computeLineDistances(); 
+            linePerSyd.geometry.setDrawRange(0, 0); 
+            globeGroup.add(linePerSyd);
+
+            // 【建立兩架飛機】
+            planeSydPer = createAirplaneSprite('west');
+            planeSydPer.visible = false;
+            globeGroup.add(planeSydPer);
+
+            planePerSyd = createAirplaneSprite('east');
+            planePerSyd.visible = false;
+            globeGroup.add(planePerSyd);
+
+            // 鎖死地球旋轉
             globeGroup.rotation.set(0, 0, 0); 
             globeGroup.updateMatrixWorld();
 
-            // 設定相機最終要俯衝到的目標 (雪梨正上方)
-            let pinWorldPos = new THREE.Vector3();
-            sydneyPin.getWorldPosition(pinWorldPos);
-            targetCameraPos = pinWorldPos.clone().normalize().multiplyScalar(33); // 拉遠一點點避免標記太大
+            // 運算鏡頭目標
+            targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33); 
+            let distFlight = window.innerWidth < 768 ? 58 : 45; 
+            targetCameraPosFlight = vMid.clone().normalize().multiplyScalar(distFlight); 
 
             window.addEventListener('resize', onWindowResize, false);
             animateGlobe();
@@ -502,6 +654,9 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            // 重新計算飛航視角距離
+            let distFlight = window.innerWidth < 768 ? 58 : 45; 
+            targetCameraPosFlight.normalize().multiplyScalar(distFlight);
         }
 
         function animateGlobe() {
@@ -509,54 +664,109 @@
             if(!scene || !camera) return;
             
             const canvasContainer = document.getElementById('canvas-container');
-            const scrollArea = document.getElementById('globe-scroll-area');
+            const p1Area = document.getElementById('globe-scroll-area');
+            const p2Area = document.getElementById('flight-syd-per-area');
+            const p3Area = document.getElementById('flight-per-syd-area');
             const yearSection = document.getElementById('year2022');
             
-            if (!scrollArea) return;
+            if (!p1Area || !p2Area || !p3Area) return;
 
-            // --- 1. 絕對滾動數學運算 ---
             let scrollY = window.scrollY || document.documentElement.scrollTop;
+            let opacity = 0;
+
+            let p2Rect = p2Area.getBoundingClientRect();
+            let p3Rect = p3Area.getBoundingClientRect();
+
+            // 重置物件可見度
+            planeSydPer.visible = false;
+            planePerSyd.visible = false;
+            lineSydPer.geometry.setDrawRange(0, 0);
+            linePerSyd.geometry.setDrawRange(0, 0);
+            perthPin.visible = false;
+            perthRing.visible = false;
+
+            // --- 判斷目前處於哪個動畫階段 ---
             
-            // 只要一往下滑動，立刻開始觸發 Zoom In (起點為 0)
-            let startY = 0; 
-            let endY = scrollArea.offsetHeight; 
-            
-            let zoomProgress = 0;
-            if (scrollY > startY) {
-                zoomProgress = (scrollY - startY) / (endY - startY);
+            if (p3Rect.top < window.innerHeight && p3Rect.bottom > 0) {
+                // 【Phase 3: 伯斯飛回雪梨】
+                let prog = (window.innerHeight - p3Rect.top) / (window.innerHeight + p3Rect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI); // 進入畫面淡入，離開淡出
+
+                camera.position.lerp(targetCameraPosFlight, 0.1);
+                camera.lookAt(0, 0, 0);
+
+                // 顯示標記
+                perthPin.visible = true; perthRing.visible = true;
+                sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
+
+                // 飛行進度
+                planePerSyd.visible = true;
+                let flightProg = (prog - 0.2) / 0.6; // 在畫面 20%~80% 之間飛行
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+                
+                linePerSyd.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planePerSyd.position.copy(curvePerSyd.getPoint(flightProg));
+
+                const hint = document.getElementById('flightHintPerSyd');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            } 
+            else if (p2Rect.top < window.innerHeight && p2Rect.bottom > 0) {
+                // 【Phase 2: 雪梨飛往伯斯】
+                let prog = (window.innerHeight - p2Rect.top) / (window.innerHeight + p2Rect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosFlight, 0.1);
+                camera.lookAt(0, 0, 0);
+
+                perthPin.visible = true; perthRing.visible = true;
+                sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
+
+                planeSydPer.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+                
+                lineSydPer.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeSydPer.position.copy(curveSydPer.getPoint(flightProg));
+
+                const hint = document.getElementById('flightHintSydPer');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            } 
+            else if (scrollY <= p1Area.offsetTop + p1Area.offsetHeight) {
+                // 【Phase 1: 開場 台灣飛雪梨】
+                let p1Prog = scrollY / p1Area.offsetHeight;
+                p1Prog = Math.max(0, Math.min(p1Prog, 1));
+                let ease1 = p1Prog * p1Prog * (3 - 2 * p1Prog);
+
+                // 球面軌跡飛行
+                camera.position.copy(initialCameraPos).applyQuaternion(
+                    new THREE.Quaternion().setFromUnitVectors(
+                        initialCameraPos.clone().normalize(),
+                        targetCameraPosSyd.clone().normalize()
+                    ).slerp(new THREE.Quaternion(), 1 - ease1)
+                );
+                let curDist = THREE.MathUtils.lerp(initialCameraPos.length(), targetCameraPosSyd.length(), ease1);
+                camera.position.normalize().multiplyScalar(curDist);
+                camera.lookAt(0, 0, 0);
+
+                // 動態縮小雪梨光圈
+                let markerScale = 1 - (ease1 * 0.7); 
+                sydneyPin.scale.set(markerScale, markerScale, markerScale);
+                sydneyRing.scale.set(markerScale, markerScale, markerScale);
+
+                // 2022 轉場淡出邏輯
+                let yearRect = yearSection.getBoundingClientRect();
+                let fadeProg = 1 - (yearRect.top / window.innerHeight); 
+                if (fadeProg > -0.2) {
+                    opacity = Math.max(0, 1 - ((fadeProg + 0.2) * 1.5)); 
+                } else {
+                    opacity = 1;
+                }
             }
-            zoomProgress = Math.max(0, Math.min(zoomProgress, 1));
 
-            // 平滑曲線 (Ease in out)
-            let easeProgress = zoomProgress * zoomProgress * (3 - 2 * zoomProgress);
-
-            // --- 2. 手動相機插值 (球面飛行) ---
-            // 由於直接直線 lerp 會穿越地球內部，我們改用 Slerp 來做球面繞行
-            camera.position.copy(initialCameraPos).applyQuaternion(
-                new THREE.Quaternion().setFromUnitVectors(
-                    initialCameraPos.clone().normalize(),
-                    targetCameraPos.clone().normalize()
-                ).slerp(new THREE.Quaternion(), 1 - easeProgress)
-            );
-
-            // 高度 (距離) 的線性插值
-            let currentDist = THREE.MathUtils.lerp(initialCameraPos.length(), targetCameraPos.length(), easeProgress);
-            camera.position.normalize().multiplyScalar(currentDist);
-            
-            camera.lookAt(0, 0, 0);
-
-            // --- 3. 2022 無縫平滑淡出 ---
-            let yearRect = yearSection.getBoundingClientRect();
-            let fadeProgress = 1 - (yearRect.top / window.innerHeight); 
-            
-            if (fadeProgress > -0.2) {
-                canvasContainer.style.opacity = Math.max(0, 1 - ((fadeProgress + 0.2) * 1.5)); 
-            } else {
-                canvasContainer.style.opacity = 1;
-            }
-
-            // 效能優化：透明度大於 0 才渲染
-            if (parseFloat(canvasContainer.style.opacity) > 0 || canvasContainer.style.opacity === "") {
+            canvasContainer.style.opacity = opacity;
+            if (opacity > 0) {
                 renderer.render(scene, camera);
             }
         }
@@ -595,24 +805,28 @@
             
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
-            setTimeout(() => wrapper.classList.add('step-3-zoom'), 1800);
+            
+            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s)
+            setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
+            
+            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
-                // 【解鎖滾動】
+                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0';
-                setTimeout(() => { landingView.style.display = 'none'; }, 800);
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 600);
-            }, 2600);
+                landingView.style.opacity = '0'; // 讓信封開場層淡出
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
+            }, 2400);
         }
 
         // ==========================================
@@ -697,8 +911,8 @@
         // ==========================================
         // 4. 其他卡片互動
         // ==========================================
+        let stackOrder = [1, 2, 3];
         function shuffleStack() {
-            let stackOrder = [1, 2, 3];
             stackOrder.unshift(stackOrder.pop());
             [document.getElementById('sc1'), document.getElementById('sc2'), document.getElementById('sc3')].forEach((card, index) => {
                 card.className = `stack-card stack-${stackOrder[index]}`;
@@ -796,8 +1010,4 @@
 
     </script>
 </body>
-</html>
-
-
-```
 </html>
