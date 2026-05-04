@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -190,9 +189,11 @@
         .is-zooming .printed-photo { z-index: 20; transform: translateX(-50%) translateY(-20px) scale(1.65); box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .is-developing .printed-photo img { filter: brightness(1) grayscale(0%); }
         
-        /* === FaceTime (使用 assets/IMG_4725.jpeg 代表 Frank) === */
+        /* === FaceTime === */
         .facetime-wrapper { position: relative; width: 100%; aspect-ratio: 9/19.5; background: #000; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 0 0 6px #222; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; }
-        .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/IMG_4725.jpeg'); background-size: cover; background-position: center; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
+        
+        /* FaceTime 影片背景 */
+        .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #333; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
         
         .ft-incoming-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 70px 20px 60px 20px; transition: opacity 0.5s ease; }
         .ft-header { text-align: center; }
@@ -437,19 +438,17 @@
                 <div class="time-badge">Jan - Jun, 2024</div>
                 <div class="story-text">
                     我畢業回台灣，緊接著的入伍讓我們連聯繫都變得奢侈。<br>
-                    每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，最大的考驗。
+                    每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
-                    <!-- 背景為 Frank -->
-                    <div class="ft-bg-layer"></div>
+                    <!-- 【替換】：背景為 Frank 的自訂影片 -->
+                    <video class="ft-bg-layer" src="assets/742539708.620992.mp4" autoplay loop muted playsinline></video>
                     
-                    <!-- 響鈴畫面 -->
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
                                 <div class="avatar-ripple"></div><div class="avatar-ripple"></div>
-                                <!-- Frank Avatar -->
-                                <img src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop" class="ft-avatar" alt="Avatar">
                             </div>
                             <h2>Frank</h2>
                             <p class="ft-video-txt">FaceTime Video</p>
@@ -470,11 +469,9 @@
 
                     <!-- 接通畫面 -->
                     <div class="ft-active-ui">
-                        <!-- Frank Avatar in Pill -->
-                        <div class="ft-top-pill"><img src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
+                        <div class="ft-top-pill"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
                         <div class="ft-pip">
-                            <!-- Sydney's picture -->
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" class="cover-img" alt="My Camera">
                             <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
                         </div>
@@ -822,26 +819,23 @@
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
             
-            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s電影級曲線)
             setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
             
-            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
-                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0'; // 讓信封開場層淡出
-                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
+                landingView.style.opacity = '0'; 
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500);
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); 
             }, 2400);
         }
 
@@ -1028,6 +1022,4 @@
     </script>
 </body>
 </html>
-
-
 ```
