@@ -24,7 +24,6 @@
 
         .no-scroll { overflow: hidden !important; }
 
-        /* cover-img 類別現在同時支援 img 與 video */
         .cover-img { width: 100%; height: 100%; object-fit: cover; display: block; background: #f4e9ec; border-radius: 4px; }
 
         /* === 全域背景與特效 === */
@@ -44,8 +43,18 @@
             z-index: 2; pointer-events: none; opacity: 1; 
         }
 
-        /* === 區塊 1：信封開場 === */
-        #landing-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; background: linear-gradient(135deg, #fdfdfd 0%, #f4e9ec 100%); transition: opacity 1.5s ease; }
+        /* === 區塊 1：信封開場 (加深對角線陰影對比) === */
+        #landing-view { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 50; 
+            /* 更強烈的左上聚光燈與右下深色環境陰影 */
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%), 
+                linear-gradient(135deg, #fcf9fa 0%, #e2d1d6 45%, #bca6ae 100%); 
+            transition: opacity 1.5s ease; 
+        }
+        
         .envelope-wrapper { position: relative; cursor: pointer; width: 300px; height: 200px; transition: transform 0.3s ease; filter: drop-shadow(0 15px 30px rgba(160, 140, 130, 0.2)); }
         .envelope-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 22px 35px rgba(160, 140, 130, 0.25)); }
         .env-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #e0d8d0; border-radius: 4px; z-index: 1; }
@@ -181,7 +190,7 @@
         .is-zooming .printed-photo { z-index: 20; transform: translateX(-50%) translateY(-20px) scale(1.65); box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .is-developing .printed-photo img { filter: brightness(1) grayscale(0%); }
         
-        /* FaceTime */
+        /* === FaceTime === */
         .facetime-wrapper { position: relative; width: 100%; aspect-ratio: 9/19.5; background: #000; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 0 0 6px #222; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; }
         .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
         
@@ -259,10 +268,9 @@
     <div class="global-flash" id="globalFlash"></div>
     <div class="main-bg" id="mainBg"></div>
 
-    <!-- 1. 綁定滾動的 3D 地球 -->
     <div id="canvas-container"></div>
 
-    <!-- 2. 開場信封 -->
+    <!-- 開場信封 -->
     <div id="landing-view">
         <div class="envelope-wrapper" id="envelopeWrapper" onclick="playEnvelopeAnimation()">
             <div class="env-back"></div>
@@ -273,7 +281,7 @@
         <div class="hint-text" id="hintText">Touch to open</div>
     </div>
 
-    <!-- 3. 滾動長軸區塊 -->
+    <!-- 滾動長軸區塊 -->
     <div id="scroll-content">
         
         <div class="counter-section" id="counterSection">
@@ -283,7 +291,6 @@
             <div class="scroll-down-hint">SCROLL DOWN</div>
         </div>
 
-        <!-- 區塊 2：地球 Zoom-in 緩衝區 (Taiwan -> Syd) -->
         <div id="globe-scroll-area"></div>
 
         <div class="year-section chapter" id="year2022">
@@ -298,18 +305,9 @@
                 <div class="time-badge">Jul, 2022</div>
                 <div class="story-text">故事的起點在澳洲。<br>那時的我們還不知道，彼此會成為生命中這麼重要的人。</div>
                 <div class="stack-container" onclick="shuffleStack()">
-                    <div class="stack-card stack-3" id="sc3">
-                        <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
-                        <div class="card-note">Bondi Beach</div>
-                    </div>
-                    <div class="stack-card stack-2" id="sc2">
-                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
-                        <div class="card-note">Darling Harbour</div>
-                    </div>
-                    <div class="stack-card stack-1" id="sc1">
-                        <img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
-                        <div class="card-note">The day we met</div>
-                    </div>
+                    <div class="stack-card stack-3" id="sc3"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="card-note">Bondi Beach</div></div>
+                    <div class="stack-card stack-2" id="sc2"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="card-note">Darling Harbour</div></div>
+                    <div class="stack-card stack-1" id="sc1"><img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="card-note">The day we met</div></div>
                 </div>
                 <span class="interactive-hint">Tap to shuffle photo 👆</span>
             </div>
@@ -442,7 +440,10 @@
                     每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
+                    <!-- 背景為 Frank (接通後清晰) -->
                     <div class="ft-bg-layer"></div>
+                    
+                    <!-- 響鈴畫面 -->
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
@@ -465,6 +466,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 接通畫面 -->
                     <div class="ft-active-ui">
                         <div class="ft-top-pill"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
@@ -488,7 +491,6 @@
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
                 <div class="filmstrip-wrapper">
-                    <!-- 【修改】：把第一格底片換成自動播放的影片檔 (.mov) -->
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                         <video src="assets/IMG_0291.mov" class="cover-img" autoplay loop muted playsinline></video>
@@ -783,7 +785,7 @@
         }
 
         // ==========================================
-        // 2. 信封解鎖滾動與 UI 邏輯
+        // 2. 信封解鎖與開場
         // ==========================================
         function calculateDays() {
             const startDate = new Date(2023, 4, 14); 
@@ -817,25 +819,26 @@
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
             
-            // 提早開始 Zoom-in，大幅度放慢 (2.8s)
+            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s電影級曲線)
             setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
             
-            // 緊湊銜接
+            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
+                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0'; 
-                setTimeout(() => { landingView.style.display = 'none'; }, 1500);
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); 
+                landingView.style.opacity = '0'; // 讓信封開場層淡出
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
             }, 2400);
         }
 
