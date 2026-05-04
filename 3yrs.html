@@ -1,10 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy 3rd Anniversary</title>
-    <!-- 引入網頁圖示 -->
     <link rel="icon" href="assets/F&S.png" type="image/png">
     <!-- 引入 Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -24,6 +24,7 @@
 
         .no-scroll { overflow: hidden !important; }
 
+        /* cover-img 類別現在同時支援 img 與 video */
         .cover-img { width: 100%; height: 100%; object-fit: cover; display: block; background: #f4e9ec; border-radius: 4px; }
 
         /* === 全域背景與特效 === */
@@ -44,12 +45,12 @@
         }
 
         /* === 區塊 1：信封開場 === */
-        #landing-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; background: linear-gradient(135deg, #fdfdfd 0%, #f4e9ec 100%); transition: opacity 1s ease; }
+        #landing-view { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; background: linear-gradient(135deg, #fdfdfd 0%, #f4e9ec 100%); transition: opacity 1.5s ease; }
         .envelope-wrapper { position: relative; cursor: pointer; width: 300px; height: 200px; transition: transform 0.3s ease; filter: drop-shadow(0 15px 30px rgba(160, 140, 130, 0.2)); }
         .envelope-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 22px 35px rgba(160, 140, 130, 0.25)); }
         .env-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #e0d8d0; border-radius: 4px; z-index: 1; }
         
-        /* 【核心修復】信封信紙抽出與放大動畫 */
+        /* 完美的信紙置中抽拉與放大設定 */
         .env-letter { 
             position: absolute; bottom: 5px; left: 2.5%; width: 95%; height: 95%; 
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%); 
@@ -71,13 +72,13 @@
         .step-1-open .seal { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         .step-1-open .hint-text { opacity: 0; }
         
-        /* 抽出階段：移除改變 z-index 的指令，讓它自然在夾縫中滑出 */
+        /* 抽出階段：自然在夾縫中向上浮現 */
         .step-2-pull .env-letter { 
             transform: translateY(-110px); 
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
         }
         
-        /* 放大階段：大幅度放慢且使用電影級柔和曲線 (2.8s) */
+        /* 放大階段：電影級柔和曲線，緩慢停靠 */
         .step-3-zoom .env-letter { 
             transform: translateY(0px) scale(60); 
             z-index: 10; 
@@ -90,7 +91,7 @@
             transition: opacity 0.4s ease; 
         }
 
-        /* === 滾動長軸：加快主畫面的淡入速度 === */
+        /* === 滾動長軸 === */
         #scroll-content { position: relative; width: 100%; opacity: 0; display: none; transition: opacity 1.5s ease; z-index: 10; }
 
         /* 區塊 2：計數器 */
@@ -100,7 +101,7 @@
         .days-label { font-size: 16px; color: #666; letter-spacing: 5px; margin-bottom: 50px; }
         .scroll-down-hint { font-size: 13px; color: #999; letter-spacing: 2px; margin-top: 40px; animation: breathe 2s infinite; }
 
-        /* 區塊 3：地球 Zoom In 緩衝區 (台灣 -> 雪梨) */
+        /* 區塊 3：地球 Zoom In 緩衝區 (Taiwan -> Syd) */
         #globe-scroll-area { width: 100%; height: 250vh; pointer-events: none; }
 
         /* 區塊 4：2022 年轉場 */
@@ -122,7 +123,7 @@
         .story-text { line-height: 2.2; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
         .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; }
 
-        /* === 3D 飛行動畫專用緩衝區 === */
+        /* === 3D 飛行動畫專用緩衝區 (兩段) === */
         .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
         .flight-hint { position: sticky; top: 50vh; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; letter-spacing: 2px; opacity: 0; transition: opacity 0.5s; text-shadow: 0 2px 5px rgba(255,255,255,0.9); }
 
@@ -182,43 +183,60 @@
         
         /* FaceTime */
         .facetime-wrapper { position: relative; width: 100%; aspect-ratio: 9/19.5; background: #000; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 0 0 6px #222; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; }
-        .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; filter: blur(15px) brightness(0.6); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
-        .ft-incoming-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 50px 20px 60px 20px; transition: opacity 0.5s ease; }
+        .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
+        
+        .ft-incoming-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 70px 20px 60px 20px; transition: opacity 0.5s ease; }
         .ft-header { text-align: center; }
         .ft-avatar-wrapper { position: relative; display: inline-block; margin-bottom: 15px; }
-        .ft-avatar { position: relative; width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); z-index: 2; }
+        .ft-avatar { position: relative; width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); z-index: 2; }
         .avatar-ripple { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.7); z-index: 1; opacity: 0; pointer-events: none; }
         .is-ringing .avatar-ripple:nth-child(1) { animation: ftRippleAnim 2s infinite ease-out 0s; }
         .is-ringing .avatar-ripple:nth-child(2) { animation: ftRippleAnim 2s infinite ease-out 1s; }
         @keyframes ftRippleAnim { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
         .is-ringing .ft-avatar { animation: avatarShake 2s infinite; }
-        @keyframes avatarShake { 0%, 20%, 100% { transform: translateX(0); } 2%, 6%, 10%, 14%, 18% { transform: translateX(-2px) rotate(-1.5deg); } 4%, 8%, 12%, 16% { transform: translateX(2px) rotate(1.5deg); } }
-        .ft-header h2 { font-size: 28px; font-weight: 400; letter-spacing: 0.5px; font-family: sans-serif; }
+        @keyframes avatarShake { 0%, 20%, 100% { transform: translateX(0); } 2%, 6%, 10%, 14%, 18% { transform: translateX(-4px) rotate(-2deg); } 4%, 8%, 12%, 16% { transform: translateX(4px) rotate(2deg); } }
+        
+        .ft-header h2 { font-size: 32px; font-weight: 300; letter-spacing: 0.5px; margin-bottom: 5px; }
         .is-ringing .ft-video-txt { animation: pulseText 2s infinite; }
-        .ft-video-txt { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 5px; font-family: sans-serif; }
+        .ft-video-txt { font-size: 16px; color: rgba(255,255,255,0.7); margin-top: 5px; }
         @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        
         .ft-bottom-area { display: flex; flex-direction: column; gap: 40px; }
         .ft-icons-row { display: flex; justify-content: space-around; padding: 0 30px; }
         .ft-icon-col { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.9); }
         .ft-icon-circle { width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; }
         .ft-icon-circle svg { width: 20px; height: 20px; fill: white; }
+        
         .ft-slider-track { position: relative; width: 90%; margin: 0 auto; height: 65px; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 35px; display: flex; align-items: center; overflow: hidden; }
         .ft-slider-text { position: absolute; width: 100%; text-align: center; font-size: 17px; font-weight: 300; letter-spacing: 1px; color: rgba(255,255,255,0.9); pointer-events: none; z-index: 1; transition: opacity 0.2s; }
         .ft-slider-text::before { content: 'slide to answer'; background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.4) 100%); background-clip: text; -webkit-background-clip: text; color: transparent; animation: shimmer 2.5s infinite linear; background-size: 200% 100%; }
         @keyframes shimmer { 0% { background-position: -100% 0; } 100% { background-position: 100% 0; } }
         .ft-slider-btn { position: absolute; left: 6px; top: 6px; width: 53px; height: 53px; background: #34c759; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2; box-shadow: 0 2px 10px rgba(0,0,0,0.2); touch-action: none; }
         .ft-slider-btn svg { width: 24px; height: 24px; fill: white; }
-        .ft-active-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; }
-        .ft-status-bar { display: flex; align-items: center; gap: 8px; margin-top: 10px; margin-left: 5px; }
-        .ft-pill { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 15px; display: flex; align-items: center; gap: 5px; font-size: 13px; }
-        .ft-pill img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
-        .ft-active-bottom { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 10px; }
-        .ft-pip { width: 90px; height: 140px; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.2); background: #333; position: relative; }
-        .ft-controls-right { display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.4); padding: 12px 10px; border-radius: 30px; backdrop-filter: blur(10px); }
-        .ft-ctrl-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; justify-content: center; align-items: center; border: none; cursor: pointer; }
-        .ft-ctrl-btn svg { width: 20px; height: 20px; fill: white; }
-        .ft-end-call { background: #eb5545; }
-        .easter-egg-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; white-space: nowrap; }
+        
+        .ft-active-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; }
+        
+        .ft-top-pill { position: absolute; top: 25px; left: 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 20px; padding: 4px 12px 4px 4px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .ft-top-pill img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+        .ft-top-right-btn { position: absolute; top: 25px; right: 20px; width: 34px; height: 34px; background: rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        
+        .ft-pip { position: absolute; bottom: 35px; left: 20px; width: 100px; height: 150px; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 8px 20px rgba(0,0,0,0.4); background: #333; z-index: 21;}
+        .ft-pip-cam-btn { position: absolute; bottom: 8px; left: 8px; width: 26px; height: 26px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .ft-pip-cam-btn svg { width: 14px; height: 14px; fill: white; }
+        
+        .ft-vertical-controls { position: absolute; bottom: 35px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 21; }
+        .ft-ctrl-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .ft-ctrl-video { background: rgba(255,255,255,0.9); }
+        .ft-ctrl-video svg { width: 22px; height: 22px; fill: #34c759; }
+        .ft-ctrl-mic { background: rgba(255,255,255,0.9); }
+        .ft-ctrl-mic svg { width: 22px; height: 22px; fill: #ff9f0a; }
+        .ft-ctrl-more { background: rgba(0,0,0,0.55); backdrop-filter: blur(10px); }
+        .ft-ctrl-more svg { width: 20px; height: 20px; fill: white; }
+        .ft-ctrl-end { background: #d93a30; }
+        .ft-ctrl-end svg { width: 24px; height: 24px; fill: white; }
+
+        .easter-egg-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; white-space: nowrap; z-index: 30;}
+
         .facetime-wrapper.is-connected .ft-bg-layer { filter: blur(0px) brightness(1); transform: scale(1); }
         .facetime-wrapper.is-connected .ft-incoming-ui { opacity: 0; pointer-events: none; }
         .facetime-wrapper.is-connected .ft-active-ui { opacity: 1; pointer-events: auto; }
@@ -227,7 +245,7 @@
         .filmstrip-wrapper { width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 15px; padding-bottom: 20px; scrollbar-width: none; }
         .filmstrip-wrapper::-webkit-scrollbar { display: none; }
         .film-frame { flex: 0 0 85%; height: 250px; scroll-snap-align: center; background: #222; padding: 10px; border-radius: 6px; position: relative; }
-        .film-frame img { border-radius: 4px; }
+        .film-frame img, .film-frame video { border-radius: 4px; }
         .film-holes { position: absolute; top: 0; bottom: 0; width: 10px; display: flex; flex-direction: column; justify-content: space-around; }
         .film-holes.left { left: 4px; }
         .film-holes.right { right: 4px; }
@@ -258,7 +276,6 @@
     <!-- 3. 滾動長軸區塊 -->
     <div id="scroll-content">
         
-        <!-- 區塊 1：3 Years 計數器 -->
         <div class="counter-section" id="counterSection">
             <div class="since-text">3 Years</div>
             <div class="days-number" id="days-count">0</div>
@@ -269,17 +286,14 @@
         <!-- 區塊 2：地球 Zoom-in 緩衝區 (Taiwan -> Syd) -->
         <div id="globe-scroll-area"></div>
 
-        <!-- 區塊 3：2022 轉場 -->
         <div class="year-section chapter" id="year2022">
             <div class="year-text">2022</div>
             <div class="year-sub">Where our journey began...</div>
         </div>
 
-        <!-- 區塊 4：故事時間軸 -->
         <div class="journey-container" id="journeyContainer">
             <svg id="route-canvas" preserveAspectRatio="none"></svg>
 
-            <!-- Chapter 1 -->
             <div class="chapter" id="chap1">
                 <div class="time-badge">Jul, 2022</div>
                 <div class="story-text">故事的起點在澳洲。<br>那時的我們還不知道，彼此會成為生命中這麼重要的人。</div>
@@ -300,7 +314,6 @@
                 <span class="interactive-hint">Tap to shuffle photo 👆</span>
             </div>
 
-            <!-- Chapter 2: Syd to Per -->
             <div class="chapter" id="chap2">
                 <div class="time-badge">Jan, 2023</div>
                 <div class="story-text">妳去了 Perth，離開了我三天。<br>原本以為或許就此見不到了，但這三天的距離，反而讓我們更確信彼此。</div>
@@ -342,12 +355,11 @@
                 <span class="interactive-hint">Tap to flip ticket 👆</span>
             </div>
 
-            <!-- 全新：雪梨飛伯斯 動畫觸發區塊 (Phase 2) -->
+            <!-- 飛往伯斯緩衝區 -->
             <div id="flight-syd-per-area" class="flight-scroll-area">
                 <div class="flight-hint" id="flightHintSydPer">Flying to Perth... ✈️</div>
             </div>
 
-            <!-- 全新：Chapter 3: Per to Syd -->
             <div class="chapter" id="chap3">
                 <div class="time-badge">Feb, 2023</div>
                 <div class="story-text">沒想到馬上就回來了。<br>原本以為要分開很久，結果驚喜來得這麼快。</div>
@@ -389,12 +401,11 @@
                 <span class="interactive-hint">Tap to flip ticket 👆</span>
             </div>
 
-            <!-- 全新：伯斯飛雪梨 動畫觸發區塊 (Phase 3) -->
+            <!-- 飛回雪梨緩衝區 -->
             <div id="flight-per-syd-area" class="flight-scroll-area">
                 <div class="flight-hint" id="flightHintPerSyd">Flying back to you... ✈️</div>
             </div>
 
-            <!-- 後續故事推移編號 -->
             <div class="chapter" id="chap4">
                 <div class="time-badge">May 14, 2023</div>
                 <div class="story-text">慢慢地相處，慢慢地靠近。<br>我們終於決定牽起彼此的手。經歷了風風雨雨，每天都很幸福。</div>
@@ -435,14 +446,12 @@
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
-                                <div class="avatar-ripple"></div>
-                                <div class="avatar-ripple"></div>
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" class="ft-avatar" alt="Avatar">
+                                <div class="avatar-ripple"></div><div class="avatar-ripple"></div>
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop" class="ft-avatar" alt="Avatar">
                             </div>
-                            <h2>Sydney</h2>
+                            <h2>Frank</h2>
                             <p class="ft-video-txt">FaceTime Video</p>
                         </div>
-                        
                         <div class="ft-bottom-area">
                             <div class="ft-icons-row">
                                 <div class="ft-icon-col"><div class="ft-icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg></div>Remind Me</div>
@@ -457,14 +466,17 @@
                         </div>
                     </div>
                     <div class="ft-active-ui">
-                        <div class="ft-status-bar"><div class="ft-pill"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Avatar">Sydney</div></div>
-                        <div class="ft-active-bottom">
-                            <div class="ft-pip"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop" class="cover-img" alt="My Camera"></div>
-                            <div class="ft-controls-right">
-                                <button class="ft-ctrl-btn"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></button>
-                                <button class="ft-ctrl-btn"><svg viewBox="0 0 24 24"><path d="M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z"/></svg></button>
-                                <button class="ft-ctrl-btn ft-end-call" onclick="showEasterEgg()"><svg viewBox="0 0 24 24" style="transform: rotate(135deg);"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></button>
-                            </div>
+                        <div class="ft-top-pill"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop" alt="Avatar">Frank 〉</div>
+                        <div class="ft-top-right-btn"></div>
+                        <div class="ft-pip">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" class="cover-img" alt="My Camera">
+                            <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
+                        </div>
+                        <div class="ft-vertical-controls">
+                            <button class="ft-ctrl-btn ft-ctrl-video"><svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+                            <button class="ft-ctrl-btn ft-ctrl-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg></button>
+                            <button class="ft-ctrl-btn ft-ctrl-more"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg></button>
+                            <button class="ft-ctrl-btn ft-ctrl-end" onclick="showEasterEgg()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
                         </div>
                         <div class="easter-egg-msg" id="ftEasterEgg">好不容易接通，捨不得掛斷...</div>
                     </div>
@@ -476,7 +488,12 @@
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
                 <div class="filmstrip-wrapper">
-                    <div class="film-frame"><div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div></div>
+                    <!-- 【修改】：把第一格底片換成自動播放的影片檔 (.mov) -->
+                    <div class="film-frame">
+                        <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                        <video src="assets/IMG_0291.mov" class="cover-img" autoplay loop muted playsinline></video>
+                        <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                    </div>
                     <div class="film-frame"><div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div></div>
                     <div class="film-frame"><div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div></div>
                 </div>
@@ -509,7 +526,7 @@
         
         const GLOBE_RADIUS = 25;
         
-        // 台灣起點 (Phase 1)
+        // 台灣起點
         const TAIWAN_LAT = 23.6978;
         const TAIWAN_LON = 120.9605;
         const twPhi = THREE.MathUtils.degToRad(90 - TAIWAN_LAT);
@@ -529,9 +546,9 @@
             ctx.textBaseline = 'middle';
             ctx.translate(64, 64);
             if (direction === 'west') {
-                ctx.rotate(-Math.PI * 0.75); // Syd -> Per (向西/左下)
+                ctx.rotate(-Math.PI * 0.75); 
             } else {
-                ctx.rotate(Math.PI * 0.25);  // Per -> Syd (向東/右上)
+                ctx.rotate(Math.PI * 0.25); 
             }
             ctx.fillText('✈️', 0, 0);
             
@@ -581,7 +598,7 @@
             const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
             globeGroup.add(wireMesh);
 
-            // 【座標定位】雪梨
+            // 雪梨
             const sydSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-33.86)), THREE.MathUtils.degToRad(151.20 + 90));
             const pinGeo = new THREE.SphereGeometry(0.5, 16, 16);
             const pinMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae });
@@ -596,7 +613,7 @@
             sydneyRing.lookAt(sydneyPin.position.clone().multiplyScalar(2)); 
             globeGroup.add(sydneyRing);
 
-            // 【座標定位】伯斯
+            // 伯斯
             const perthSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-31.95)), THREE.MathUtils.degToRad(115.86 + 90));
             perthPin = new THREE.Mesh(pinGeo, pinMat);
             perthPin.position.setFromSpherical(perthSpherical);
@@ -609,7 +626,7 @@
             perthRing.visible = false;
             globeGroup.add(perthRing);
 
-            // 【建立航線曲線】
+            // 航線曲線
             const vSyd = sydneyPin.position.clone();
             const vPerth = perthPin.position.clone();
             const vMid = vSyd.clone().add(vPerth).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 4);
@@ -629,7 +646,7 @@
             linePerSyd.geometry.setDrawRange(0, 0); 
             globeGroup.add(linePerSyd);
 
-            // 【建立兩架飛機】
+            // 飛機
             planeSydPer = createAirplaneSprite('west');
             planeSydPer.visible = false;
             globeGroup.add(planeSydPer);
@@ -638,7 +655,6 @@
             planePerSyd.visible = false;
             globeGroup.add(planePerSyd);
 
-            // 鎖死地球旋轉
             globeGroup.rotation.set(0, 0, 0); 
             globeGroup.updateMatrixWorld();
 
@@ -656,7 +672,6 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            // 重新計算飛航視角距離
             let distFlight = window.innerWidth < 768 ? 58 : 45; 
             targetCameraPosFlight.normalize().multiplyScalar(distFlight);
         }
@@ -679,32 +694,29 @@
             let p2Rect = p2Area.getBoundingClientRect();
             let p3Rect = p3Area.getBoundingClientRect();
 
-            // 重置物件可見度
+            // 狀態重置
             planeSydPer.visible = false;
             planePerSyd.visible = false;
             lineSydPer.geometry.setDrawRange(0, 0);
             linePerSyd.geometry.setDrawRange(0, 0);
-            perthPin.visible = false;
-            perthRing.visible = false;
+            if(perthPin) perthPin.visible = false;
+            if(perthRing) perthRing.visible = false;
 
-            // --- 判斷目前處於哪個動畫階段 ---
-            
+            // --- 動畫階段判斷 ---
             if (p3Rect.top < window.innerHeight && p3Rect.bottom > 0) {
-                // 【Phase 3: 伯斯飛回雪梨】
+                // Phase 3: 伯斯飛回雪梨
                 let prog = (window.innerHeight - p3Rect.top) / (window.innerHeight + p3Rect.height);
                 prog = Math.max(0, Math.min(prog, 1));
-                opacity = Math.sin(prog * Math.PI); // 進入畫面淡入，離開淡出
+                opacity = Math.sin(prog * Math.PI); 
 
                 camera.position.lerp(targetCameraPosFlight, 0.1);
                 camera.lookAt(0, 0, 0);
 
-                // 顯示標記
                 perthPin.visible = true; perthRing.visible = true;
                 sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
 
-                // 飛行進度
                 planePerSyd.visible = true;
-                let flightProg = (prog - 0.2) / 0.6; // 在畫面 20%~80% 之間飛行
+                let flightProg = (prog - 0.2) / 0.6; 
                 flightProg = Math.max(0, Math.min(flightProg, 1));
                 
                 linePerSyd.geometry.setDrawRange(0, Math.floor(flightProg * 101));
@@ -714,7 +726,7 @@
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             } 
             else if (p2Rect.top < window.innerHeight && p2Rect.bottom > 0) {
-                // 【Phase 2: 雪梨飛往伯斯】
+                // Phase 2: 雪梨飛往伯斯
                 let prog = (window.innerHeight - p2Rect.top) / (window.innerHeight + p2Rect.height);
                 prog = Math.max(0, Math.min(prog, 1));
                 opacity = Math.sin(prog * Math.PI);
@@ -736,12 +748,11 @@
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             } 
             else if (scrollY <= p1Area.offsetTop + p1Area.offsetHeight) {
-                // 【Phase 1: 開場 台灣飛雪梨】
+                // Phase 1: 台灣飛雪梨
                 let p1Prog = scrollY / p1Area.offsetHeight;
                 p1Prog = Math.max(0, Math.min(p1Prog, 1));
                 let ease1 = p1Prog * p1Prog * (3 - 2 * p1Prog);
 
-                // 球面軌跡飛行
                 camera.position.copy(initialCameraPos).applyQuaternion(
                     new THREE.Quaternion().setFromUnitVectors(
                         initialCameraPos.clone().normalize(),
@@ -752,12 +763,10 @@
                 camera.position.normalize().multiplyScalar(curDist);
                 camera.lookAt(0, 0, 0);
 
-                // 動態縮小雪梨光圈
                 let markerScale = 1 - (ease1 * 0.7); 
                 sydneyPin.scale.set(markerScale, markerScale, markerScale);
                 sydneyRing.scale.set(markerScale, markerScale, markerScale);
 
-                // 2022 轉場淡出邏輯
                 let yearRect = yearSection.getBoundingClientRect();
                 let fadeProg = 1 - (yearRect.top / window.innerHeight); 
                 if (fadeProg > -0.2) {
@@ -808,26 +817,25 @@
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
             
-            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s)
+            // 提早開始 Zoom-in，大幅度放慢 (2.8s)
             setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
             
-            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
+            // 緊湊銜接
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
-                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0'; // 讓信封開場層淡出
-                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
+                landingView.style.opacity = '0'; 
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500);
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); 
             }, 2400);
         }
 
@@ -927,6 +935,7 @@
             flash.classList.remove('flash-anim');
             void flash.offsetWidth; 
             flash.classList.add('flash-anim');
+            
             if(navigator.vibrate) navigator.vibrate(50); 
 
             setTimeout(() => {
@@ -1012,4 +1021,8 @@
 
     </script>
 </body>
+</html>
+
+
+```
 </html>
