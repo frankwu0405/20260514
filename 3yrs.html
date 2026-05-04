@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -192,12 +193,14 @@
         /* === FaceTime === */
         .facetime-wrapper { position: relative; width: 100%; aspect-ratio: 9/19.5; background: #000; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 0 0 6px #222; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; }
         
-        /* FaceTime 影片背景 */
+        /* 影片背景層 */
         .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #333; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
         
         .ft-incoming-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 70px 20px 60px 20px; transition: opacity 0.5s ease; }
         .ft-header { text-align: center; }
         .ft-avatar-wrapper { position: relative; display: inline-block; margin-bottom: 15px; }
+        
+        /* 來電大頭貼使用 IMG_4725.jpeg */
         .ft-avatar { position: relative; width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); z-index: 2; }
         .avatar-ripple { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.7); z-index: 1; opacity: 0; pointer-events: none; }
         .is-ringing .avatar-ripple:nth-child(1) { animation: ftRippleAnim 2s infinite ease-out 0s; }
@@ -226,6 +229,7 @@
         
         .ft-active-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; }
         
+        /* 膠囊小頭貼使用 IMG_4725.jpeg */
         .ft-top-pill { position: absolute; top: 25px; left: 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 20px; padding: 4px 12px 4px 4px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         .ft-top-pill img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
         .ft-top-right-btn { position: absolute; top: 25px; right: 20px; width: 34px; height: 34px; background: rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -441,14 +445,14 @@
                     每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
-                    <!-- 【替換】：背景為 Frank 的自訂影片 -->
+                    <!-- 背景為 Frank 的自訂影片 -->
                     <video class="ft-bg-layer" src="assets/742539708.620992.mp4" autoplay loop muted playsinline></video>
                     
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
                                 <div class="avatar-ripple"></div><div class="avatar-ripple"></div>
-                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop" class="ft-avatar" alt="Avatar">
+                                <img src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
                             </div>
                             <h2>Frank</h2>
                             <p class="ft-video-txt">FaceTime Video</p>
@@ -469,7 +473,7 @@
 
                     <!-- 接通畫面 -->
                     <div class="ft-active-ui">
-                        <div class="ft-top-pill"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop" alt="Avatar">Frank 〉</div>
+                        <div class="ft-top-pill"><img src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
                         <div class="ft-pip">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" class="cover-img" alt="My Camera">
@@ -819,23 +823,26 @@
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
             
+            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s電影級曲線)
             setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
             
+            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
+                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0'; 
-                setTimeout(() => { landingView.style.display = 'none'; }, 1500);
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); 
+                landingView.style.opacity = '0'; // 讓信封開場層淡出
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
             }, 2400);
         }
 
@@ -1022,4 +1029,7 @@
     </script>
 </body>
 </html>
+
+
+```
 ```
