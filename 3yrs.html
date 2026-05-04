@@ -149,7 +149,7 @@
         .bp-barcode { height: 22px; width: 100%; background: repeating-linear-gradient(to right, #333, #333 2px, transparent 2px, transparent 4px, #333 4px, #333 5px, transparent 5px, transparent 7px, #333 7px, #333 10px, transparent 10px, transparent 12px); opacity: 0.7; margin-top: 5px; }
         
         .flip-back { 
-            background: #000; /* 設定黑色底色以襯托影片 */
+            background: #000; 
             transform: rotateY(180deg); 
             border-right: 16px solid #d1bfae; 
             padding: 0; 
@@ -169,7 +169,7 @@
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            pointer-events: none; /* 讓點擊事件可以穿透覆蓋層 */
+            pointer-events: none; 
         }
         .flip-back-overlay .handwriting { 
             font-family: 'Caveat', cursive; 
@@ -180,7 +180,7 @@
             line-height: 1.1;
         }
 
-        /* 互動式 3D 雙重機票 (Z-Order Switching) */
+        /* 互動式 3D 雙重機票 */
         .double-ticket-wrapper { position: relative; width: 100%; height: 260px; margin-bottom: 10px; perspective: 1000px; }
         .ticket-layer { position: absolute; top: 0; left: 0; width: 100%; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s; }
         .ticket-layer .flip-front, .ticket-layer .flip-back { transition: box-shadow 0.8s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -542,18 +542,29 @@
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
 
-            <!-- Chapter 6 -->
+            <!-- Chapter 6 (更新：膠卷輪播的照片與影片) -->
             <div class="chapter" id="chap6">
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
                 <div class="filmstrip-wrapper">
+                    <!-- 第一格：原有的影片 -->
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                         <video src="assets/IMG_0291.mov" class="cover-img" autoplay loop muted playsinline></video>
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
-                    <div class="film-frame"><div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div></div>
-                    <div class="film-frame"><div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory"><div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div></div>
+                    <!-- 第二格：更新為照片 -->
+                    <div class="film-frame">
+                        <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                        <img src="assets/1D23B52C-EB73-439C-B12F-89B234D61846.jpeg" class="cover-img" alt="Memory">
+                        <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                    </div>
+                    <!-- 第三格：更新為影片 -->
+                    <div class="film-frame">
+                        <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                        <video src="assets/511747188628390229.mp4" class="cover-img" autoplay loop muted playsinline></video>
+                        <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+                    </div>
                 </div>
                 <span class="interactive-hint">Swipe to view memories 👈 👉</span>
             </div>
@@ -629,7 +640,6 @@
                                     <div class="bp-barcode"></div>
                                 </div>
                             </div>
-                            <!-- 更新：滿版影片背面 (Frank) -->
                             <div class="flip-back">
                                 <video src="assets/IMG_8403.mov" class="flip-back-img" autoplay loop muted playsinline></video>
                                 <div class="flip-back-overlay">
@@ -663,7 +673,6 @@
                                     <div class="bp-barcode"></div>
                                 </div>
                             </div>
-                            <!-- 更新：滿版影片背面 (Sydney) -->
                             <div class="flip-back">
                                 <video src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" autoplay loop muted playsinline></video>
                                 <div class="flip-back-overlay">
