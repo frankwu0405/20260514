@@ -18,13 +18,13 @@
             font-family: 'Noto Serif TC', serif;
             background-color: #fafafa;
             overflow-x: hidden; 
-            overflow-y: hidden; /* 初始鎖定，信封打開後解鎖 */
+            overflow-y: hidden; 
             scroll-behavior: smooth;
         }
 
         .no-scroll { overflow: hidden !important; }
 
-        .cover-img { width: 100%; height: 100%; object-fit: cover; display: block; background: #f4e9ec; border-radius: 4px; }
+        .cover-img { width: 100%; height: 100%; object-fit: cover; display: block; background: #f4e9ec; border-radius: 4px; pointer-events: none; user-select: none; -webkit-user-drag: none; }
 
         /* === 全域背景與特效 === */
         .main-bg {
@@ -43,12 +43,11 @@
             z-index: 2; pointer-events: none; opacity: 1; 
         }
 
-        /* === 區塊 1：信封開場 (加深對角線陰影對比) === */
+        /* === 區塊 1：信封開場 === */
         #landing-view { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             z-index: 50; 
-            /* 更強烈的左上聚光燈與右下深色環境陰影 */
             background: 
                 radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%), 
                 linear-gradient(135deg, #fcf9fa 0%, #e2d1d6 45%, #bca6ae 100%); 
@@ -59,13 +58,12 @@
         .envelope-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 22px 35px rgba(160, 140, 130, 0.25)); }
         .env-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #e0d8d0; border-radius: 4px; z-index: 1; }
         
-        /* 完美的信紙置中抽拉與放大設定 */
         .env-letter { 
             position: absolute; bottom: 5px; left: 2.5%; width: 95%; height: 95%; 
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%); 
-            border-radius: 4px; z-index: 2; /* 初始待在底層 */
+            border-radius: 4px; z-index: 2; 
             transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 1s ease; 
-            transform-origin: center center; /* 讓縮放完美從中心等比展開 */
+            transform-origin: center center; 
         }
         
         .env-left { position: absolute; left: 0; border-top: 100px solid transparent; border-bottom: 100px solid transparent; border-left: 150px solid #fcfbf9; z-index: 3; transition: opacity 0.5s; }
@@ -74,46 +72,27 @@
         .env-flap { position: absolute; top: 0; border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 115px solid #ffffff; transform-origin: top; transition: transform 0.8s ease, opacity 0.5s; z-index: 6; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.08));}
         
         .seal { position: absolute; top: 110px; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #d1bfae; border-radius: 50%; z-index: 7; display: flex; justify-content: center; align-items: center; color: #fff; font-family: 'Cormorant Garamond', serif; font-style: italic; transition: opacity 0.4s, transform 0.4s; box-shadow: 0 4px 10px rgba(209, 191, 174, 0.4); }
-        .hint-text { margin-top: 60px; color: #888; font-size: 13px; letter-spacing: 3px; animation: breathe 2s infinite ease-in-out; transition: opacity 0.4s; font-family: 'Noto Sans TC', sans-serif;}
+        .hint-text { margin-top: 60px; color: #888; font-size: 13px; letter-spacing: 3px; animation: breathe 2s infinite ease-in-out; transition: opacity 0.4s; font-family: -apple-system, sans-serif;}
         @keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
         .step-1-open .env-flap { transform: rotateX(180deg); z-index: 1; }
         .step-1-open .seal { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         .step-1-open .hint-text { opacity: 0; }
-        
-        /* 抽出階段：自然在夾縫中向上浮現 */
-        .step-2-pull .env-letter { 
-            transform: translateY(-110px); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-        }
-        
-        /* 放大階段：電影級柔和曲線，緩慢停靠 */
-        .step-3-zoom .env-letter { 
-            transform: translateY(0px) scale(60); 
-            z-index: 10; 
-            border-radius: 0;
-            box-shadow: none;
-            transition: transform 2.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease; 
-        }
-        .step-3-zoom .env-back, .step-3-zoom .env-left, .step-3-zoom .env-right, .step-3-zoom .env-bottom, .step-3-zoom .env-flap { 
-            opacity: 0; 
-            transition: opacity 0.4s ease; 
-        }
+        .step-2-pull .env-letter { transform: translateY(-110px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .step-3-zoom .env-letter { transform: translateY(0px) scale(60); z-index: 10; border-radius: 0; box-shadow: none; transition: transform 2.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease; }
+        .step-3-zoom .env-back, .step-3-zoom .env-left, .step-3-zoom .env-right, .step-3-zoom .env-bottom, .step-3-zoom .env-flap { opacity: 0; transition: opacity 0.4s ease; }
 
         /* === 滾動長軸 === */
         #scroll-content { position: relative; width: 100%; opacity: 0; display: none; transition: opacity 1.5s ease; z-index: 10; }
 
-        /* 區塊 2：計數器 */
         .counter-section { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .since-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #999; margin-bottom: 15px; letter-spacing: 2px; }
         .days-number { font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: #333; line-height: 1; margin-bottom: 10px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .days-label { font-size: 16px; color: #666; letter-spacing: 5px; margin-bottom: 50px; }
-        .scroll-down-hint { font-size: 13px; color: #999; letter-spacing: 2px; margin-top: 40px; animation: breathe 2s infinite; }
+        .days-label { font-size: 16px; color: #666; letter-spacing: 5px; margin-bottom: 50px; font-family: -apple-system, sans-serif;}
+        .scroll-down-hint { font-size: 13px; color: #999; letter-spacing: 2px; margin-top: 40px; animation: breathe 2s infinite; font-family: -apple-system, sans-serif;}
 
-        /* 區塊 3：地球 Zoom In 緩衝區 (Taiwan -> Syd) */
         #globe-scroll-area { width: 100%; height: 250vh; pointer-events: none; }
 
-        /* 區塊 4：2022 年轉場 */
         .year-section { 
             width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
             opacity: 0; transform: translateY(60px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; 
@@ -123,20 +102,19 @@
         .year-text { font-family: 'Cormorant Garamond', serif; font-size: 120px; font-weight: 300; color: #d1bfae; line-height: 1; margin-bottom: 15px; letter-spacing: 5px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .year-sub { font-family: 'Noto Serif TC', serif; font-size: 16px; color: #666; letter-spacing: 3px; }
 
-        /* 區塊 5：故事時間軸 */
         .journey-container { position: relative; max-width: 500px; margin: 0 auto; padding: 50px 20px 150px 20px; }
         #route-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
         .chapter.is-visible { opacity: 1; transform: translateY(0); }
         .time-badge { display: inline-block; padding: 6px 15px; background: #fff; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; letter-spacing: 1px; border: 1px solid #f4e9ec; }
         .story-text { line-height: 2.2; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
-        .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; }
+        .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; font-family: -apple-system, sans-serif;}
 
-        /* === 3D 飛行動畫專用緩衝區 (兩段) === */
         .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
         .flight-hint { position: sticky; top: 50vh; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; letter-spacing: 2px; opacity: 0; transition: opacity 0.5s; text-shadow: 0 2px 5px rgba(255,255,255,0.9); }
 
-        /* --- UI 元件 --- */
+        /* --- UI 元件庫 --- */
+        
         .stack-container { position: relative; width: 100%; height: 350px; perspective: 1000px; cursor: pointer; }
         .stack-card { position: absolute; top: 0; left: 50%; width: 280px; height: 320px; background: #fff; padding: 12px 12px 40px 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; overflow: hidden; }
         .stack-1 { transform: translateX(-50%) rotate(-3deg) translateY(0) scale(1); z-index: 3; }
@@ -144,28 +122,82 @@
         .stack-3 { transform: translateX(-50%) rotate(-2deg) translateY(20px) scale(0.9); z-index: 1; opacity: 0.6; }
         .card-note { position: absolute; bottom: 8px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 22px; color: #555; }
 
-        .flip-container { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; }
-        .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; }
+        /* 滿版照片/影片機票 (Flip Container) */
+        .flip-container { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; -webkit-tap-highlight-color: transparent;}
+        .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
         .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .flip-front { background: #fff; border-left: 16px solid #d1bfae; flex-direction: row; justify-content: flex-start; align-items: stretch; }
+        
+        .flip-front, .flip-back { 
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+            border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; 
+        }
+        
+        .flip-front { background: #fff; border-left: 16px solid #d1bfae; display: flex; flex-direction: row; justify-content: flex-start; align-items: stretch; }
         .bp-left { flex: 2.8; padding: 12px 15px; display: flex; flex-direction: column; justify-content: space-between; }
         .bp-right { flex: 1; padding: 12px 10px; border-left: 2px dashed #ddd; background: #faf8f5; display: flex; flex-direction: column; justify-content: space-between; }
         .bp-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f4e9ec; padding-bottom: 6px; margin-bottom: 4px; }
-        .bp-airline { font-family: 'Noto Sans TC', sans-serif; font-weight: 800; font-size: 13px; color: #333; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+        .bp-airline { font-family: -apple-system, sans-serif; font-weight: 800; font-size: 13px; color: #333; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
         .bp-airline svg { width: 14px; height: 14px; fill: #d1bfae; transform: rotate(45deg); }
-        .bp-class { font-family: 'Noto Sans TC', sans-serif; font-weight: bold; font-size: 10px; color: #d1bfae; }
+        .bp-class { font-family: -apple-system, sans-serif; font-weight: bold; font-size: 10px; color: #d1bfae; }
         .bp-row { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; }
         .bp-route { justify-content: flex-start; gap: 15px; margin: 2px 0; }
         .bp-col { display: flex; flex-direction: column; text-align: left; }
-        .bp-label { font-family: 'Noto Sans TC', sans-serif; font-size: 9px; color: #999; text-transform: uppercase; margin-bottom: 1px; letter-spacing: 0.5px; line-height: 1; }
-        .bp-data { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: #333; font-weight: 700; line-height: 1.2; }
-        .bp-data-large { font-family: 'Noto Sans TC', sans-serif; font-size: 30px; color: #333; font-weight: 800; line-height: 1; letter-spacing: -1px; margin-top: 2px; }
+        .bp-label { font-family: -apple-system, sans-serif; font-size: 9px; color: #999; text-transform: uppercase; margin-bottom: 1px; letter-spacing: 0.5px; line-height: 1; }
+        .bp-data { font-family: -apple-system, sans-serif; font-size: 13px; color: #333; font-weight: 700; line-height: 1.2; }
+        .bp-data-large { font-family: -apple-system, sans-serif; font-size: 30px; color: #333; font-weight: 800; line-height: 1; letter-spacing: -1px; margin-top: 2px; }
         .bp-icon { font-size: 16px; color: #d1bfae; transform: rotate(45deg); margin-bottom: 5px; }
         .bp-barcode { height: 22px; width: 100%; background: repeating-linear-gradient(to right, #333, #333 2px, transparent 2px, transparent 4px, #333 4px, #333 5px, transparent 5px, transparent 7px, #333 7px, #333 10px, transparent 10px, transparent 12px); opacity: 0.7; margin-top: 5px; }
-        .flip-back { background: #fdfafb; transform: rotateY(180deg); border-right: 16px solid #f4e9ec; flex-direction: column; padding: 20px; }
-        .handwriting { font-family: 'Caveat', cursive; font-size: 26px; color: #555; }
+        
+        .flip-back { 
+            background: #000; /* 設定黑色底色以襯托影片 */
+            transform: rotateY(180deg); 
+            border-right: 16px solid #d1bfae; 
+            padding: 0; 
+            position: relative;
+        }
+        .flip-back-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .flip-back-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 40px 20px 15px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            pointer-events: none; /* 讓點擊事件可以穿透覆蓋層 */
+        }
+        .flip-back-overlay .handwriting { 
+            font-family: 'Caveat', cursive; 
+            font-size: 26px; 
+            color: #fff; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            margin: 0;
+            line-height: 1.1;
+        }
 
+        /* 互動式 3D 雙重機票 (Z-Order Switching) */
+        .double-ticket-wrapper { position: relative; width: 100%; height: 260px; margin-bottom: 10px; perspective: 1000px; }
+        .ticket-layer { position: absolute; top: 0; left: 0; width: 100%; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s; }
+        .ticket-layer .flip-front, .ticket-layer .flip-back { transition: box-shadow 0.8s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .double-ticket-wrapper:not(.revealed) .ticket-1 { transform: translateY(0) rotate(0deg); z-index: 1; }
+        .double-ticket-wrapper:not(.revealed) .ticket-2 { transform: translateY(0) rotate(0deg); z-index: 2; }
+        
+        .double-ticket-wrapper.revealed[data-front="1"] .ticket-1 { z-index: 3; transform: translateY(35px) translateX(5px) rotate(6deg); }
+        .double-ticket-wrapper.revealed[data-front="1"] .ticket-2 { z-index: 1; transform: translateY(-10px) translateX(-15px) rotate(-3deg); }
+        .double-ticket-wrapper.revealed[data-front="2"] .ticket-1 { z-index: 1; transform: translateY(-10px) translateX(-15px) rotate(-3deg); }
+        .double-ticket-wrapper.revealed[data-front="2"] .ticket-2 { z-index: 3; transform: translateY(35px) translateX(5px) rotate(6deg); }
+
+        .double-ticket-wrapper.revealed[data-front="1"] .ticket-1 .flip-front, .double-ticket-wrapper.revealed[data-front="1"] .ticket-1 .flip-back,
+        .double-ticket-wrapper.revealed[data-front="2"] .ticket-2 .flip-front, .double-ticket-wrapper.revealed[data-front="2"] .ticket-2 .flip-back { box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+        .double-ticket-wrapper.revealed[data-front="1"] .ticket-2 .flip-front, .double-ticket-wrapper.revealed[data-front="1"] .ticket-2 .flip-back,
+        .double-ticket-wrapper.revealed[data-front="2"] .ticket-1 .flip-front, .double-ticket-wrapper.revealed[data-front="2"] .ticket-1 .flip-back { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* 拍立得相機特效 */
         .camera-wrapper { position: relative; width: 220px; height: 260px; margin: 40px auto 20px auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .camera-3d { position: relative; width: 100%; height: 100%; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); }
         .cam-top { position: relative; z-index: 10; width: 170px; height: 60px; margin: 0 auto; background: linear-gradient(to bottom, #545760, #3e4148); border-radius: 20px 20px 0 0; box-shadow: inset 0 6px 10px rgba(255,255,255,0.2), inset 0 -4px 8px rgba(0,0,0,0.4); }
@@ -182,7 +214,7 @@
         .cam-glare-2 { position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 50%; }
         .cam-button { position: absolute; top: 45%; left: 20px; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff5252, #b71c1c); box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 6px rgba(0,0,0,0.5); border: 2px solid #5a0000; }
         .cam-bottom { position: relative; z-index: 4; width: 220px; height: 50px; background: linear-gradient(to bottom, #111 0%, #111 12px, #4a4c54 12px, #36383e 100%); border-radius: 0 0 16px 16px; box-shadow: inset 0 13px 5px rgba(0,0,0,0.6), inset 0 -4px 8px rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 12px; }
-        .cam-label { font-size: 10px; color: rgba(255,255,255,0.6); font-weight: bold; letter-spacing: 2px; }
+        .cam-label { font-size: 10px; color: rgba(255,255,255,0.6); font-weight: bold; letter-spacing: 2px; font-family: -apple-system, sans-serif;}
         .printed-photo { position: absolute; top: 155px; left: 50%; width: 140px; height: 165px; background: #fff; transform: translateX(-50%) translateY(0); z-index: 5; padding: 8px 8px 30px 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .printed-photo img { filter: brightness(0.15) grayscale(100%); transition: filter 4s ease-out; }
         .printed-photo .date { position: absolute; bottom: 6px; left: 0; width: 100%; text-align: center; font-family: 'Caveat', cursive; font-size: 18px; color: #555; }
@@ -190,17 +222,12 @@
         .is-zooming .printed-photo { z-index: 20; transform: translateX(-50%) translateY(-20px) scale(1.65); box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .is-developing .printed-photo img { filter: brightness(1) grayscale(0%); }
         
-        /* === FaceTime === */
+        /* FaceTime 復刻 */
         .facetime-wrapper { position: relative; width: 100%; aspect-ratio: 9/19.5; background: #000; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 0 0 6px #222; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; user-select: none; }
-        
-        /* 影片背景層 */
         .ft-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; background-color: #333; filter: blur(25px) brightness(0.5); transition: filter 1s ease, transform 1s ease; transform: scale(1.1); z-index: 1; }
-        
         .ft-incoming-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 70px 20px 60px 20px; transition: opacity 0.5s ease; }
         .ft-header { text-align: center; }
         .ft-avatar-wrapper { position: relative; display: inline-block; margin-bottom: 15px; }
-        
-        /* 來電大頭貼使用 IMG_4725.jpeg */
         .ft-avatar { position: relative; width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); z-index: 2; }
         .avatar-ripple { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.7); z-index: 1; opacity: 0; pointer-events: none; }
         .is-ringing .avatar-ripple:nth-child(1) { animation: ftRippleAnim 2s infinite ease-out 0s; }
@@ -208,36 +235,28 @@
         @keyframes ftRippleAnim { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
         .is-ringing .ft-avatar { animation: avatarShake 2s infinite; }
         @keyframes avatarShake { 0%, 20%, 100% { transform: translateX(0); } 2%, 6%, 10%, 14%, 18% { transform: translateX(-4px) rotate(-2deg); } 4%, 8%, 12%, 16% { transform: translateX(4px) rotate(2deg); } }
-        
         .ft-header h2 { font-size: 32px; font-weight: 300; letter-spacing: 0.5px; margin-bottom: 5px; }
         .is-ringing .ft-video-txt { animation: pulseText 2s infinite; }
         .ft-video-txt { font-size: 16px; color: rgba(255,255,255,0.7); margin-top: 5px; }
         @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-        
         .ft-bottom-area { display: flex; flex-direction: column; gap: 40px; }
         .ft-icons-row { display: flex; justify-content: space-around; padding: 0 30px; }
         .ft-icon-col { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.9); }
         .ft-icon-circle { width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; }
         .ft-icon-circle svg { width: 20px; height: 20px; fill: white; }
-        
         .ft-slider-track { position: relative; width: 90%; margin: 0 auto; height: 65px; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 35px; display: flex; align-items: center; overflow: hidden; }
         .ft-slider-text { position: absolute; width: 100%; text-align: center; font-size: 17px; font-weight: 300; letter-spacing: 1px; color: rgba(255,255,255,0.9); pointer-events: none; z-index: 1; transition: opacity 0.2s; }
         .ft-slider-text::before { content: 'slide to answer'; background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.4) 100%); background-clip: text; -webkit-background-clip: text; color: transparent; animation: shimmer 2.5s infinite linear; background-size: 200% 100%; }
         @keyframes shimmer { 0% { background-position: -100% 0; } 100% { background-position: 100% 0; } }
         .ft-slider-btn { position: absolute; left: 6px; top: 6px; width: 53px; height: 53px; background: #34c759; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2; box-shadow: 0 2px 10px rgba(0,0,0,0.2); touch-action: none; }
         .ft-slider-btn svg { width: 24px; height: 24px; fill: white; }
-        
         .ft-active-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; }
-        
-        /* 膠囊小頭貼使用 IMG_4725.jpeg */
         .ft-top-pill { position: absolute; top: 25px; left: 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 20px; padding: 4px 12px 4px 4px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         .ft-top-pill img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
         .ft-top-right-btn { position: absolute; top: 25px; right: 20px; width: 34px; height: 34px; background: rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        
         .ft-pip { position: absolute; bottom: 35px; left: 20px; width: 100px; height: 150px; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 8px 20px rgba(0,0,0,0.4); background: #333; z-index: 21;}
         .ft-pip-cam-btn { position: absolute; bottom: 8px; left: 8px; width: 26px; height: 26px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
         .ft-pip-cam-btn svg { width: 14px; height: 14px; fill: white; }
-        
         .ft-vertical-controls { position: absolute; bottom: 35px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 21; }
         .ft-ctrl-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .ft-ctrl-video { background: rgba(255,255,255,0.9); }
@@ -248,14 +267,12 @@
         .ft-ctrl-more svg { width: 20px; height: 20px; fill: white; }
         .ft-ctrl-end { background: #d93a30; }
         .ft-ctrl-end svg { width: 24px; height: 24px; fill: white; }
-
         .easter-egg-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 20px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; white-space: nowrap; z-index: 30;}
-
         .facetime-wrapper.is-connected .ft-bg-layer { filter: blur(0px) brightness(1); transform: scale(1); }
         .facetime-wrapper.is-connected .ft-incoming-ui { opacity: 0; pointer-events: none; }
         .facetime-wrapper.is-connected .ft-active-ui { opacity: 1; pointer-events: auto; }
 
-        /* 底片 */
+        /* 底片橫向滾動 */
         .filmstrip-wrapper { width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 15px; padding-bottom: 20px; scrollbar-width: none; }
         .filmstrip-wrapper::-webkit-scrollbar { display: none; }
         .film-frame { flex: 0 0 85%; height: 250px; scroll-snap-align: center; background: #222; padding: 10px; border-radius: 6px; position: relative; }
@@ -265,6 +282,35 @@
         .film-holes.right { right: 4px; }
         .hole { width: 6px; height: 10px; background: rgba(255,255,255,0.8); border-radius: 2px; }
 
+        /* 膠帶拍立得牆 */
+        .scrapbook-track-wrapper { position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: 30px; margin-bottom: 10px; }
+        .scrapbook-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 40px 10vw 60px 10vw; gap: 40px; align-items: center; scrollbar-width: none; -ms-overflow-style: none; }
+        .scrapbook-track::-webkit-scrollbar { display: none; }
+        .sb-polaroid { flex: 0 0 auto; position: relative; padding: 12px 12px 45px 12px; box-shadow: 2px 10px 25px rgba(0,0,0,0.07); scroll-snap-align: center; border-radius: 2px; }
+        .sb-p1 { width: 240px; transform: rotate(-3deg) translateY(10px); background: #fdfdfc; }
+        .sb-p1 img { height: 220px; }
+        .sb-p2 { width: 220px; transform: rotate(4deg) translateY(-5px); background: #fcf9fa; }
+        .sb-p2 img { height: 240px; }
+        .sb-p3 { width: 250px; transform: rotate(-1deg); background: #fafaf8; }
+        .sb-p3 img { height: 200px; }
+        .sb-p4 { width: 230px; transform: rotate(-5deg) translateY(5px); background: #fdfdfc; }
+        .sb-p4 img { height: 230px; }
+        .sb-p5 { width: 260px; transform: rotate(2deg) translateY(-10px); background: #fcf9fa; }
+        .sb-p5 img { height: 210px; }
+        .sb-polaroid img { width: 100%; object-fit: cover; filter: contrast(1.05) saturate(0.9); border-radius: 2px; }
+        .sb-tape { position: absolute; background: rgba(220, 215, 205, 0.85); box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px); z-index: 5; }
+        .tape-style-a { top: -12px; left: 50%; width: 75px; height: 28px; transform: translateX(-50%) rotate(-2deg); border-left: 2px dashed rgba(255,255,255,0.4); border-right: 2px dashed rgba(255,255,255,0.4); }
+        .tape-style-b { top: -10px; right: -15px; width: 60px; height: 24px; transform: rotate(35deg); background: rgba(230, 200, 200, 0.8); }
+        .tape-style-c { top: -8px; left: -10px; width: 65px; height: 25px; transform: rotate(-40deg); background: rgba(200, 210, 220, 0.8); }
+        .tape-style-d { top: -15px; left: 40%; width: 80px; height: 22px; transform: rotate(3deg); border-left: 2px dashed rgba(255,255,255,0.4); border-right: 2px dashed rgba(255,255,255,0.4); }
+        .tape-style-e { top: -5px; right: -5px; width: 50px; height: 20px; transform: rotate(45deg); }
+        .sb-note { position: absolute; padding: 4px 12px; font-family: 'Caveat', cursive; font-size: 20px; color: #444; box-shadow: 1px 3px 8px rgba(0,0,0,0.12); z-index: 10; border-radius: 1px; line-height: 1.2; white-space: nowrap; }
+        .note-pos-1 { bottom: 10px; right: -10px; transform: rotate(6deg); background: #fdf4e3; }
+        .note-pos-2 { bottom: 15px; left: -5px; transform: rotate(-4deg); background: #f2ede4; }
+        .note-pos-3 { bottom: 5px; right: 20px; transform: rotate(-2deg); background: #e8f0e6; }
+        .note-pos-4 { bottom: -10px; left: 15%; transform: rotate(-6deg); background: #fdfdfc; border: 1px solid #eaeaea; }
+        .note-pos-5 { bottom: 18px; right: -15px; transform: rotate(8deg); background: #fbeceb; }
+
         .signature { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #333; margin-top: 80px; }
     </style>
 </head>
@@ -272,7 +318,6 @@
 
     <div class="global-flash" id="globalFlash"></div>
     <div class="main-bg" id="mainBg"></div>
-
     <div id="canvas-container"></div>
 
     <!-- 開場信封 -->
@@ -306,6 +351,7 @@
         <div class="journey-container" id="journeyContainer">
             <svg id="route-canvas" preserveAspectRatio="none"></svg>
 
+            <!-- Chapter 1 -->
             <div class="chapter" id="chap1">
                 <div class="time-badge">Jul, 2022</div>
                 <div class="story-text">故事的起點在澳洲。<br>那時的我們還不知道，彼此會成為生命中這麼重要的人。</div>
@@ -317,6 +363,7 @@
                 <span class="interactive-hint">Tap to shuffle photo 👆</span>
             </div>
 
+            <!-- Chapter 2: Syd to Per -->
             <div class="chapter" id="chap2">
                 <div class="time-badge">Jan, 2023</div>
                 <div class="story-text">妳去了 Perth，離開了我三天。<br>原本以為或許就此見不到了，但這三天的距離，反而讓我們更確信彼此。</div>
@@ -340,7 +387,6 @@
                                     <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data">FS0124</span></div>
                                     <div class="bp-col"><span class="bp-label">Date</span><span class="bp-data">24JAN</span></div>
                                     <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data">1A</span></div>
-                                    <div class="bp-col"><span class="bp-label">Boarding</span><span class="bp-data" style="color: #d1bfae;">09:15</span></div>
                                 </div>
                             </div>
                             <div class="bp-right">
@@ -351,7 +397,10 @@
                             </div>
                         </div>
                         <div class="flip-back">
-                            <div class="handwriting">Missed you so much...</div>
+                            <img src="https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=600&auto=format&fit=crop" class="flip-back-img" alt="Perth">
+                            <div class="flip-back-overlay">
+                                <div class="handwriting">Missed you so much...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -363,6 +412,7 @@
                 <div class="flight-hint" id="flightHintSydPer">Flying to Perth... ✈️</div>
             </div>
 
+            <!-- Chapter 3: Per to Syd -->
             <div class="chapter" id="chap3">
                 <div class="time-badge">Feb, 2023</div>
                 <div class="story-text">沒想到馬上就回來了。<br>原本以為要分開很久，結果驚喜來得這麼快。</div>
@@ -386,18 +436,19 @@
                                     <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data">A82</span></div>
                                     <div class="bp-col"><span class="bp-label">Date</span><span class="bp-data">15FEB</span></div>
                                     <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data">2A</span></div>
-                                    <div class="bp-col"><span class="bp-label">Boarding</span><span class="bp-data" style="color: #d1bfae;">14:30</span></div>
                                 </div>
                             </div>
                             <div class="bp-right">
                                 <div class="bp-col"><span class="bp-label">Name</span><span class="bp-data" style="font-size: 11px;">SYDNEY</span></div>
-                                <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data" style="font-size: 11px;">A82</span></div>
                                 <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data-large" style="font-size: 24px;">2A</span></div>
                                 <div class="bp-barcode"></div>
                             </div>
                         </div>
                         <div class="flip-back">
-                            <div class="handwriting">呀比~可以回來見面了</div>
+                            <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=600&auto=format&fit=crop" class="flip-back-img" alt="Sydney">
+                            <div class="flip-back-overlay">
+                                <div class="handwriting">呀比~可以回來見面了</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -409,6 +460,7 @@
                 <div class="flight-hint" id="flightHintPerSyd">Flying back to you... ✈️</div>
             </div>
 
+            <!-- Chapter 4 -->
             <div class="chapter" id="chap4">
                 <div class="time-badge">May 14, 2023</div>
                 <div class="story-text">慢慢地相處，慢慢地靠近。<br>我們終於決定牽起彼此的手。經歷了風風雨雨，每天都很幸福。</div>
@@ -438,6 +490,7 @@
                 </div>
             </div>
 
+            <!-- Chapter 5 -->
             <div class="chapter" id="chap5">
                 <div class="time-badge">Jan - Jun, 2024</div>
                 <div class="story-text">
@@ -445,7 +498,6 @@
                     每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
-                    <!-- 背景為 Frank 的自訂影片 -->
                     <video class="ft-bg-layer" src="assets/742539708.620992.mp4" autoplay loop muted playsinline></video>
                     
                     <div class="ft-incoming-ui">
@@ -471,7 +523,6 @@
                         </div>
                     </div>
 
-                    <!-- 接通畫面 -->
                     <div class="ft-active-ui">
                         <div class="ft-top-pill"><img src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
@@ -480,7 +531,7 @@
                             <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
                         </div>
                         <div class="ft-vertical-controls">
-                            <button class="ft-ctrl-btn ft-ctrl-video"><svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+                            <button class="ft-ctrl-btn ft-ctrl-video"><svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-more"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-end" onclick="showEasterEgg()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
@@ -491,6 +542,7 @@
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
 
+            <!-- Chapter 6 -->
             <div class="chapter" id="chap6">
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
@@ -506,7 +558,131 @@
                 <span class="interactive-hint">Swipe to view memories 👈 👉</span>
             </div>
 
+            <!-- Chapter 7 (台灣新生活) -->
             <div class="chapter" id="chap7">
+                <div class="time-badge">Aug, 2024</div>
+                <div class="story-text">
+                    我們慢慢的適應了回到台灣的新生活，找到了新的步調。<br>
+                    一開始有了些摩擦，但還是因為彼此的陪伴，在忙碌又充滿挫折的每一天獲得了小確幸。
+                </div>
+
+                <div class="scrapbook-track-wrapper">
+                    <div class="scrapbook-track">
+                        <div class="sb-polaroid sb-p1">
+                            <div class="sb-tape tape-style-a"></div>
+                            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=600&auto=format&fit=crop" alt="Cafe Date">
+                            <div class="sb-note note-pos-1">Coffee days ☕️</div>
+                        </div>
+                        <div class="sb-polaroid sb-p2">
+                            <div class="sb-tape tape-style-b"></div>
+                            <img src="https://images.unsplash.com/photo-1470004914212-05527e49370b?q=80&w=600&auto=format&fit=crop" alt="City Streets">
+                            <div class="sb-note note-pos-2">City walks...</div>
+                        </div>
+                        <div class="sb-polaroid sb-p3">
+                            <div class="sb-tape tape-style-c"></div>
+                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=600&auto=format&fit=crop" alt="Holding Hands">
+                            <div class="sb-note note-pos-3">Always together.</div>
+                        </div>
+                        <div class="sb-polaroid sb-p4">
+                            <div class="sb-tape tape-style-d"></div>
+                            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=600&auto=format&fit=crop" alt="Night Vibes">
+                            <div class="sb-note note-pos-4">Late night talks</div>
+                        </div>
+                        <div class="sb-polaroid sb-p5">
+                            <div class="sb-tape tape-style-e"></div>
+                            <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop" alt="Cozy">
+                            <div class="sb-note note-pos-5">Our little pace ❤️</div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint" style="margin-top: 5px;">Swipe to explore our days 👈 👉</span>
+            </div>
+
+            <!-- Chapter 8 (返回澳洲與影片雙重機票) -->
+            <div class="chapter" id="chap8">
+                <div class="time-badge">Oct, 2024</div>
+                <div class="story-text">2024 的 10 月，我們因為我的畢業典禮，終於回到了澳洲。</div>
+                
+                <div class="double-ticket-wrapper" id="doubleTicket" data-front="2">
+                    
+                    <!-- 底層機票 (Ticket 1 - Frank) -->
+                    <div class="flip-container ticket-layer ticket-1" onclick="handleDoubleTicketClick(1, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <div class="bp-left">
+                                    <div class="bp-header"><span class="bp-airline"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>F&S AIRWAYS</span><span class="bp-class">FIRST CLASS</span></div>
+                                    <div class="bp-row" style="margin-bottom: 4px;"><div class="bp-col"><span class="bp-label">Name</span><span class="bp-data">FRANK</span></div></div>
+                                    <div class="bp-row bp-route">
+                                        <div class="bp-col"><span class="bp-label">From</span><span class="bp-data-large">TPE</span></div>
+                                        <div class="bp-icon" style="transform: rotate(45deg);">✈</div>
+                                        <div class="bp-col"><span class="bp-label">To</span><span class="bp-data-large">SYD</span></div>
+                                    </div>
+                                    <div class="bp-row">
+                                        <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data">FS999</span></div>
+                                        <div class="bp-col"><span class="bp-label">Date</span><span class="bp-data">10OCT</span></div>
+                                        <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data">1A</span></div>
+                                    </div>
+                                </div>
+                                <div class="bp-right">
+                                    <div class="bp-col"><span class="bp-label">Name</span><span class="bp-data" style="font-size: 11px;">FRANK</span></div>
+                                    <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data-large" style="font-size: 24px;">1A</span></div>
+                                    <div class="bp-barcode"></div>
+                                </div>
+                            </div>
+                            <!-- 更新：滿版影片背面 (Frank) -->
+                            <div class="flip-back">
+                                <video src="assets/IMG_8403.mov" class="flip-back-img" autoplay loop muted playsinline></video>
+                                <div class="flip-back-overlay">
+                                    <div class="handwriting">Graduation Trip 🎓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 頂層機票 (Ticket 2 - Sydney) -->
+                    <div class="flip-container ticket-layer ticket-2" onclick="handleDoubleTicketClick(2, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <div class="bp-left">
+                                    <div class="bp-header"><span class="bp-airline"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>F&S AIRWAYS</span><span class="bp-class">FIRST CLASS</span></div>
+                                    <div class="bp-row" style="margin-bottom: 4px;"><div class="bp-col"><span class="bp-label">Name</span><span class="bp-data">SYDNEY</span></div></div>
+                                    <div class="bp-row bp-route">
+                                        <div class="bp-col"><span class="bp-label">From</span><span class="bp-data-large">TPE</span></div>
+                                        <div class="bp-icon" style="transform: rotate(45deg);">✈</div>
+                                        <div class="bp-col"><span class="bp-label">To</span><span class="bp-data-large">SYD</span></div>
+                                    </div>
+                                    <div class="bp-row">
+                                        <div class="bp-col"><span class="bp-label">Flight</span><span class="bp-data">FS999</span></div>
+                                        <div class="bp-col"><span class="bp-label">Date</span><span class="bp-data">10OCT</span></div>
+                                        <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data">1B</span></div>
+                                    </div>
+                                </div>
+                                <div class="bp-right">
+                                    <div class="bp-col"><span class="bp-label">Name</span><span class="bp-data" style="font-size: 11px;">SYDNEY</span></div>
+                                    <div class="bp-col"><span class="bp-label">Seat</span><span class="bp-data-large" style="font-size: 24px;">1B</span></div>
+                                    <div class="bp-barcode"></div>
+                                </div>
+                            </div>
+                            <!-- 更新：滿版影片背面 (Sydney) -->
+                            <div class="flip-back">
+                                <video src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" autoplay loop muted playsinline></video>
+                                <div class="flip-back-overlay">
+                                    <div class="handwriting">終於一起回去了！</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">Tap back ticket to bring forward, or front to flip 👆</span>
+            </div>
+
+            <!-- 台灣飛雪梨 3D 航線緩衝區 -->
+            <div id="flight-tpe-syd-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintTpeSyd">Back to where it all began... ✈️</div>
+            </div>
+
+            <!-- Chapter 9 -->
+            <div class="chapter" id="chap9">
                 <div class="time-badge">2026 & Beyond</div>
                 <div class="story-text">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</div>
                 <div style="background: #fff; padding: 12px 12px 40px 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); transform: rotate(-1deg); border-radius: 4px;">
@@ -521,18 +697,19 @@
 
     <script>
         // ==========================================
-        // 1. 3D Globe - 支援多重階段的滾動動畫 (Scrollytelling)
+        // 1. 3D Globe - 支援多重階段的滾動動畫
         // ==========================================
         let scene, camera, renderer, globeGroup;
         let sydneyPin, sydneyRing;
         let perthPin, perthRing;
-        let curveSydPer, curvePerSyd;
-        let lineSydPer, linePerSyd;
-        let planeSydPer, planePerSyd;
+        let taiwanPin, taiwanRing; 
+        
+        let curveSydPer, curvePerSyd, curveTpeSyd;
+        let lineSydPer, linePerSyd, lineTpeSyd;
+        let planeSydPer, planePerSyd, planeTpeSyd;
         
         const GLOBE_RADIUS = 25;
         
-        // 台灣起點
         const TAIWAN_LAT = 23.6978;
         const TAIWAN_LON = 120.9605;
         const twPhi = THREE.MathUtils.degToRad(90 - TAIWAN_LAT);
@@ -542,6 +719,7 @@
         
         let targetCameraPosSyd = new THREE.Vector3();
         let targetCameraPosFlight = new THREE.Vector3();
+        let targetCameraPosFlightTpe = new THREE.Vector3();
 
         function createAirplaneSprite(direction) {
             const canvas = document.createElement('canvas');
@@ -553,8 +731,10 @@
             ctx.translate(64, 64);
             if (direction === 'west') {
                 ctx.rotate(-Math.PI * 0.75); 
-            } else {
+            } else if (direction === 'east') {
                 ctx.rotate(Math.PI * 0.25); 
+            } else if (direction === 'southeast') {
+                ctx.rotate(Math.PI * 0.533); 
             }
             ctx.fillText('✈️', 0, 0);
             
@@ -604,16 +784,17 @@
             const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
             globeGroup.add(wireMesh);
 
-            // 雪梨
-            const sydSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-33.86)), THREE.MathUtils.degToRad(151.20 + 90));
             const pinGeo = new THREE.SphereGeometry(0.5, 16, 16);
             const pinMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae });
+            const ringGeo = new THREE.RingGeometry(0.8, 1.3, 32);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae, side: THREE.DoubleSide, transparent: true });
+
+            // 雪梨
+            const sydSpherical = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - (-33.86)), THREE.MathUtils.degToRad(151.20 + 90));
             sydneyPin = new THREE.Mesh(pinGeo, pinMat);
             sydneyPin.position.setFromSpherical(sydSpherical);
             globeGroup.add(sydneyPin);
 
-            const ringGeo = new THREE.RingGeometry(0.8, 1.3, 32);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0xd1bfae, side: THREE.DoubleSide, transparent: true });
             sydneyRing = new THREE.Mesh(ringGeo, ringMat);
             sydneyRing.position.copy(sydneyPin.position);
             sydneyRing.lookAt(sydneyPin.position.clone().multiplyScalar(2)); 
@@ -632,42 +813,54 @@
             perthRing.visible = false;
             globeGroup.add(perthRing);
 
+            // 台灣
+            const tpeSpherical = new THREE.Spherical(GLOBE_RADIUS, twPhi, twTheta);
+            taiwanPin = new THREE.Mesh(pinGeo, pinMat);
+            taiwanPin.position.setFromSpherical(tpeSpherical);
+            taiwanPin.visible = false;
+            globeGroup.add(taiwanPin);
+
+            taiwanRing = new THREE.Mesh(ringGeo, ringMat);
+            taiwanRing.position.copy(taiwanPin.position);
+            taiwanRing.lookAt(taiwanPin.position.clone().multiplyScalar(2));
+            taiwanRing.visible = false;
+            globeGroup.add(taiwanRing);
+
             // 航線曲線
             const vSyd = sydneyPin.position.clone();
             const vPerth = perthPin.position.clone();
-            const vMid = vSyd.clone().add(vPerth).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 4);
+            const vTpe = taiwanPin.position.clone();
             
-            curveSydPer = new THREE.QuadraticBezierCurve3(vSyd, vMid, vPerth);
-            curvePerSyd = new THREE.QuadraticBezierCurve3(vPerth, vMid, vSyd);
+            const vMidSydPer = vSyd.clone().add(vPerth).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 4);
+            const vMidTpeSyd = vTpe.clone().add(vSyd).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 6); 
+            
+            curveSydPer = new THREE.QuadraticBezierCurve3(vSyd, vMidSydPer, vPerth);
+            curvePerSyd = new THREE.QuadraticBezierCurve3(vPerth, vMidSydPer, vSyd);
+            curveTpeSyd = new THREE.QuadraticBezierCurve3(vTpe, vMidTpeSyd, vSyd);
 
             const lineMatDashed = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.6, gapSize: 0.4 });
             
             lineSydPer = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveSydPer.getPoints(100)), lineMatDashed);
-            lineSydPer.computeLineDistances(); 
-            lineSydPer.geometry.setDrawRange(0, 0); 
-            globeGroup.add(lineSydPer);
+            lineSydPer.computeLineDistances(); lineSydPer.geometry.setDrawRange(0, 0); globeGroup.add(lineSydPer);
 
             linePerSyd = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curvePerSyd.getPoints(100)), lineMatDashed);
-            linePerSyd.computeLineDistances(); 
-            linePerSyd.geometry.setDrawRange(0, 0); 
-            globeGroup.add(linePerSyd);
+            linePerSyd.computeLineDistances(); linePerSyd.geometry.setDrawRange(0, 0); globeGroup.add(linePerSyd);
+
+            lineTpeSyd = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveTpeSyd.getPoints(100)), lineMatDashed);
+            lineTpeSyd.computeLineDistances(); lineTpeSyd.geometry.setDrawRange(0, 0); globeGroup.add(lineTpeSyd);
 
             // 飛機
-            planeSydPer = createAirplaneSprite('west');
-            planeSydPer.visible = false;
-            globeGroup.add(planeSydPer);
-
-            planePerSyd = createAirplaneSprite('east');
-            planePerSyd.visible = false;
-            globeGroup.add(planePerSyd);
+            planeSydPer = createAirplaneSprite('west'); planeSydPer.visible = false; globeGroup.add(planeSydPer);
+            planePerSyd = createAirplaneSprite('east'); planePerSyd.visible = false; globeGroup.add(planePerSyd);
+            planeTpeSyd = createAirplaneSprite('southeast'); planeTpeSyd.visible = false; globeGroup.add(planeTpeSyd);
 
             globeGroup.rotation.set(0, 0, 0); 
             globeGroup.updateMatrixWorld();
 
-            // 運算鏡頭目標
             targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33); 
             let distFlight = window.innerWidth < 768 ? 58 : 45; 
-            targetCameraPosFlight = vMid.clone().normalize().multiplyScalar(distFlight); 
+            targetCameraPosFlight = vMidSydPer.clone().normalize().multiplyScalar(distFlight); 
+            targetCameraPosFlightTpe = vMidTpeSyd.clone().normalize().multiplyScalar(distFlight + 5); 
 
             window.addEventListener('resize', onWindowResize, false);
             animateGlobe();
@@ -680,6 +873,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             let distFlight = window.innerWidth < 768 ? 58 : 45; 
             targetCameraPosFlight.normalize().multiplyScalar(distFlight);
+            targetCameraPosFlightTpe.normalize().multiplyScalar(distFlight + 5);
         }
 
         function animateGlobe() {
@@ -690,27 +884,45 @@
             const p1Area = document.getElementById('globe-scroll-area');
             const p2Area = document.getElementById('flight-syd-per-area');
             const p3Area = document.getElementById('flight-per-syd-area');
+            const p4Area = document.getElementById('flight-tpe-syd-area'); 
             const yearSection = document.getElementById('year2022');
             
-            if (!p1Area || !p2Area || !p3Area) return;
+            if (!p1Area || !p2Area || !p3Area || !p4Area) return;
 
             let scrollY = window.scrollY || document.documentElement.scrollTop;
             let opacity = 0;
 
             let p2Rect = p2Area.getBoundingClientRect();
             let p3Rect = p3Area.getBoundingClientRect();
+            let p4Rect = p4Area.getBoundingClientRect();
 
-            // 狀態重置
-            planeSydPer.visible = false;
-            planePerSyd.visible = false;
-            lineSydPer.geometry.setDrawRange(0, 0);
-            linePerSyd.geometry.setDrawRange(0, 0);
-            if(perthPin) perthPin.visible = false;
-            if(perthRing) perthRing.visible = false;
+            planeSydPer.visible = false; planePerSyd.visible = false; planeTpeSyd.visible = false;
+            lineSydPer.geometry.setDrawRange(0, 0); linePerSyd.geometry.setDrawRange(0, 0); lineTpeSyd.geometry.setDrawRange(0, 0);
+            if(perthPin) perthPin.visible = false; if(perthRing) perthRing.visible = false;
+            if(taiwanPin) taiwanPin.visible = false; if(taiwanRing) taiwanRing.visible = false;
 
-            // --- 動畫階段判斷 ---
-            if (p3Rect.top < window.innerHeight && p3Rect.bottom > 0) {
-                // Phase 3: 伯斯飛回雪梨
+            if (p4Rect.top < window.innerHeight && p4Rect.bottom > 0) {
+                let prog = (window.innerHeight - p4Rect.top) / (window.innerHeight + p4Rect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI); 
+
+                camera.position.lerp(targetCameraPosFlightTpe, 0.1);
+                camera.lookAt(0, 0, 0);
+
+                taiwanPin.visible = true; taiwanRing.visible = true;
+                sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
+
+                planeTpeSyd.visible = true;
+                let flightProg = (prog - 0.2) / 0.6; 
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+                
+                lineTpeSyd.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeTpeSyd.position.copy(curveTpeSyd.getPoint(flightProg));
+
+                const hint = document.getElementById('flightHintTpeSyd');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (p3Rect.top < window.innerHeight && p3Rect.bottom > 0) {
                 let prog = (window.innerHeight - p3Rect.top) / (window.innerHeight + p3Rect.height);
                 prog = Math.max(0, Math.min(prog, 1));
                 opacity = Math.sin(prog * Math.PI); 
@@ -732,7 +944,6 @@
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             } 
             else if (p2Rect.top < window.innerHeight && p2Rect.bottom > 0) {
-                // Phase 2: 雪梨飛往伯斯
                 let prog = (window.innerHeight - p2Rect.top) / (window.innerHeight + p2Rect.height);
                 prog = Math.max(0, Math.min(prog, 1));
                 opacity = Math.sin(prog * Math.PI);
@@ -754,7 +965,6 @@
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             } 
             else if (scrollY <= p1Area.offsetTop + p1Area.offsetHeight) {
-                // Phase 1: 台灣飛雪梨
                 let p1Prog = scrollY / p1Area.offsetHeight;
                 p1Prog = Math.max(0, Math.min(p1Prog, 1));
                 let ease1 = p1Prog * p1Prog * (3 - 2 * p1Prog);
@@ -823,26 +1033,23 @@
             wrapper.classList.add('step-1-open');
             setTimeout(() => wrapper.classList.add('step-2-pull'), 800);
             
-            // 提早開始 Zoom-in，並讓過程大幅度放慢 (2.8s電影級曲線)
             setTimeout(() => wrapper.classList.add('step-3-zoom'), 1700);
             
-            // 緊湊銜接：放大到約三分之一時 (700ms 後)，主內容就開始柔和浮現
             setTimeout(() => {
                 mainBg.style.opacity = '1';
                 scrollContent.style.display = 'block';
                 void scrollContent.offsetWidth; 
                 scrollContent.style.opacity = '1';
                 
-                // 解鎖滾動
                 document.documentElement.style.overflowY = 'auto'; 
                 document.body.classList.remove('no-scroll');
                 
                 initGlobe();
                 drawRoute(); 
                 
-                landingView.style.opacity = '0'; // 讓信封開場層淡出
-                setTimeout(() => { landingView.style.display = 'none'; }, 1500); // 等待淡出完畢
-                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); // 提早啟動數字跳動
+                landingView.style.opacity = '0'; 
+                setTimeout(() => { landingView.style.display = 'none'; }, 1500);
+                setTimeout(() => { animateValue(daysElement, 0, calculateDays(), 3000); }, 500); 
             }, 2400);
         }
 
@@ -855,6 +1062,12 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
+                    if (entry.target.id === 'chap8') {
+                        setTimeout(() => {
+                            const dt = document.getElementById('doubleTicket');
+                            if(dt) dt.classList.add('revealed');
+                        }, 1000); 
+                    }
                     obs.unobserve(entry.target); 
                 }
             });
@@ -926,7 +1139,7 @@
         });
 
         // ==========================================
-        // 4. 其他卡片互動
+        // 4. 卡片互動邏輯
         // ==========================================
         let stackOrder = [1, 2, 3];
         function shuffleStack() {
@@ -934,6 +1147,22 @@
             [document.getElementById('sc1'), document.getElementById('sc2'), document.getElementById('sc3')].forEach((card, index) => {
                 card.className = `stack-card stack-${stackOrder[index]}`;
             });
+        }
+
+        // 處理雙重機票的點擊 (層級切換與翻轉)
+        function handleDoubleTicketClick(ticketNum, element) {
+            const wrapper = document.getElementById('doubleTicket');
+            if (!wrapper.classList.contains('revealed')) return;
+
+            const currentFront = wrapper.getAttribute('data-front');
+            
+            if (currentFront !== String(ticketNum)) {
+                wrapper.setAttribute('data-front', String(ticketNum));
+                if(navigator.vibrate) navigator.vibrate(20);
+            } else {
+                element.classList.toggle('flipped');
+                if(navigator.vibrate) navigator.vibrate(20);
+            }
         }
 
         function shootCamera(el) {
@@ -944,7 +1173,6 @@
             flash.classList.add('flash-anim');
             
             if(navigator.vibrate) navigator.vibrate(50); 
-
             setTimeout(() => {
                 el.classList.add('is-ejecting');
                 if(navigator.vibrate) navigator.vibrate([20, 100, 20, 100, 20]); 
@@ -953,6 +1181,7 @@
             setTimeout(() => { el.classList.add('is-developing'); }, 2400); 
         }
 
+        // FaceTime 邏輯
         const sliderBtn = document.getElementById('sliderBtn');
         const sliderTrack = document.getElementById('sliderTrack');
         const sliderText = document.getElementById('sliderText');
