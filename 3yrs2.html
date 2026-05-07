@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -400,34 +401,6 @@
             transform: scale(1) translateX(-15px); /* 略微往左靠，留空間給齒輪 */
         }
 
-        /* 有機漏光 Film Burn (僅針對上下黑邊區域) */
-        .vm-film-burn-top, .vm-film-burn-bottom {
-            position: absolute; left: 0; width: 100%; height: 35%;
-            pointer-events: none; z-index: 8; mix-blend-mode: screen;
-        }
-        .vm-film-burn-top {
-            top: -10px;
-            background: radial-gradient(ellipse at 40% 0%, rgba(255, 80, 0, 0.3) 0%, rgba(255, 100, 0, 0.1) 40%, transparent 70%);
-            animation: filmBurnFloatTop 6s infinite alternate;
-        }
-        .vm-film-burn-bottom {
-            bottom: -10px;
-            background: radial-gradient(ellipse at 60% 100%, rgba(255, 60, 0, 0.25) 0%, rgba(255, 90, 0, 0.1) 40%, transparent 70%);
-            animation: filmBurnFloatBottom 5s infinite alternate-reverse;
-        }
-        @keyframes filmBurnFloatTop {
-            0% { opacity: 0.6; transform: scale(1) translateX(0); }
-            33% { opacity: 0.8; transform: scale(1.05) translateX(10px); }
-            66% { opacity: 0.5; transform: scale(0.95) translateX(-5px); }
-            100% { opacity: 0.7; transform: scale(1) translateX(5px); }
-        }
-        @keyframes filmBurnFloatBottom {
-            0% { opacity: 0.5; transform: scale(1) translateX(0); }
-            33% { opacity: 0.7; transform: scale(1.05) translateX(-10px); }
-            66% { opacity: 0.4; transform: scale(0.95) translateX(5px); }
-            100% { opacity: 0.8; transform: scale(1) translateX(-5px); }
-        }
-
         /* 雙眼透鏡暗角 */
         .vm-vignette {
             position: absolute; inset: 0; z-index: 5; pointer-events: none;
@@ -543,14 +516,15 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        .sandbox-polaroid {
+        /* 將原本的 polaroid 改成更純粹的實體相片風格 (等距白邊) */
+        .sandbox-photo {
             background: #fff;
-            padding: 10px 10px 35px 10px;
+            padding: 6px; 
             border-radius: 2px;
-            width: 160px;
+            width: 140px; 
         }
         
-        .sandbox-polaroid img {
+        .sandbox-photo img {
             width: 100%;
             height: 140px;
             object-fit: cover;
@@ -1066,9 +1040,6 @@
         </div>
 
         <div class="vm-container" id="vmContainer">
-            <!-- 有機漏光 -->
-            <div class="vm-film-burn-top"></div>
-            <div class="vm-film-burn-bottom"></div>
             <div class="vm-vignette"></div>
             
             <div class="vm-track" id="vmTrack">
@@ -1292,13 +1263,25 @@
         // 0.5 沙盒拖曳挖掘邏輯
         // ==========================================
         const memoryItems = [
-            { type: 'polaroid', src: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=400&auto=format&fit=crop' },
+            { type: 'photo', src: 'assets/17794.jpeg' },
+            { type: 'photo', src: 'assets/17796.jpeg' },
             { type: 'note', text: 'Remember our first coffee date? ☕️' },
-            { type: 'polaroid', src: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop' },
+            { type: 'photo', src: 'assets/IMG_1315.jpeg' },
+            { type: 'photo', src: 'assets/IMG_1318.jpeg' },
+            { type: 'photo', src: 'assets/IMG_4382.jpeg' },
             { type: 'note', text: 'So many laughs together... 😂' },
-            { type: 'polaroid', src: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=400&auto=format&fit=crop' },
+            { type: 'photo', src: 'assets/IMG_5558.jpeg' },
+            { type: 'photo', src: 'assets/IMG_5560.jpeg' },
+            { type: 'photo', src: 'assets/IMG_5972.jpeg' },
+            { type: 'photo', src: 'assets/IMG_5974.jpeg' },
             { type: 'note', text: 'Through all the distance ❤️' },
-            { type: 'polaroid', src: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=400&auto=format&fit=crop' }
+            { type: 'photo', src: 'assets/IMG_3499.jpeg' },
+            { type: 'photo', src: 'assets/IMG_2291.jpeg' },
+            { type: 'photo', src: 'assets/IMG_5977.jpeg' },
+            { type: 'photo', src: 'assets/IMG_2975.jpeg' },
+            { type: 'photo', src: 'assets/IMG_2961.jpeg' },
+            { type: 'photo', src: 'assets/IMG_3952.jpeg' },
+            { type: 'photo', src: 'assets/IMG_5124.jpeg' }
         ];
 
         let isSandboxInitialized = false;
@@ -1314,18 +1297,18 @@
                 let el = document.createElement('div');
                 el.classList.add('drag-item');
                 
-                if (item.type === 'polaroid') {
-                    el.classList.add('sandbox-polaroid');
+                if (item.type === 'photo') {
+                    el.classList.add('sandbox-photo');
                     el.innerHTML = `<img src="${item.src}" alt="Memory">`;
                 } else {
                     el.classList.add('sandbox-note');
                     el.innerHTML = item.text;
                 }
 
-                // 隨機初始位置（集中在中心）
-                let offsetX = (Math.random() - 0.5) * 80;
-                let offsetY = (Math.random() - 0.5) * 80;
-                let rot = (Math.random() - 0.5) * 40;
+                // 隨機初始位置（散落在中心較大範圍）
+                let offsetX = (Math.random() - 0.5) * 120;
+                let offsetY = (Math.random() - 0.5) * 120;
+                let rot = (Math.random() - 0.5) * 60;
                 
                 el.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rot}deg)`;
                 el.style.zIndex = dragZIndex++;
@@ -2086,4 +2069,7 @@
     </script>
 </body>
 </html>
+
+
+```
 ```
