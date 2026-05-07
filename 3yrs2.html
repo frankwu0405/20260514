@@ -285,7 +285,7 @@
         .facetime-wrapper.is-connected .ft-active-ui { opacity: 1; pointer-events: auto; }
 
         /* 底片橫向滾動 */
-        .filmstrip-wrapper { width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 15px; padding-bottom: 20px; scrollbar-width: none; }
+        .filmstrip-wrapper { position: relative; width: 100vw; left: 50%; margin-left: -50vw; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 15px; padding: 0 5vw 20px 5vw; scrollbar-width: none; }
         .filmstrip-wrapper::-webkit-scrollbar { display: none; }
         .film-frame { flex: 0 0 85%; height: 250px; scroll-snap-align: center; background: #222; padding: 10px; border-radius: 6px; position: relative; }
         .film-frame img, .film-frame video { border-radius: 4px; }
@@ -881,7 +881,7 @@
                             <button class="ft-ctrl-btn ft-ctrl-more"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-end" onclick="showEasterEgg()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
                         </div>
-                        <div class="easter-egg-msg" id="ftEasterEgg">好不容易接通，捨不得掛斷...</div>
+                        <div class="easter-egg-msg" id="ftEasterEgg">就知道你馬上就會想掛我電話，休想~</div>
                     </div>
                 </div>
                 <span class="interactive-hint">Slide to answer your call 👆</span>
@@ -2093,4 +2093,3 @@
     </script>
 </body>
 </html>
-
