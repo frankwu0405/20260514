@@ -102,6 +102,18 @@
         .year-text { font-family: 'Cormorant Garamond', serif; font-size: 120px; font-weight: 300; color: #d1bfae; line-height: 1; margin-bottom: 15px; letter-spacing: 5px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .year-sub { font-family: 'Noto Serif TC', serif; font-size: 16px; color: #666; letter-spacing: 3px; }
 
+        /* 穿插在章節之間的年份標題 */
+        .inline-year { 
+            width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            position: relative; z-index: 5; margin: 0; 
+        }
+        .inline-year .year-text { 
+            text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.9), 0 5px 15px rgba(0,0,0,0.05); 
+        }
+        .inline-year .year-sub { 
+            text-shadow: 0 0 30px rgba(255,255,255,1), 0 0 15px rgba(255,255,255,0.9); 
+        }
+
         .journey-container { position: relative; max-width: 500px; margin: 0 auto; padding: 50px 20px 150px 20px; }
         #route-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
@@ -313,6 +325,115 @@
 
         .signature { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #333; margin-top: 80px; margin-bottom: 50px; }
 
+        /* --- 新增：View-Master 特效 --- */
+        .vm-trigger-wrapper {
+            margin: 0 auto;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+            -webkit-tap-highlight-color: transparent;
+        }
+        .vm-trigger-wrapper:hover {
+            transform: scale(1.05) translateY(-5px);
+            filter: drop-shadow(0 20px 35px rgba(0,0,0,0.15));
+        }
+        
+        #viewmaster-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5,5,5,0.98); z-index: 100000;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            touch-action: none; /* 鎖住背後滾動 */
+        }
+        #viewmaster-overlay.is-active {
+            opacity: 1; pointer-events: auto;
+        }
+        
+        .vm-close {
+            position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.4); 
+            font-size: 32px; font-weight: 300; cursor: pointer; z-index: 10; 
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            transition: color 0.3s; font-family: sans-serif;
+        }
+        .vm-close:hover { color: #fff; }
+
+        /* 導航齒輪 (Wheel) */
+        .vm-wheel-wrapper {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 220px; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            perspective: 500px;
+        }
+        .vm-wheel {
+            width: 30px; height: 160px;
+            background: linear-gradient(to right, #0a0a0a, #333 30%, #555 50%, #333 70%, #0a0a0a);
+            border-radius: 15px; cursor: grab; touch-action: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.9), inset 0 0 15px rgba(0,0,0,1);
+            position: relative;
+            /* 齒輪紋理 */
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent, transparent 6px,
+                rgba(0,0,0,0.8) 6px, rgba(0,0,0,0.8) 12px
+            );
+            background-position: 0 0;
+            will-change: background-position;
+        }
+        .vm-wheel:active { cursor: grabbing; }
+        
+        .vm-wheel-hint {
+            position: absolute; right: 40px; color: rgba(255,255,255,0.4);
+            font-family: -apple-system, sans-serif; font-size: 10px; font-weight: bold;
+            letter-spacing: 4px; writing-mode: vertical-rl; text-orientation: upright;
+            animation: breathe 2.5s infinite; pointer-events: none;
+        }
+
+        /* 觀景窗：調整為垂直比例，並將圖片強制 1:1 置中，自然產生上下黑邊 */
+        .vm-container {
+            width: 90%; max-width: 400px; aspect-ratio: 3/4; 
+            background: #050505; border-radius: 40px; position: relative; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+            transform: scale(0.8); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        #viewmaster-overlay.is-active .vm-container {
+            transform: scale(1) translateX(-15px); /* 略微往左靠，留空間給齒輪 */
+        }
+
+        /* 雙眼透鏡暗角 */
+        .vm-vignette {
+            position: absolute; inset: 0; z-index: 5; pointer-events: none;
+            box-shadow: inset 0 0 80px 40px #000;
+            background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.9) 100%);
+        }
+
+        /* 幻燈片軌道 */
+        .vm-track {
+            display: flex; flex-direction: column; width: 100%; height: 100%;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* KACHUNK 手感 */
+        }
+        .vm-slide {
+            flex: 0 0 100%; width: 100%; height: 100%; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .vm-slide img {
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            object-fit: cover;
+            filter: contrast(1.15) sepia(0.35) saturate(1.2); /* 復古幻燈片濾鏡 */
+        }
+        .vm-caption {
+            position: absolute; bottom: 8%; left: 0; width: 100%; text-align: center;
+            font-family: 'Caveat', cursive; font-size: 28px; color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5);
+            z-index: 6; opacity: 0; transform: translateY(15px); transition: all 0.3s ease 0.3s;
+            padding: 0 20px; line-height: 1.1;
+        }
+        .vm-slide.is-active .vm-caption {
+            opacity: 1; transform: translateY(0);
+        }
+
         /* --- 無盡深淵切換層 --- */
         #black-void-overlay {
             position: fixed;
@@ -515,6 +636,12 @@
                 <span class="interactive-hint">Tap to shuffle photo 👆</span>
             </div>
 
+            <!-- Inline Year 2023 -->
+            <div class="chapter inline-year">
+                <div class="year-text">2023</div>
+                <div class="year-sub">Distance, reunions, and a promise.</div>
+            </div>
+
             <!-- Chapter 2 -->
             <div class="chapter" id="chap2">
                 <div class="time-badge">Jan, 2023</div>
@@ -640,9 +767,44 @@
                 </div>
             </div>
 
-            <!-- Chapter 5 -->
+            <!-- Inline Year 2024 -->
+            <div class="chapter inline-year">
+                <div class="year-text">2024</div>
+                <div class="year-sub">The longest wait, the sweetest return.</div>
+            </div>
+
+            <!-- Chapter 5 (New: Leaving Sydney / View-Master Trigger) -->
+            <div class="chapter" id="chap-usyd">
+                <div class="time-badge">Jan 28, 2024</div>
+                <div class="story-text">
+                    2024 年初，我即將離開澳洲，把妳一個人留在了雪梨。<br>
+                    在離別的前一晚，我們回到了故事的起點——夜晚的 USYD，在那裡留下了我們在澳洲最後的回憶。
+                </div>
+                
+                <!-- View-Master Trigger -->
+                <div class="vm-trigger-wrapper" onclick="openViewMaster()">
+                    <svg viewBox="0 0 200 140" width="160" height="110">
+                        <rect x="10" y="20" width="180" height="100" rx="40" fill="#d93a30"/>
+                        <!-- Top bump -->
+                        <path d="M 60 20 Q 100 -15 140 20" fill="#d93a30"/>
+                        <!-- Lenses -->
+                        <circle cx="65" cy="70" r="28" fill="#1d3557"/>
+                        <circle cx="135" cy="70" r="28" fill="#1d3557"/>
+                        <circle cx="65" cy="70" r="18" fill="#050505"/>
+                        <circle cx="135" cy="70" r="18" fill="#050505"/>
+                        <circle cx="60" cy="65" r="4" fill="rgba(255,255,255,0.2)"/>
+                        <circle cx="130" cy="65" r="4" fill="rgba(255,255,255,0.2)"/>
+                        <!-- Side Lever -->
+                        <path d="M 185 55 L 205 55 L 205 75 L 185 75 Z" fill="#f1faee" rx="5"/>
+                        <circle cx="205" cy="65" r="10" fill="#ffb703"/>
+                    </svg>
+                    <span class="interactive-hint">Tap to look inside 👆</span>
+                </div>
+            </div>
+
+            <!-- Chapter 6 (FaceTime) -->
             <div class="chapter" id="chap5">
-                <div class="time-badge">Jan - Jun, 2024</div>
+                <div class="time-badge">Feb - Jun, 2024</div>
                 <div class="story-text">
                     我畢業回台灣，緊接著的入伍讓我們連聯繫都變得奢侈。<br>
                     每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
@@ -692,7 +854,7 @@
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
 
-            <!-- Chapter 6 -->
+            <!-- Chapter 7 (Filmstrip) -->
             <div class="chapter" id="chap6">
                 <div class="time-badge">Jun, 2024</div>
                 <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
@@ -716,7 +878,7 @@
                 <span class="interactive-hint">Swipe to view memories 👈 👉</span>
             </div>
 
-            <!-- Chapter 7 -->
+            <!-- Chapter 8 (Scrapbook) -->
             <div class="chapter" id="chap7">
                 <div class="time-badge">Aug, 2024</div>
                 <div class="story-text">
@@ -756,7 +918,7 @@
                 <span class="interactive-hint" style="margin-top: 5px;">Swipe to explore our days 👈 👉</span>
             </div>
 
-            <!-- Chapter 8 -->
+            <!-- Chapter 9 (Double Ticket) -->
             <div class="chapter" id="chap8">
                 <div class="time-badge">Oct, 2024</div>
                 <div class="story-text">2024 的 10 月，我們因為我的畢業典禮，終於回到了澳洲。</div>
@@ -834,7 +996,13 @@
                 <div class="flight-hint" id="flightHintTpeSyd">Back to where it all began... ✈️</div>
             </div>
 
-            <!-- Chapter 9 -->
+            <!-- Inline Year 2025 -->
+            <div class="chapter inline-year">
+                <div class="year-text">2025</div>
+                <div class="year-sub">Building our everyday life, step by step.</div>
+            </div>
+
+            <!-- Chapter 10 -->
             <div class="chapter" id="chap9">
                 <div class="time-badge">2026 & Beyond</div>
                 <div class="story-text">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</div>
@@ -855,12 +1023,50 @@
 
     </div>
 
+    <!-- 覆蓋全螢幕的View-Master互動層 -->
+    <div id="viewmaster-overlay">
+        <div class="vm-close" onclick="closeViewMaster()">✕</div>
+        
+        <!-- 導航齒輪 -->
+        <div class="vm-wheel-wrapper">
+            <div class="vm-wheel" id="vmWheel"></div>
+            <div class="vm-wheel-hint">TURN</div>
+        </div>
+
+        <div class="vm-container" id="vmContainer">
+            <div class="vm-vignette"></div>
+            
+            <div class="vm-track" id="vmTrack">
+                <!-- Slide 1 -->
+                <div class="vm-slide is-active">
+                    <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=800&auto=format&fit=crop" alt="USYD Night">
+                    <div class="vm-caption">Our last night walk at USYD...</div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="vm-slide">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop" alt="Hotpot">
+                    <div class="vm-caption">Visiting you at work 🍲</div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="vm-slide">
+                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop" alt="Photobooth">
+                    <div class="vm-caption">Silly photobooth moments 📸</div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="vm-slide">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop" alt="Airport">
+                    <div class="vm-caption">Saying goodbye...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 覆蓋全螢幕的黑色空間 -->
     <div id="black-void-overlay">
         <canvas id="starsCanvas"></canvas>
         
         <div class="sandbox-container" id="sandboxContainer">
-            <div class="dig-instruction" id="digInstruction">咦？在這堆回憶底下的是...</div>
+            <div class="dig-instruction" id="digInstruction">Dig through the memories...</div>
             
             <!-- 隱藏的手寫信 -->
             <div class="final-letter" id="finalLetter">
@@ -876,6 +1082,117 @@
     </div>
 
     <script>
+        // ==========================================
+        // -1. View-Master 互動邏輯
+        // ==========================================
+        let vmCurrentIndex = 0;
+        const vmTotalSlides = 4;
+        
+        // 齒輪變數
+        const vmWheel = document.getElementById('vmWheel');
+        let isWheelDragging = false;
+        let wheelStartY = 0;
+        let wheelBgY = 0;
+        let wheelAccumulator = 0;
+        const WHEEL_THRESHOLD = 40; // 拖曳多少 pixel 切換幻燈片
+
+        function openViewMaster() {
+            document.getElementById('viewmaster-overlay').classList.add('is-active');
+            vmCurrentIndex = 0;
+            updateVmTrack();
+            if(navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function closeViewMaster() {
+            document.getElementById('viewmaster-overlay').classList.remove('is-active');
+            if(navigator.vibrate) navigator.vibrate(20);
+        }
+
+        function kachunkNext() {
+            if (vmCurrentIndex < vmTotalSlides - 1) {
+                vmCurrentIndex++;
+                updateVmTrack();
+                if(navigator.vibrate) navigator.vibrate([40, 30, 40]); // 模擬雙段機械卡榫感
+            } else {
+                // 到底時的輕微撞擊回饋
+                const container = document.getElementById('vmContainer');
+                container.style.transform = 'scale(1) translateX(-15px) translateY(5px)';
+                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(-5px)', 50);
+                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(0)', 100);
+                if(navigator.vibrate) navigator.vibrate(20);
+            }
+        }
+        
+        function kachunkPrev() {
+            if (vmCurrentIndex > 0) {
+                vmCurrentIndex--;
+                updateVmTrack();
+                if(navigator.vibrate) navigator.vibrate([40, 30, 40]);
+            } else {
+                // 到頂時的輕微撞擊回饋
+                const container = document.getElementById('vmContainer');
+                container.style.transform = 'scale(1) translateX(-15px) translateY(-5px)';
+                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(5px)', 50);
+                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(0)', 100);
+                if(navigator.vibrate) navigator.vibrate(20);
+            }
+        }
+
+        function updateVmTrack() {
+            const track = document.getElementById('vmTrack');
+            track.style.transform = `translateY(-${vmCurrentIndex * 100}%)`;
+            
+            const slides = document.querySelectorAll('.vm-slide');
+            slides.forEach((s, i) => {
+                if (i === vmCurrentIndex) s.classList.add('is-active');
+                else s.classList.remove('is-active');
+            });
+        }
+
+        // 綁定齒輪拖曳事件
+        vmWheel.addEventListener('pointerdown', (e) => {
+            isWheelDragging = true;
+            wheelStartY = e.clientY;
+            wheelAccumulator = 0;
+            vmWheel.setPointerCapture(e.pointerId);
+        });
+
+        vmWheel.addEventListener('pointermove', (e) => {
+            if (!isWheelDragging) return;
+            e.preventDefault();
+
+            let dy = e.clientY - wheelStartY;
+            wheelStartY = e.clientY;
+            
+            // 視覺上轉動齒輪紋理
+            wheelBgY += dy;
+            vmWheel.style.backgroundPositionY = `${wheelBgY}px`;
+
+            // 邏輯計算
+            wheelAccumulator += dy;
+            
+            // 往下拉 (dy > 0) -> 下一張
+            if (wheelAccumulator > WHEEL_THRESHOLD) {
+                kachunkNext();
+                wheelAccumulator = 0;
+            } 
+            // 往上推 (dy < 0) -> 上一張
+            else if (wheelAccumulator < -WHEEL_THRESHOLD) {
+                kachunkPrev();
+                wheelAccumulator = 0;
+            }
+        });
+
+        vmWheel.addEventListener('pointerup', (e) => {
+            isWheelDragging = false;
+            vmWheel.releasePointerCapture(e.pointerId);
+        });
+
+        vmWheel.addEventListener('pointercancel', (e) => {
+            isWheelDragging = false;
+            vmWheel.releasePointerCapture(e.pointerId);
+        });
+
         // ==========================================
         // 0. 動態生成有機星空畫布 (Canvas)
         // ==========================================
@@ -1736,4 +2053,5 @@
 </html>
 
 
+```
 ```
