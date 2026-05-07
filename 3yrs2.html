@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -400,6 +401,34 @@
             transform: scale(1) translateX(-15px); /* 略微往左靠，留空間給齒輪 */
         }
 
+        /* 有機漏光 Film Burn (僅針對上下黑邊區域) */
+        .vm-film-burn-top, .vm-film-burn-bottom {
+            position: absolute; left: 0; width: 100%; height: 35%;
+            pointer-events: none; z-index: 8; mix-blend-mode: screen;
+        }
+        .vm-film-burn-top {
+            top: -10px;
+            background: radial-gradient(ellipse at 40% 0%, rgba(255, 80, 0, 0.3) 0%, rgba(255, 100, 0, 0.1) 40%, transparent 70%);
+            animation: filmBurnFloatTop 6s infinite alternate;
+        }
+        .vm-film-burn-bottom {
+            bottom: -10px;
+            background: radial-gradient(ellipse at 60% 100%, rgba(255, 60, 0, 0.25) 0%, rgba(255, 90, 0, 0.1) 40%, transparent 70%);
+            animation: filmBurnFloatBottom 5s infinite alternate-reverse;
+        }
+        @keyframes filmBurnFloatTop {
+            0% { opacity: 0.6; transform: scale(1) translateX(0); }
+            33% { opacity: 0.8; transform: scale(1.05) translateX(10px); }
+            66% { opacity: 0.5; transform: scale(0.95) translateX(-5px); }
+            100% { opacity: 0.7; transform: scale(1) translateX(5px); }
+        }
+        @keyframes filmBurnFloatBottom {
+            0% { opacity: 0.5; transform: scale(1) translateX(0); }
+            33% { opacity: 0.7; transform: scale(1.05) translateX(-10px); }
+            66% { opacity: 0.4; transform: scale(0.95) translateX(5px); }
+            100% { opacity: 0.8; transform: scale(1) translateX(-5px); }
+        }
+
         /* 雙眼透鏡暗角 */
         .vm-vignette {
             position: absolute; inset: 0; z-index: 5; pointer-events: none;
@@ -508,6 +537,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: box-shadow 0.2s, transform 0.1s; /* 拖曳時取消 transform 動畫避免卡頓，放下時恢復 */
             will-change: transform;
+            border-radius: 4px;
         }
 
         .drag-item:active {
@@ -515,19 +545,17 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        /* 將原本的 polaroid 改成更純粹的實體相片風格 (等距白邊) */
+        /* 純粹的相片 (無白邊) */
         .sandbox-photo {
-            background: #fff;
-            padding: 6px; 
-            border-radius: 2px;
-            width: 140px; 
+            width: 150px; 
+            border-radius: 4px;
         }
         
         .sandbox-photo img {
             width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 1px;
+            height: auto;
+            display: block;
+            border-radius: 4px;
             pointer-events: none; /* 避免拖曳時選到圖片 */
         }
 
@@ -1039,6 +1067,9 @@
         </div>
 
         <div class="vm-container" id="vmContainer">
+            <!-- 有機漏光 -->
+            <div class="vm-film-burn-top"></div>
+            <div class="vm-film-burn-bottom"></div>
             <div class="vm-vignette"></div>
             
             <div class="vm-track" id="vmTrack">
@@ -2064,3 +2095,4 @@
     </script>
 </body>
 </html>
+
