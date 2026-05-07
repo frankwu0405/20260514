@@ -287,7 +287,7 @@
         /* 底片橫向滾動 */
         .filmstrip-wrapper { position: relative; width: 100vw; left: 50%; margin-left: -50vw; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 15px; padding: 0 5vw 20px 5vw; scrollbar-width: none; }
         .filmstrip-wrapper::-webkit-scrollbar { display: none; }
-        .film-frame { flex: 0 0 85%; height: 250px; scroll-snap-align: center; background: #222; padding: 10px; border-radius: 6px; position: relative; }
+        .film-frame { flex: 0 0 85vw; max-width: 420px; height: 250px; scroll-snap-align: center; background: #222; padding: 10px; border-radius: 6px; position: relative; }
         .film-frame img, .film-frame video { border-radius: 4px; }
         .film-holes { position: absolute; top: 0; bottom: 0; width: 10px; display: flex; flex-direction: column; justify-content: space-around; }
         .film-holes.left { left: 4px; }
