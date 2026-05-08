@@ -331,9 +331,10 @@
         .cam-flash-veil { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 99998; }
         .cam-flash-veil.pop { animation: camFlashAnim 0.2s ease-out forwards; }
         @keyframes camFlashAnim { 0%{opacity:0.88} 100%{opacity:0} }
-        .disp-cam-roll { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: min(360px, 95vw); }
+        .disp-cam-roll { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; width: min(360px, 95vw); padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
+        .disp-cam-roll::-webkit-scrollbar { display: none; }
         /* Film print — outer wrapper carries the eject animation + rotation */
-        .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; scroll-snap-align: start; }
         /* Actual photo frame — thin dark film-edge border, no polaroid bottom */
         .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 165px; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; }
         .disp-polaroid-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; filter: contrast(1.1) brightness(0.88) saturate(0.82) sepia(0.07); }
@@ -355,9 +356,11 @@
         @keyframes polEject { from{opacity:0;margin-top:-14px} to{opacity:1;margin-top:0} }
         .disp-cam-done { font-family: 'Caveat', cursive; font-size: 16px; color: #aaa; text-align: center; opacity: 0; transition: opacity 0.8s ease; }
         .disp-cam-done.show { opacity: 1; }
-        .disp-film-print.is-full-width { width: 100%; margin-top: 6px; }
-        .disp-film-print.is-full-width .disp-polaroid { width: 100%; }
-        .disp-film-print.is-full-width .disp-polaroid-caption { width: 100%; font-size: 15px; }
+        .disp-cam-final { width: min(360px, 95vw); display: none; margin-top: 10px; }
+        .disp-cam-final.show { display: block; }
+        .disp-cam-final .disp-film-print { width: 100%; flex-shrink: unset; scroll-snap-align: unset; }
+        .disp-cam-final .disp-polaroid { width: 100%; }
+        .disp-cam-final .disp-polaroid-caption { width: 100%; font-size: 15px; }
 
         .signature { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #333; margin-top: 80px; margin-bottom: 50px; }
 
@@ -1160,6 +1163,7 @@
                         </svg>
                     </div>
                     <div class="disp-cam-roll" id="dispCamRoll"></div>
+                    <div class="disp-cam-final" id="dispCamFinal"></div>
                     <div class="disp-cam-done" id="dispCamDone">🎞️ 底片用完了… 每一格都是你。</div>
                 </div>
                 <span class="interactive-hint">Tap to shoot 📷</span>
@@ -2381,6 +2385,7 @@
             const body = document.getElementById('dispCamBody');
             const counter = document.getElementById('dispCamCounter');
             const roll = document.getElementById('dispCamRoll');
+            const finalDiv = document.getElementById('dispCamFinal');
             if (!body || !counter || !roll) return;
 
             body.classList.add('shooting');
@@ -2441,7 +2446,13 @@
                 frame.innerHTML = '<div class="disp-pol-inner"><div class="disp-polaroid-note-text">' + lines + '</div></div>' + ovEl;
                 print.appendChild(frame);
             }
-            roll.appendChild(print);
+            if (shot.isFullWidth && finalDiv) {
+                finalDiv.appendChild(print);
+                finalDiv.classList.add('show');
+            } else {
+                roll.appendChild(print);
+                setTimeout(() => { roll.scrollTo({ left: roll.scrollWidth, behavior: 'smooth' }); }, 80);
+            }
 
             setTimeout(() => {
                 const ov = document.getElementById('polOv' + idx);
