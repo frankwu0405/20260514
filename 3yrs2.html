@@ -2462,6 +2462,7 @@
             if (_dispIdx >= DISP_SHOTS.length) {
                 setTimeout(() => {
                     body.classList.add('used-up');
+                    if (counter) counter.classList.add('flicker');
                     const done = document.getElementById('dispCamDone');
                     if (done) done.classList.add('show');
                 }, 900);
