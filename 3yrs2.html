@@ -333,12 +333,12 @@
         @keyframes camFlashAnim { 0%{opacity:0.88} 100%{opacity:0} }
         @keyframes ccFlicker { 0%,100%{opacity:1} 12%{opacity:0.05} 25%{opacity:1} 38%{opacity:0.08} 52%{opacity:0.95} 65%{opacity:0.05} 78%{opacity:1} 88%{opacity:0.2} }
         #dispCamCounter.flicker { animation: ccFlicker 0.9s linear 2 forwards; }
-        .disp-cam-roll { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding: 12px 5vw 18px; width: 100vw; position: relative; max-width: none; scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; align-items: flex-start; }
+        .disp-cam-roll { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0px; padding: 12px 5vw 18px; width: 100vw; position: relative; max-width: none; scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; align-items: flex-start; }
         .disp-cam-roll::-webkit-scrollbar { display: none; }
         /* Film print — outer wrapper carries the eject animation + rotation */
         .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; flex: 0 0 74vw; max-width: 340px; scroll-snap-align: start; }
         /* Actual photo frame — thin dark film-edge border, no polaroid bottom */
-        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 100%; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; max-height: 26vh; display: flex; align-self: baseline; justify-content: center; flex-wrap: wrap; align-items: center; flex-direction: column;}
+        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 75%; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; display: flex; align-self: baseline; justify-content: center; flex-wrap: wrap; align-items: center; flex-direction: column; padding-bottom: 10px;}
         .disp-polaroid-img { width: 100%; height: auto; display: block; filter: contrast(1.1) brightness(0.88) saturate(0.82) sepia(0.07); }
         .disp-polaroid-grad { width: 100%; aspect-ratio: 3/2; display: block; }
         /* Vignette — darkens edges like real film optics */
@@ -351,7 +351,7 @@
         .disp-polaroid-overlay { position: absolute; inset: 0; background: #ccc7bc; transition: opacity 3.5s ease; z-index: 6; }
         .disp-polaroid-overlay.clear { opacity: 0; }
         /* Caption lives below the frame, not inside */
-        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 13px; color: #999; text-align: center; line-height: 1.2; width: 100%; padding: 0 4px; }
+        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 13px; color: #999; text-align: center; line-height: 1.2; padding: 0 4px; }
         /* Final note card — same dark border, warm paper inside */
         .disp-pol-inner { width: 100%; aspect-ratio: 3/2; display: flex; align-items: center; justify-content: center; background: #fdf8e8; }
         .disp-polaroid-note-text { font-family: 'Caveat', cursive; font-size: 12px; color: #8a7050; line-height: 1.5; text-align: center; padding: 4px; }
