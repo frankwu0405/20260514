@@ -335,20 +335,20 @@
         /* Film print — outer wrapper carries the eject animation + rotation */
         .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: center; gap: 5px; }
         /* Actual photo frame — thin dark film-edge border, no polaroid bottom */
-        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 110px; box-shadow: 0 5px 20px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.25); overflow: hidden; }
+        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 165px; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; }
         .disp-polaroid-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; filter: contrast(1.1) brightness(0.88) saturate(0.82) sepia(0.07); }
         .disp-polaroid-grad { width: 100%; aspect-ratio: 3/2; display: block; }
         /* Vignette — darkens edges like real film optics */
         .disp-polaroid::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(0,0,0,0.55) 100%); pointer-events: none; z-index: 3; }
         /* Film grain overlay via SVG noise */
-        .disp-polaroid-grain { position: absolute; inset: 0; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='110'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/></filter><rect width='160' height='110' filter='url(%23n)' opacity='0.35'/></svg>"); background-size: 160px 110px; opacity: 0.13; mix-blend-mode: overlay; pointer-events: none; z-index: 4; }
+        .disp-polaroid-grain { position: absolute; inset: 0; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='165' height='110'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/></filter><rect width='165' height='110' filter='url(%23n)' opacity='0.35'/></svg>"); background-size: 165px 110px; opacity: 0.13; mix-blend-mode: overlay; pointer-events: none; z-index: 4; }
         /* Classic orange date stamp burnt into the corner */
         .disp-polaroid-date { position: absolute; bottom: 5px; right: 5px; font-family: 'Courier New', monospace; font-size: 7px; color: #ff8c00; text-shadow: 0 0 6px rgba(255,80,0,0.95); pointer-events: none; z-index: 5; letter-spacing: 1px; }
         /* Development overlay — warm grey that fades away over 3.5s */
         .disp-polaroid-overlay { position: absolute; inset: 0; background: #ccc7bc; transition: opacity 3.5s ease; z-index: 6; }
         .disp-polaroid-overlay.clear { opacity: 0; }
         /* Caption lives below the frame, not inside */
-        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 11px; color: #999; text-align: center; line-height: 1.2; width: 110px; padding: 0 3px; }
+        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 13px; color: #999; text-align: center; line-height: 1.2; width: 165px; padding: 0 4px; }
         /* Final note card — same dark border, warm paper inside */
         .disp-pol-inner { width: 100%; aspect-ratio: 3/2; display: flex; align-items: center; justify-content: center; background: #fdf8e8; }
         .disp-polaroid-note-text { font-family: 'Caveat', cursive; font-size: 12px; color: #8a7050; line-height: 1.5; text-align: center; padding: 4px; }
@@ -1081,17 +1081,56 @@
                                     <stop offset="50%" stop-color="#1e1e1e"/>
                                     <stop offset="100%" stop-color="#080808"/>
                                 </radialGradient>
+                                <linearGradient id="ccBodyGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#3e3e3e"/>
+                                    <stop offset="100%" stop-color="#080808"/>
+                                </linearGradient>
+                                <linearGradient id="ccYellowGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#ffe040"/>
+                                    <stop offset="38%" stop-color="#f5c400"/>
+                                    <stop offset="100%" stop-color="#a87800"/>
+                                </linearGradient>
+                                <linearGradient id="ccOrangeGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#f27535"/>
+                                    <stop offset="38%" stop-color="#e05300"/>
+                                    <stop offset="100%" stop-color="#852e00"/>
+                                </linearGradient>
+                                <linearGradient id="ccTopShimmer" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="rgba(255,255,255,0.22)"/>
+                                    <stop offset="55%" stop-color="rgba(255,255,255,0.05)"/>
+                                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                                </linearGradient>
+                                <radialGradient id="ccBottomShadow" cx="50%" cy="100%" r="55%">
+                                    <stop offset="0%" stop-color="rgba(0,0,0,0.40)"/>
+                                    <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+                                </radialGradient>
+                                <radialGradient id="ccLensHousingGrad" cx="50%" cy="28%" r="65%">
+                                    <stop offset="0%" stop-color="#2e2e2e"/>
+                                    <stop offset="100%" stop-color="#050505"/>
+                                </radialGradient>
+                                <linearGradient id="ccShutterGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#e01800"/>
+                                    <stop offset="100%" stop-color="#7a0800"/>
+                                </linearGradient>
                             </defs>
                             <!-- Body outer shell -->
-                            <rect x="1" y="5" width="242" height="143" rx="24" fill="#1c1c1c"/>
+                            <rect x="1" y="5" width="242" height="143" rx="24" fill="url(#ccBodyGrad)"/>
                             <!-- Yellow fill -->
-                            <rect x="1" y="5" width="155" height="143" fill="#f5c400" clip-path="url(#ccBodyClip)"/>
+                            <rect x="1" y="5" width="155" height="143" fill="url(#ccYellowGrad)" clip-path="url(#ccBodyClip)"/>
                             <!-- Orange fill -->
-                            <polygon points="147,5 243,5 243,148 147,148" fill="#e05300" clip-path="url(#ccBodyClip)"/>
+                            <polygon points="147,5 243,5 243,148 147,148" fill="url(#ccOrangeGrad)" clip-path="url(#ccBodyClip)"/>
+                            <!-- Top shimmer highlight — simulates curved plastic catching light -->
+                            <rect x="1" y="5" width="242" height="58" rx="24" fill="url(#ccTopShimmer)" clip-path="url(#ccBodyClip)"/>
+                            <!-- Bottom vignette shadow for depth -->
+                            <rect x="1" y="104" width="242" height="44" fill="url(#ccBottomShadow)" clip-path="url(#ccBodyClip)"/>
                             <!-- Yellow/orange seam -->
                             <path d="M147,5 Q159,76 147,148" stroke="#1c1c1c" stroke-width="9" fill="none" clip-path="url(#ccBodyClip)"/>
                             <!-- Lens housing -->
-                            <rect x="74" y="20" width="98" height="110" rx="20" fill="#141414"/>
+                            <rect x="74" y="20" width="98" height="110" rx="20" fill="url(#ccLensHousingGrad)"/>
+                            <!-- Lens housing top edge highlight -->
+                            <ellipse cx="123" cy="26" rx="38" ry="4" fill="rgba(255,255,255,0.07)"/>
+                            <!-- Lens housing bottom edge shadow -->
+                            <ellipse cx="123" cy="122" rx="38" ry="4" fill="rgba(0,0,0,0.45)"/>
                             <!-- Lens rings -->
                             <circle cx="123" cy="75" r="42" fill="#242424"/>
                             <circle cx="123" cy="75" r="34" fill="#1a1a1a"/>
@@ -1108,7 +1147,7 @@
                             <rect x="95" y="8" width="32" height="15" rx="2.5" fill="#c2c2c2"/>
                             <rect x="98" y="10" width="14" height="11" rx="1" fill="#f2f2f2"/>
                             <!-- Shutter button -->
-                            <rect x="184" y="2" width="26" height="17" rx="7" fill="#bb0e00"/>
+                            <rect x="184" y="2" width="26" height="17" rx="7" fill="url(#ccShutterGrad)"/>
                             <rect x="188" y="5" width="18" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
                             <!-- Brand text -->
                             <text x="14" y="83" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="26" fill="#dd1010" font-style="italic" letter-spacing="-1">F&amp;S</text>
