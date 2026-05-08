@@ -374,6 +374,7 @@
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
             -webkit-tap-highlight-color: transparent;
+            scale: 1.5;
         }
         .vm-trigger-wrapper:hover {
             transform: scale(1.05) translateY(-5px);
@@ -857,20 +858,85 @@
                 
                 <!-- View-Master Trigger -->
                 <div class="vm-trigger-wrapper" onclick="openViewMaster()">
-                    <svg viewBox="0 0 200 140" width="160" height="110">
-                        <rect x="10" y="20" width="180" height="100" rx="40" fill="#d93a30"/>
-                        <!-- Top bump -->
-                        <path d="M 60 20 Q 100 -15 140 20" fill="#d93a30"/>
-                        <!-- Lenses -->
-                        <circle cx="65" cy="70" r="28" fill="#1d3557"/>
-                        <circle cx="135" cy="70" r="28" fill="#1d3557"/>
-                        <circle cx="65" cy="70" r="18" fill="#050505"/>
-                        <circle cx="135" cy="70" r="18" fill="#050505"/>
-                        <circle cx="60" cy="65" r="4" fill="rgba(255,255,255,0.2)"/>
-                        <circle cx="130" cy="65" r="4" fill="rgba(255,255,255,0.2)"/>
-                        <!-- Side Lever -->
-                        <path d="M 185 55 L 205 55 L 205 75 L 185 75 Z" fill="#f1faee" rx="5"/>
-                        <circle cx="205" cy="65" r="10" fill="#ffb703"/>
+                    <svg viewBox="0 0 330 262" width="200" height="159" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="vmBg" x1="0.15" y1="0" x2="0.85" y2="1">
+                          <stop offset="0%" stop-color="#de9090"/>
+                          <stop offset="40%" stop-color="#c46868"/>
+                          <stop offset="100%" stop-color="#a45050"/>
+                        </linearGradient>
+                        <radialGradient id="vmLens" cx="36%" cy="31%" r="65%">
+                          <stop offset="0%" stop-color="#20202e"/>
+                          <stop offset="100%" stop-color="#020205"/>
+                        </radialGradient>
+                        <linearGradient id="vmReel" x1="0.1" y1="0" x2="0.9" y2="1">
+                          <stop offset="0%" stop-color="#ebebeb"/>
+                          <stop offset="100%" stop-color="#b4b4b4"/>
+                        </linearGradient>
+                        <filter id="vmShad" x="-18%" y="-12%" width="136%" height="136%">
+                          <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="rgba(0,0,0,0.42)"/>
+                        </filter>
+                      </defs>
+                      <g filter="url(#vmShad)">
+                        <!-- REEL DISC (body drawn on top hides lower portion) -->
+                        <circle cx="155" cy="115" r="84" fill="url(#vmReel)" stroke="#aaa" stroke-width="2"/>
+                        <circle cx="155" cy="115" r="72" fill="none" stroke="#ccc" stroke-width="1.2"/>
+                        <!-- Slide windows: 5 rectangular cutouts arranged around rim -->
+                        <rect x="144" y="33" width="22" height="18" rx="3" fill="#151515" transform="rotate(-48,155,115)"/>
+                        <rect x="144" y="33" width="22" height="18" rx="3" fill="#151515" transform="rotate(-24,155,115)"/>
+                        <rect x="144" y="33" width="22" height="18" rx="3" fill="#151515" transform="rotate(0,155,115)"/>
+                        <rect x="144" y="33" width="22" height="18" rx="3" fill="#151515" transform="rotate(24,155,115)"/>
+                        <rect x="144" y="33" width="22" height="18" rx="3" fill="#151515" transform="rotate(48,155,115)"/>
+                        <!-- Numbers between windows -->
+                        <text x="88" y="78" font-size="9" fill="#555" font-family="sans-serif" text-anchor="middle">3</text>
+                        <text x="140" y="43" font-size="9" fill="#555" font-family="sans-serif" text-anchor="middle">2</text>
+                        <text x="200" y="57" font-size="9" fill="#555" font-family="sans-serif" text-anchor="middle">1</text>
+                        <!-- Hub -->
+                        <circle cx="155" cy="115" r="13" fill="#a8a8a8" stroke="#888" stroke-width="1.5"/>
+                        <circle cx="155" cy="115" r="6" fill="#c4c4c4"/>
+
+                        <!-- BODY (covers lower reel) -->
+                        <path d="M 22,106 Q 22,93 42,93 L 113,93 Q 121,87 155,87 Q 189,87 197,93 L 268,93 Q 288,93 288,106 L 288,238 Q 288,254 268,254 L 42,254 Q 22,254 22,238 Z"
+                              fill="url(#vmBg)"/>
+                        <!-- Subtle top-edge highlight -->
+                        <path d="M 42,93 L 113,93 Q 121,87 155,87 Q 189,87 197,93 L 268,93"
+                              fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+
+                        <!-- LEFT EYE CUP — concentric ridged rings -->
+                        <circle cx="88" cy="170" r="57" fill="#ad5c5c"/>
+                        <circle cx="88" cy="170" r="52" fill="#cb7272"/>
+                        <circle cx="88" cy="170" r="47" fill="#b86060"/>
+                        <circle cx="88" cy="170" r="42" fill="#c96e6e"/>
+                        <!-- Lens housing -->
+                        <circle cx="88" cy="170" r="37" fill="#0e0e1c"/>
+                        <!-- Lens glass -->
+                        <circle cx="88" cy="170" r="31" fill="url(#vmLens)"/>
+                        <!-- Specular highlights -->
+                        <ellipse cx="78" cy="160" rx="10" ry="6" fill="rgba(255,255,255,0.22)" transform="rotate(-20,78,160)"/>
+                        <circle cx="100" cy="183" r="3" fill="rgba(255,255,255,0.05)"/>
+
+                        <!-- RIGHT EYE CUP -->
+                        <circle cx="222" cy="170" r="57" fill="#ad5c5c"/>
+                        <circle cx="222" cy="170" r="52" fill="#cb7272"/>
+                        <circle cx="222" cy="170" r="47" fill="#b86060"/>
+                        <circle cx="222" cy="170" r="42" fill="#c96e6e"/>
+                        <circle cx="222" cy="170" r="37" fill="#0e0e1c"/>
+                        <circle cx="222" cy="170" r="31" fill="url(#vmLens)"/>
+                        <ellipse cx="212" cy="160" rx="10" ry="6" fill="rgba(255,255,255,0.22)" transform="rotate(-20,212,160)"/>
+                        <circle cx="234" cy="183" r="3" fill="rgba(255,255,255,0.05)"/>
+
+                        <!-- VIEW-MASTER TEXT -->
+                        <text x="155" y="114" font-size="11" text-anchor="middle"
+                              font-family="'Arial Black','Arial Bold',Arial,sans-serif"
+                              font-weight="900" letter-spacing="2.2"
+                              fill="rgba(255,255,255,0.76)">VIEW-MASTER</text>
+
+                        <!-- ADVANCE LEVER (right side, blue tab) -->
+                        <path d="M 285,148 L 316,142 Q 325,142 325,151 L 325,171 Q 325,180 316,180 L 285,174 Z"
+                              fill="#6070b0"/>
+                        <path d="M 287,150 L 313,145 Q 320,145 320,153 L 320,169 Q 320,177 313,177 L 287,172 Z"
+                              fill="#7888c8"/>
+                      </g>
                     </svg>
                     <span class="interactive-hint">Tap to look inside 👆</span>
                 </div>
