@@ -355,6 +355,9 @@
         @keyframes polEject { from{opacity:0;margin-top:-14px} to{opacity:1;margin-top:0} }
         .disp-cam-done { font-family: 'Caveat', cursive; font-size: 16px; color: #aaa; text-align: center; opacity: 0; transition: opacity 0.8s ease; }
         .disp-cam-done.show { opacity: 1; }
+        .disp-film-print.is-full-width { width: 100%; margin-top: 6px; }
+        .disp-film-print.is-full-width .disp-polaroid { width: 100%; }
+        .disp-film-print.is-full-width .disp-polaroid-caption { width: 100%; font-size: 15px; }
 
         .signature { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #333; margin-top: 80px; margin-bottom: 50px; }
 
@@ -1153,7 +1156,7 @@
                             <text x="14" y="83" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="26" fill="#dd1010" font-style="italic" letter-spacing="-1">F&amp;S</text>
                             <!-- Frame counter -->
                             <rect x="192" y="22" width="34" height="21" rx="4" fill="#050505" stroke="#2a2a2a" stroke-width="1"/>
-                            <text id="dispCamCounter" x="209" y="37" text-anchor="middle" font-family="Courier New, monospace" font-size="13" font-weight="700" fill="#ff3b30">6</text>
+                            <text id="dispCamCounter" x="209" y="37" text-anchor="middle" font-family="Courier New, monospace" font-size="13" font-weight="700" fill="#ff3b30">11</text>
                         </svg>
                     </div>
                     <div class="disp-cam-roll" id="dispCamRoll"></div>
@@ -1194,7 +1197,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=600&auto=format&fit=crop" class="flip-back-img" alt="Airport">
+                                <img src="assets/IMG_0070.heic" class="flip-back-img" alt="Airport">
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">See you back home 🏠</div>
                                 </div>
@@ -2359,12 +2362,17 @@
         // 6. Disposable Camera Roll
         // ==========================================
         const DISP_SHOTS = [
-            { type: 'photo', src: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=400&auto=format&fit=crop', note: '這片海浪聲，還記得我們嗎？', rot: -4 },
-            { type: 'photo', src: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=400&auto=format&fit=crop', note: '走過了萬里，才知道這裡才是起點。', rot: 3 },
-            { type: 'photo', src: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=400&auto=format&fit=crop', note: '故事始於此，又一起回來了。', rot: -2 },
-            { type: 'grad', grad: 'linear-gradient(135deg,#fd7b5a,#ff9a44)', note: '落日把整個港口都染成金色。', rot: 5 },
-            { type: 'grad', grad: 'linear-gradient(135deg,#5c85d6,#89b4fa)', note: '每一個清晨，都有你的咖啡香。', rot: -3 },
-            { type: 'note', note: '每一張照片，\n都是我想\n留住的你。\n♡', rot: 2 },
+            { type: 'photo', src: 'assets/5EDB0083-ABDF-4E7F-94DB-8EB6B46B729D.jpeg', note: '這片海浪聲，還記得我們嗎？', rot: -4 },
+            { type: 'photo', src: 'assets/fxn 2024-10-12 122022.864.jpeg', note: '走過了萬里，才知道這裡才是起點。', rot: 3 },
+            { type: 'photo', src: 'assets/35E4742A-2F7F-4876-9891-5826A8ACD01E.jpeg', note: '故事始於此，又一起回來了。', rot: -2 },
+            { type: 'photo', src: 'assets/IMG_5784.heic', note: '每一個轉角，都有你的影子。', rot: 2 },
+            { type: 'video', src: 'assets/IMG_8952.mov', note: '那一刻，時間好像靜止了。', rot: -3 },
+            { type: 'photo', src: 'assets/IMG_8962.heic', note: '每一幀，都是我想永遠記住的你。', rot: 4 },
+            { type: 'photo', src: 'assets/1A8CB526-AE50-4A5D-9285-E726EB2D1E6D.jpeg', note: '我們在最熟悉的地方，重新相遇。', rot: -2 },
+            { type: 'photo', src: 'assets/IMG_6334.jpeg', note: '落日把整個港口都染成金色。', rot: 5 },
+            { type: 'photo', src: 'assets/IMG_1198.jpeg', note: '每一個清晨，都有你的咖啡香。', rot: -3 },
+            { type: 'photo', src: 'assets/IMG_0051.heic', note: '這些記憶，會跟著我一輩子。', rot: 3 },
+            { type: 'photo', src: 'assets/_DSC9485.jpeg', note: '每一張照片，都是我想留住的你。♡', rot: 0, isFullWidth: true },
         ];
         let _dispIdx = 0;
 
@@ -2401,6 +2409,7 @@
 
             const print = document.createElement('div');
             print.className = 'disp-film-print';
+            if (shot.isFullWidth) print.classList.add('is-full-width');
             print.style.transform = 'rotate(' + shot.rot + 'deg)';
 
             const frame = document.createElement('div');
@@ -2408,6 +2417,13 @@
 
             if (shot.type === 'photo') {
                 frame.innerHTML = '<img class="disp-polaroid-img" src="' + shot.src + '" alt="">' + grain + datEl + ovEl;
+                const cap = document.createElement('div');
+                cap.className = 'disp-polaroid-caption';
+                cap.textContent = shot.note;
+                print.appendChild(frame);
+                print.appendChild(cap);
+            } else if (shot.type === 'video') {
+                frame.innerHTML = '<video class="disp-polaroid-img" src="' + shot.src + '" autoplay loop muted playsinline></video>' + grain + datEl + ovEl;
                 const cap = document.createElement('div');
                 cap.className = 'disp-polaroid-caption';
                 cap.textContent = shot.note;
