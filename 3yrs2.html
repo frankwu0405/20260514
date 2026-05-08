@@ -336,10 +336,10 @@
         .disp-cam-roll { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding: 12px 5vw 18px; width: 100vw; position: relative; max-width: none; scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; align-items: flex-start; }
         .disp-cam-roll::-webkit-scrollbar { display: none; }
         /* Film print — outer wrapper carries the eject animation + rotation */
-        .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; flex: 0 0 auto; scroll-snap-align: start; }
+        .disp-film-print { opacity: 0; animation: polEject 0.45s cubic-bezier(0.22,1,0.36,1) forwards; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; flex: 0 0 74vw; max-width: 340px; scroll-snap-align: start; }
         /* Actual photo frame — thin dark film-edge border, no polaroid bottom */
-        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: auto; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; }
-        .disp-polaroid-img { width: auto; height: auto; max-height: 44vh; max-width: 82vw; display: block; filter: contrast(1.1) brightness(0.88) saturate(0.82) sepia(0.07); }
+        .disp-polaroid { position: relative; background: #181614; padding: 2px; width: 100%; box-shadow: 0 6px 22px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25); overflow: hidden; max-height: 26vh; display: flex; align-self: baseline; justify-content: center; flex-wrap: wrap; align-items: center; flex-direction: column;}
+        .disp-polaroid-img { width: 100%; height: auto; display: block; filter: contrast(1.1) brightness(0.88) saturate(0.82) sepia(0.07); }
         .disp-polaroid-grad { width: 100%; aspect-ratio: 3/2; display: block; }
         /* Vignette — darkens edges like real film optics */
         .disp-polaroid::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(0,0,0,0.55) 100%); pointer-events: none; z-index: 3; }
@@ -351,19 +351,18 @@
         .disp-polaroid-overlay { position: absolute; inset: 0; background: #ccc7bc; transition: opacity 3.5s ease; z-index: 6; }
         .disp-polaroid-overlay.clear { opacity: 0; }
         /* Caption lives below the frame, not inside */
-        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 13px; color: #999; text-align: center; line-height: 1.2; width: auto; padding: 0 4px; }
+        .disp-polaroid-caption { font-family: 'Caveat', cursive; font-size: 13px; color: #999; text-align: center; line-height: 1.2; width: 100%; padding: 0 4px; }
         /* Final note card — same dark border, warm paper inside */
         .disp-pol-inner { width: 100%; aspect-ratio: 3/2; display: flex; align-items: center; justify-content: center; background: #fdf8e8; }
         .disp-polaroid-note-text { font-family: 'Caveat', cursive; font-size: 12px; color: #8a7050; line-height: 1.5; text-align: center; padding: 4px; }
         @keyframes polEject { from{opacity:0;margin-top:-14px} to{opacity:1;margin-top:0} }
         .disp-cam-done { font-family: 'Caveat', cursive; font-size: 16px; color: #aaa; text-align: center; opacity: 0; transition: opacity 0.8s ease; }
         .disp-cam-done.show { opacity: 1; }
-        .disp-cam-final { display: none; margin-top: 10px; width: 100%; justify-content: center; }
-        .disp-cam-final.show { display: flex; }
-        .disp-cam-final .disp-film-print { flex: 0 0 auto; scroll-snap-align: unset; align-items: center; }
-        .disp-cam-final .disp-polaroid { width: auto; }
-        .disp-cam-final .disp-polaroid-img { max-height: 28vh; max-width: 88vw; width: auto; height: auto; }
-        .disp-cam-final .disp-polaroid-caption { width: auto; font-size: 15px; text-align: center; }
+        .disp-cam-final { width: min(360px, 95vw); display: none; margin-top: 10px; }
+        .disp-cam-final.show { display: block; }
+        .disp-cam-final .disp-film-print { width: 100%; flex-shrink: unset; scroll-snap-align: unset; }
+        .disp-cam-final .disp-polaroid { width: 100%; }
+        .disp-cam-final .disp-polaroid-caption { width: 100%; font-size: 15px; }
 
         .signature { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; color: #333; margin-top: 80px; margin-bottom: 50px; }
 
