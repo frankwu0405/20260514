@@ -382,12 +382,11 @@
         }
         
         #viewmaster-overlay {
-        position: fixed; inset: 0;
+            position: fixed; inset: 0;
             background: rgba(5,5,5,0.98); z-index: 100000;
             opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            touch-action: none; /* 鎖住背後滾動 */
+            touch-action: none;
         }
         #viewmaster-overlay.is-active {
             opacity: 1; pointer-events: auto;
@@ -432,16 +431,20 @@
             animation: breathe 2.5s infinite; pointer-events: none;
         }
 
-        /* 觀景窗：調整為垂直比例，並將圖片強制 1:1 置中，自然產生上下黑邊 */
+        /* 觀景窗：absolute centering is the only reliable approach on iOS Safari */
         .vm-container {
-            width: 90%; max-width: 400px; aspect-ratio: 3/4; 
-            background: #050505; border-radius: 40px; position: relative; overflow: hidden;
+            width: 90%; max-width: 400px; aspect-ratio: 3/4;
+            background: #050505; border-radius: 40px;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow: hidden;
             box-shadow: 0 30px 80px rgba(0,0,0,0.9);
-            transform: scale(0.8); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        /* #viewmaster-overlay.is-active .vm-container {
-            transform: scale(1) translateX(-15px); 
-        }*/
+        #viewmaster-overlay.is-active .vm-container {
+            transform: translate(-50%, -50%) scale(1);
+        }
 
         /* 有機漏光 Film Burn (僅針對上下黑邊區域) */
         .vm-film-burn-top, .vm-film-burn-bottom {
@@ -1439,9 +1442,9 @@
             } else {
                 // 到底時的輕微撞擊回饋
                 const container = document.getElementById('vmContainer');
-                container.style.transform = 'scale(1) translateX(-15px) translateY(5px)';
-                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(-5px)', 50);
-                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(0)', 100);
+                container.style.transform = 'translate(-50%, -50%) scale(1) translateY(5px)';
+                setTimeout(() => container.style.transform = 'translate(-50%, -50%) scale(1) translateY(-5px)', 50);
+                setTimeout(() => container.style.transform = 'translate(-50%, -50%) scale(1) translateY(0)', 100);
                 if(navigator.vibrate) navigator.vibrate(20);
             }
         }
@@ -1454,9 +1457,9 @@
             } else {
                 // 到頂時的輕微撞擊回饋
                 const container = document.getElementById('vmContainer');
-                container.style.transform = 'scale(1) translateX(-15px) translateY(-5px)';
-                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(5px)', 50);
-                setTimeout(() => container.style.transform = 'scale(1) translateX(-15px) translateY(0)', 100);
+                container.style.transform = 'translate(-50%, -50%) scale(1) translateY(-5px)';
+                setTimeout(() => container.style.transform = 'translate(-50%, -50%) scale(1) translateY(5px)', 50);
+                setTimeout(() => container.style.transform = 'translate(-50%, -50%) scale(1) translateY(0)', 100);
                 if(navigator.vibrate) navigator.vibrate(20);
             }
         }
