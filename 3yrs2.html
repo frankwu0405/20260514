@@ -170,6 +170,15 @@
         .pause-section { display: flex; align-items: center; justify-content: center; min-height: 65vh; padding: 40px 28px; }
         .pause-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 38px; color: #aaa; text-align: center; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,255,255,0.9); }
 
+        /* === Jan–May 2023 Daily Moments === */
+        .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
+        .moment-item { display: flex; align-items: center; gap: 16px; }
+        .moment-item:nth-child(even) { flex-direction: row-reverse; }
+        .moment-img-wrap { flex: 0 0 105px; height: 105px; border-radius: 4px; overflow: hidden; box-shadow: 0 5px 16px rgba(0,0,0,0.10); }
+        .moment-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .moment-caption { flex: 1; font-family: 'Noto Serif TC', serif; font-size: 13px; color: #888; line-height: 2.1; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255,255,255,0.8); }
+        .moment-item:nth-child(even) .moment-caption { text-align: right; }
+
         /* 滿版照片/影片機票 (Flip Container) */
         .flip-container { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; -webkit-tap-highlight-color: transparent;}
         .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
@@ -922,10 +931,35 @@
                 <div class="flight-hint" id="flightHintPerSyd">Flying back to you... ✈️</div>
             </div>
 
+            <!-- Chapter: Jan–May 2023 Daily Life -->
+            <div class="chapter" id="chap-daily-2023">
+                <div class="time-badge">Jan–May, 2023</div>
+                <p class="story-text">每天每天的相處在一起，一起出門約會、陪我拍片、接你下班…</p>
+                <div class="moments-grid">
+                    <div class="moment-item">
+                        <div class="moment-img-wrap"><img src="" alt="約會" style="background:#f0e8e4;"></div>
+                        <p class="moment-caption">一起出門約會的每一個午後</p>
+                    </div>
+                    <div class="moment-item">
+                        <div class="moment-img-wrap"><img src="" alt="拍片" style="background:#e5ece8;"></div>
+                        <p class="moment-caption">在旁邊陪你拍片的那些夜晚</p>
+                    </div>
+                    <div class="moment-item">
+                        <div class="moment-img-wrap"><img src="" alt="接下班" style="background:#e5e8ec;"></div>
+                        <p class="moment-caption">下班時等在路口的那個身影</p>
+                    </div>
+                    <div class="moment-item">
+                        <div class="moment-img-wrap"><img src="" alt="日常" style="background:#ece8e5;"></div>
+                        <p class="moment-caption">最平凡的日子，卻是最幸福的時光</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Chapter 4 -->
             <div class="chapter" id="chap4">
                 <div class="time-badge">May 14, 2023</div>
-                <div class="story-text">慢慢地相處，慢慢地靠近。<br>我們終於決定牽起彼此的手。經歷了風風雨雨，每天都很幸福。</div>
+                <p class="story-text" style="font-size:22px; color:#c9a0a0; letter-spacing:2px; margin-bottom:10px;">終於…我們決定在一起了💕</p>
+                <p class="story-text">那是個有著很陽春告白的一個晚上，我們躺在床上看著彼此好久好久，看的都哭了，才迎來了這個新的開始。</p>
                 <div class="camera-wrapper" id="polaroidCamera" onclick="shootCamera(this)">
                     <div class="camera-3d">
                         <div class="cam-top">
@@ -944,7 +978,7 @@
                             </div>
                         </div>
                         <div class="printed-photo">
-                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800&auto=format&fit=crop" class="cover-img" alt="Memory">
+                            <img src="assets/17772.jpeg" class="cover-img" alt="Memory">
                             <div class="date">2023.05.14</div>
                         </div>
                         <div class="cam-bottom"><div class="cam-label">PRESS TO SHOOT</div></div>
