@@ -172,19 +172,59 @@
         .pause-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 38px; color: #aaa; text-align: center; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,255,255,0.9); }
 
         /* === Jul 2023 – Jan 2024: Moving In Together (Newspaper) === */
-        .home-newspaper { background: #fdf8f0; border: 1px solid #e0d6c4; padding: 18px; margin: 28px 0; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
-        .hn-masthead { text-align: center; border-top: 3px double #bbb; border-bottom: 3px double #bbb; padding: 8px 0; margin-bottom: 14px; }
+        /* 同居週報 — color-themeable via CSS custom props set on each poster */
+        .hn-poster-stack { display: flex; flex-direction: column; gap: 28px; margin: 28px 0; }
+        .home-newspaper { background: var(--hn-bg, #fdf8f0); border: 1px solid var(--hn-border, #e0d6c4); padding: 18px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+        .hn-masthead { text-align: center; border-top: 3px double var(--hn-border, #bbb); border-bottom: 3px double var(--hn-border, #bbb); padding: 8px 0; margin-bottom: 14px; }
         .hn-kicker { font-family: -apple-system, sans-serif; font-size: 9px; color: #aaa; letter-spacing: 3px; text-transform: uppercase; }
         .hn-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: #222; letter-spacing: 4px; line-height: 1; margin: 4px 0; }
         .hn-dateline { font-family: -apple-system, sans-serif; font-size: 9px; color: #aaa; letter-spacing: 2px; margin-top: 4px; }
-        .hn-main-photo { width: 100%; height: 190px; object-fit: cover; display: block; background: #e8e0d0; border: 1px solid #e0d6c4; }
-        .hn-headline { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: #333; text-align: center; padding: 10px 4px; border-bottom: 1px solid #ddd; margin-bottom: 12px; letter-spacing: 0.5px; line-height: 1.8; }
+        .hn-main-photo { width: 100%; height: 190px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-headline { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: #333; text-align: center; padding: 10px 4px; border-bottom: 1px solid var(--hn-border, #ddd); margin-bottom: 12px; letter-spacing: 0.5px; line-height: 1.8; }
         .hn-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .hn-col { display: flex; flex-direction: column; gap: 7px; }
-        .hn-col-photo { width: 100%; height: 85px; object-fit: cover; display: block; background: #e5ddd0; border: 1px solid #e0d6c4; }
-        .hn-col-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #444; line-height: 1.6; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+        .hn-col-photo { width: 100%; height: 85px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-col-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #444; line-height: 1.6; border-bottom: 1px solid var(--hn-border, #eee); padding-bottom: 4px; }
         .hn-col-text { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.9; letter-spacing: 0.3px; }
-        .hn-footer { font-family: -apple-system, sans-serif; font-size: 9px; color: #bbb; letter-spacing: 2px; text-align: center; border-top: 1px solid #eee; margin-top: 14px; padding-top: 10px; }
+        .hn-footer { font-family: -apple-system, sans-serif; font-size: 9px; color: #bbb; letter-spacing: 2px; text-align: center; border-top: 1px solid var(--hn-border, #eee); margin-top: 14px; padding-top: 10px; }
+        /* Layout B – Left-heavy duo */
+        .hn-layout-b .hn-duo { display: grid; grid-template-columns: 5fr 3fr; gap: 10px; margin-bottom: 10px; }
+        .hn-big-photo { width: 100%; height: 155px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-sm-photo { width: 100%; height: 72px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-col-label { font-family: -apple-system, sans-serif; font-size: 8px; color: var(--hn-accent, #8b6c50); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+        .hn-sub-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #444; border-bottom: 1px solid var(--hn-border, #eee); padding-bottom: 4px; margin-bottom: 4px; }
+        .hn-sub-text { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.9; }
+        /* Layout C – Feature */
+        .hn-feature-photo { width: 100%; height: 195px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); margin-bottom: 10px; }
+        .hn-prose { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #666; line-height: 2.2; letter-spacing: 0.4px; }
+        .hn-divider { border: none; border-top: 1px solid var(--hn-border, #e0d6c4); margin: 9px 0; }
+        .hn-prose-em { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--hn-accent, #8b6c50); }
+        /* Layout D – Pull-quote */
+        .hn-layout-d .hn-quote-row { display: grid; grid-template-columns: 3fr 2fr; gap: 10px; margin-bottom: 10px; }
+        .hn-stacked { display: flex; flex-direction: column; gap: 5px; }
+        .hn-stacked .hn-sm-photo { height: 82px; }
+        .hn-quote-box { border: 1px solid var(--hn-border, #e0d6c4); display: flex; align-items: center; justify-content: center; padding: 12px 8px; }
+        .hn-pull-quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--hn-accent, #8b6c50); text-align: center; line-height: 1.7; }
+        /* Layout E – Wide photo + 2-col text */
+        .hn-wide-photo { width: 100%; height: 165px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); margin-bottom: 10px; }
+        .hn-two-col-text { column-count: 2; column-gap: 12px; font-family: 'Noto Serif TC', serif; font-size: 10px; color: #666; line-height: 2.1; }
+        /* Layout F – 2×2 grid */
+        .hn-layout-f .hn-grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 8px; }
+        .hn-grid-photo { width: 100%; height: 105px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-grid-cell { display: flex; flex-direction: column; }
+        .hn-grid-caption { font-family: -apple-system, sans-serif; font-size: 8px; color: #aaa; text-align: center; letter-spacing: 0.5px; margin-top: 2px; }
+        .hn-blurb { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #666; line-height: 2; text-align: center; padding: 6px 8px 0; }
+        /* Layout G – Timeline */
+        .hn-timeline { display: flex; flex-direction: column; margin-bottom: 10px; }
+        .hn-tl-item { display: flex; }
+        .hn-tl-spine { display: flex; flex-direction: column; align-items: center; flex: 0 0 26px; }
+        .hn-tl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--hn-accent, #8b6c50); flex-shrink: 0; margin-top: 3px; }
+        .hn-tl-line { flex: 1; width: 1px; background: var(--hn-border, #e0d6c4); min-height: 16px; }
+        .hn-tl-content { flex: 1; padding: 0 0 14px 4px; }
+        .hn-tl-date-label { font-family: -apple-system, sans-serif; font-size: 8px; font-weight: 700; color: var(--hn-accent, #8b6c50); letter-spacing: 1.5px; margin-bottom: 2px; text-transform: uppercase; }
+        .hn-tl-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #333; margin-bottom: 2px; }
+        .hn-tl-body { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.8; }
+        .hn-tl-img { width: 100%; height: 60px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); margin-top: 5px; }
 
         /* === Jan–May 2023 Daily Moments === */
         .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
@@ -1008,33 +1048,181 @@
                 <p class="story-text">幾經波折，我們決定搬去一起住了🏠</p>
                 <p class="story-text">意想不到的同居生活…會發生什麼事呢？</p>
 
-                <div class="home-newspaper">
-                    <div class="hn-masthead">
-                        <div class="hn-kicker">VOL. 1 · 2023.07 — 2024.01</div>
-                        <div class="hn-title">同 居 週 報</div>
-                        <div class="hn-dateline">F &amp; S HOME EDITION · SYDNEY</div>
-                    </div>
+                <div class="hn-poster-stack">
 
-                    <img src="" class="hn-main-photo" alt="" style="background:#ede5dc;">
-
-                    <div class="hn-headline">
-                        「兩個人，一個家，從此柴米油鹽都成了故事。」
-                    </div>
-
-                    <div class="hn-columns">
-                        <div class="hn-col">
-                            <img src="" class="hn-col-photo" alt="" style="background:#e8e0d4;">
-                            <div class="hn-col-head">廚房裡的煙火氣</div>
-                            <p class="hn-col-text">一起煮飯，一起弄得滿廚房都是，然後一起把它收拾乾淨。</p>
+                    <!-- Vol.1 – July 2023 · Layout A: masthead → hero photo → headline → 2-col -->
+                    <div class="home-newspaper" style="--hn-bg:#fdf8f0;--hn-border:#d4c4a8;--hn-accent:#8b6c50;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 1 · JULY 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">搬家特別號 · F &amp; S HOME EDITION</div>
                         </div>
-                        <div class="hn-col">
-                            <img src="" class="hn-col-photo" alt="" style="background:#e0e4e8;">
-                            <div class="hn-col-head">沙發上的長夜</div>
-                            <p class="hn-col-text">窩在一起追劇，說好只看一集，結果一起看到天亮。</p>
+                        <img src="" class="hn-main-photo" alt="" style="background:#e8ddd0;">
+                        <div class="hn-headline">「兩個人，一個家，從此柴米油鹽都成了故事。」</div>
+                        <div class="hn-columns">
+                            <div class="hn-col">
+                                <img src="" class="hn-col-photo" alt="" style="background:#e4d8cc;">
+                                <div class="hn-col-head">搬家日大作戰</div>
+                                <p class="hn-col-text">行李箱、紙箱、大包小包，終於把家當都搬進來了。看著空蕩蕩的房間慢慢被填滿，很踏實。</p>
+                            </div>
+                            <div class="hn-col">
+                                <img src="" class="hn-col-photo" alt="" style="background:#ddd8cc;">
+                                <div class="hn-col-head">第一頓家常飯</div>
+                                <p class="hn-col-text">鍋碗瓢盆還沒到位，硬是湊出了第一頓飯。味道記不清，但那個笑聲記得一輩子。</p>
+                            </div>
                         </div>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
-                    <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    <!-- Vol.2 – August 2023 · Layout B: masthead → headline → left-heavy duo (big photo | small photo + text) -->
+                    <div class="home-newspaper hn-layout-b" style="--hn-bg:#f2f6f1;--hn-border:#b4c8a8;--hn-accent:#5a7a50;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 2 · AUGUST 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">家的模樣 · F &amp; S HOME EDITION</div>
+                        </div>
+                        <div class="hn-headline">「把家布置成我們喜歡的樣子，就是我們的事業。」</div>
+                        <div class="hn-duo">
+                            <div>
+                                <img src="" class="hn-big-photo" alt="" style="background:#ccd8c4;">
+                                <div class="hn-col-label">客廳的角落</div>
+                            </div>
+                            <div>
+                                <img src="" class="hn-sm-photo" alt="" style="background:#c4d4bc;">
+                                <div class="hn-col-label">陽台的植物</div>
+                                <div class="hn-sub-head" style="margin-top:8px;">超市採買日記</div>
+                                <p class="hn-sub-text">每週末推著推車逛超市，這個要那個也要，錢包一下就見底了。但每次都滿載而歸。</p>
+                            </div>
+                        </div>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
+                    <!-- Vol.3 – September 2023 · Layout C: masthead → headline → large feature photo → prose -->
+                    <div class="home-newspaper hn-layout-c" style="--hn-bg:#fdf0f4;--hn-border:#d4a8bc;--hn-accent:#9c6a7c;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 3 · SEPTEMBER 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">日常特輯 · DAILY LIFE EDITION</div>
+                        </div>
+                        <div class="hn-headline">「最平凡的週末，是我最喜歡的時光。」</div>
+                        <img src="" class="hn-feature-photo" alt="" style="background:#e0ccd4;">
+                        <p class="hn-prose">不知道從什麼時候開始，週末的早晨有了固定的模樣——賴床、做早餐、去市場、回家整理。每一件事都很瑣碎，但合在一起，就是我們最喜歡的生活。</p>
+                        <hr class="hn-divider">
+                        <p class="hn-prose-em">原來，幸福這麼具體。</p>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
+                    <!-- Vol.4 – October 2023 · Layout D: masthead → [2 stacked photos | pull quote] → headline -->
+                    <div class="home-newspaper hn-layout-d" style="--hn-bg:#fef4ee;--hn-border:#e4b894;--hn-accent:#b05828;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 4 · OCTOBER 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">秋日特輯 · COZY EDITION</div>
+                        </div>
+                        <div class="hn-quote-row">
+                            <div class="hn-stacked">
+                                <img src="" class="hn-sm-photo" alt="" style="background:#e4d0bc;">
+                                <img src="" class="hn-sm-photo" alt="" style="background:#dcc8b0;">
+                            </div>
+                            <div class="hn-quote-box">
+                                <p class="hn-pull-quote">「窩在一起的每個夜晚，是我最喜歡的地方。」</p>
+                            </div>
+                        </div>
+                        <div class="hn-headline" style="margin-bottom:0;">秋天了，我們的沙發正式成為我們的宇宙</div>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
+                    <!-- Vol.5 – November 2023 · Layout E: masthead → wide photo → headline → 2-col text -->
+                    <div class="home-newspaper hn-layout-e" style="--hn-bg:#f0f4f8;--hn-border:#a0b8d0;--hn-accent:#4a6080;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 5 · NOVEMBER 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">出走特輯 · WEEKEND ADVENTURES</div>
+                        </div>
+                        <img src="" class="hn-wide-photo" alt="" style="background:#c8d4e0;">
+                        <div class="hn-headline">「出去走走，才知道家有多好。」</div>
+                        <div class="hn-two-col-text">這個月我們用了幾個週末，去了一直說要去的地方。早出晚歸，拍了很多照片，也說了很多話。最喜歡的部分不是景點本身，而是回家的路上，一起回味今天發生的事，說著下次要去哪裡。</div>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
+                    <!-- Vol.6 – December 2023 · Layout F: masthead → headline → 2×2 photo grid → blurb -->
+                    <div class="home-newspaper hn-layout-f" style="--hn-bg:#f0f5f1;--hn-border:#9abcaa;--hn-accent:#3d6050;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 6 · DECEMBER 2023</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">聖誕特刊 · HOLIDAY EDITION</div>
+                        </div>
+                        <div class="hn-headline">「這是我們在這個家過的第一個聖誕節。」</div>
+                        <div class="hn-grid-2x2">
+                            <div class="hn-grid-cell">
+                                <img src="" class="hn-grid-photo" alt="" style="background:#c4d8cc;">
+                                <div class="hn-grid-caption">聖誕裝飾</div>
+                            </div>
+                            <div class="hn-grid-cell">
+                                <img src="" class="hn-grid-photo" alt="" style="background:#bcccc4;">
+                                <div class="hn-grid-caption">一起下廚</div>
+                            </div>
+                            <div class="hn-grid-cell">
+                                <img src="" class="hn-grid-photo" alt="" style="background:#c0d4c8;">
+                                <div class="hn-grid-caption">交換禮物</div>
+                            </div>
+                            <div class="hn-grid-cell">
+                                <img src="" class="hn-grid-photo" alt="" style="background:#b8ccc0;">
+                                <div class="hn-grid-caption">聖誕夜</div>
+                            </div>
+                        </div>
+                        <p class="hn-blurb">每一個細節都記在心裡，希望下一個，還可以一起過。</p>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
+                    <!-- Vol.7 – January 2024 · Layout G: masthead → headline → timeline -->
+                    <div class="home-newspaper hn-layout-g" style="--hn-bg:#f4f5f8;--hn-border:#bcc0cc;--hn-accent:#5a6070;">
+                        <div class="hn-masthead">
+                            <div class="hn-kicker">VOL. 7 · JANUARY 2024</div>
+                            <div class="hn-title">同 居 週 報</div>
+                            <div class="hn-dateline">最終回 · FINAL EDITION</div>
+                        </div>
+                        <div class="hn-headline">「每一天，都知道這是倒數計時。」</div>
+                        <div class="hn-timeline">
+                            <div class="hn-tl-item">
+                                <div class="hn-tl-spine">
+                                    <div class="hn-tl-dot"></div>
+                                    <div class="hn-tl-line"></div>
+                                </div>
+                                <div class="hn-tl-content">
+                                    <div class="hn-tl-date-label">JAN EARLY</div>
+                                    <div class="hn-tl-head">新年快樂</div>
+                                    <p class="hn-tl-body">雖然知道快要分開，但這個新年我們還是過得很開心，像是還沒意識到即將來臨的事。</p>
+                                    <img src="" class="hn-tl-img" alt="" style="background:#ccd0d8;">
+                                </div>
+                            </div>
+                            <div class="hn-tl-item">
+                                <div class="hn-tl-spine">
+                                    <div class="hn-tl-dot"></div>
+                                    <div class="hn-tl-line"></div>
+                                </div>
+                                <div class="hn-tl-content">
+                                    <div class="hn-tl-date-label">JAN MID</div>
+                                    <div class="hn-tl-head">整理行李</div>
+                                    <p class="hn-tl-body">整理東西的時候，偶爾會停下來，看看這個一起住了半年的家。每個角落都有故事。</p>
+                                    <img src="" class="hn-tl-img" alt="" style="background:#c4c8d0;">
+                                </div>
+                            </div>
+                            <div class="hn-tl-item">
+                                <div class="hn-tl-spine">
+                                    <div class="hn-tl-dot"></div>
+                                </div>
+                                <div class="hn-tl-content">
+                                    <div class="hn-tl-date-label">JAN LATE</div>
+                                    <div class="hn-tl-head">最後的日子</div>
+                                    <p class="hn-tl-body">最後幾天，什麼都沒做，只是待在一起。什麼都沒說，什麼都懂了。</p>
+                                    <img src="" class="hn-tl-img" alt="" style="background:#c8ccd4;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
+                    </div>
+
                 </div>
             </div>
 
