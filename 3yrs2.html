@@ -550,18 +550,18 @@
         .vm-slide {
             flex: 0 0 100%; width: 100%; height: 100%; position: relative;
         }
-        .vm-slide img {
-            width: 100%; 
+        .vm-slide img, .vm-slide video {
+            width: 100%;
             height: auto;
-            aspect-ratio: 1 / 1; 
+            aspect-ratio: 1 / 1;
             object-fit: cover;
-            /* Safari Centering Fix */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            filter: contrast(1.15) sepia(0.35) saturate(1.2); /* 復古幻燈片濾鏡 */
         }
+        .vm-slide img { filter: contrast(1.15) sepia(0.35) saturate(1.2); }
+        .vm-slide video { filter: contrast(1.08) saturate(1.1); }
         .vm-caption {
             position: absolute; bottom: 8%; left: 0; width: 100%; text-align: center;
             font-family: 'Caveat', cursive; font-size: 28px; color: #fff;
@@ -895,7 +895,7 @@
             </div>
 
             <div id="flight-syd-per-area" class="flight-scroll-area">
-                <div class="flight-hint" id="flightHintSydPer">還會再見到面嗎.. 😢</div>
+                <div class="flight-hint" id="flightHintSydPer">還會再見到面嗎... 😢</div>
             </div>
 
             <!-- Chapter 3 -->
@@ -1556,25 +1556,45 @@
             <div class="vm-vignette"></div>
             
             <div class="vm-track" id="vmTrack">
-                <!-- Slide 1 -->
                 <div class="vm-slide is-active">
-                    <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=800&auto=format&fit=crop" alt="USYD Night">
-                    <div class="vm-caption">Our last night walk at USYD...</div>
+                    <img src="assets/E93E032E-314F-4910-B54F-124D106A2738.jpeg" alt="">
+                    <div class="vm-caption">大半夜的 只有我們走在USYD的校園裡</div>
                 </div>
-                <!-- Slide 2 -->
                 <div class="vm-slide">
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop" alt="Hotpot">
-                    <div class="vm-caption">Visiting you at work 🍲</div>
+                    <img src="assets/IMG_5866.heic" alt="">
+                    <div class="vm-caption">路過了可愛的蘑菇一家人🍄‍🟫</div>
                 </div>
-                <!-- Slide 3 -->
                 <div class="vm-slide">
-                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop" alt="Photobooth">
-                    <div class="vm-caption">Silly photobooth moments 📸</div>
+                    <img src="assets/IMG_5858.heic" alt="">
+                    <div class="vm-caption">那天晚上有好多星星喔</div>
                 </div>
-                <!-- Slide 4 -->
                 <div class="vm-slide">
-                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop" alt="Airport">
-                    <div class="vm-caption">Saying goodbye...</div>
+                    <img src="assets/IMG_5385.heic" alt="">
+                    <div class="vm-caption">這是我們第一次見面坐的長椅喔</div>
+                </div>
+                <div class="vm-slide">
+                    <video src="assets/IMG_5389 2.mp4" autoplay loop muted playsinline></video>
+                    <div class="vm-caption">還近距離抓到袋貂了！</div>
+                </div>
+                <div class="vm-slide">
+                    <img src="assets/IMG_5886.heic" alt="">
+                    <div class="vm-caption">還有這朵牆角的玫瑰花，下次再回去的時候就不見了</div>
+                </div>
+                <div class="vm-slide">
+                    <video src="assets/IMG_5474.mov" autoplay loop muted playsinline></video>
+                    <div class="vm-caption">隔天跑去吃最後一次火鍋的我們</div>
+                </div>
+                <div class="vm-slide">
+                    <img src="assets/IMG_5969.heic" alt="">
+                    <div class="vm-caption">拍了最後一組的拍貼機</div>
+                </div>
+                <div class="vm-slide">
+                    <img src="assets/IMG_5984.heic" alt="">
+                    <div class="vm-caption">到機場了…</div>
+                </div>
+                <div class="vm-slide">
+                    <img src="assets/05A9D49B-8386-427D-857B-CDA979B8A33C.jpeg" alt="">
+                    <div class="vm-caption">真的要起飛了…小寶你要照顧好自己喔🥹</div>
                 </div>
             </div>
         </div>
@@ -1605,7 +1625,7 @@
         // -1. View-Master 互動邏輯
         // ==========================================
         let vmCurrentIndex = 0;
-        const vmTotalSlides = 4;
+        const vmTotalSlides = 10;
         
         // 齒輪變數
         const vmWheel = document.getElementById('vmWheel');
@@ -2586,7 +2606,7 @@
             // Line 5: reflective, appears as line 4 fades, gone before cream
             const line5 = document.getElementById('houseLine5');
             if (line5) {
-                const l5 = rm(p, 0.90, 0.93) * (1 - rm(p, 0.94, 0.97));
+                const l5 = rm(p, 0.88, 0.91) * (1 - rm(p, 0.94, 0.97));
                 line5.style.opacity = l5;
                 line5.style.transform = l5 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
             }
