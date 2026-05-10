@@ -129,7 +129,7 @@
         
         /* === Chapter 1: The Share House / Frosted Window === */
         .house-stage { position: relative; width: 100vw; left: 50%; margin-left: -50vw; height: 380vh; margin-bottom: 60px; }
-        .house-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+        .house-sticky { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
         .house-photo-wrap { position: absolute; inset: 0; transform-origin: 43% 50%; }
         .house-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
         .house-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.42); pointer-events: none; z-index: 1; }
@@ -735,7 +735,7 @@
                     <div class="house-sticky" id="houseSticky">
                         <div class="house-photo-wrap" id="housePhotoWrap">
                             <img class="house-photo" id="housePhoto" src="assets/IMG_7169.png" alt="The share house - morning">
-                            <img class="house-photo house-photo-night" id="housePhotoNight.png" src="assets/7159" alt="The share house - night">
+                            <img class="house-photo house-photo-night" id="housePhotoNight" src="assets/7159" alt="The share house - night">
                         </div>
                         <div class="house-dim" id="houseDim"></div>
                         <div class="house-vignette" id="houseVignette"></div>
@@ -2396,6 +2396,24 @@
             const stageScrollH = stage.offsetHeight - window.innerHeight;
             if (stageScrollH <= 0) return;
             const scrolled = -rect.top;
+
+            // JS-driven sticky — CSS position:sticky breaks whenever any ancestor
+            // has a non-visible overflow (body has overflow-x:hidden from base CSS).
+            // Driving it via fixed/absolute is reliable on all browsers including iOS Safari.
+            const sticky = document.getElementById('houseSticky');
+            if (sticky) {
+                if (rect.top >= 0) {
+                    // Stage not yet at viewport top — rest at stage origin
+                    sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;';
+                } else if (scrolled >= stageScrollH) {
+                    // Scroll track exhausted — park at track end so it exits with stage
+                    sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;`;
+                } else {
+                    // Active zone — pin to viewport (top/right/bottom/left avoids 100vh iOS quirks)
+                    sticky.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;overflow:hidden;';
+                }
+            }
+
             if (scrolled < -window.innerHeight || scrolled > stageScrollH + window.innerHeight) return;
             const p = Math.max(0, Math.min(scrolled / stageScrollH, 1));
 
