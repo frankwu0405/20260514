@@ -137,18 +137,18 @@
         .house-sticky { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
         .house-photo-wrap { position: absolute; inset: 0; transform-origin: 43% 50%; }
         .house-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .house-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.42); pointer-events: none; z-index: 1; }
+        .house-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.22); pointer-events: none; z-index: 1; }
         .house-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 43% 50%, transparent 28%, rgba(0,0,0,0.72) 100%); pointer-events: none; z-index: 2; opacity: 0; }
         .house-text-layer { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 28px; z-index: 4; pointer-events: none; }
         .house-line { font-family: 'Noto Serif TC', serif; font-size: 15px; color: rgba(255,255,255,0.9); line-height: 2; letter-spacing: 1.5px; text-align: center; text-shadow: 0 2px 12px rgba(0,0,0,0.8); opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; max-width: 340px; }
         .house-line.is-vis { opacity: 1; transform: translateY(0); }
         .house-line-intro { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: rgba(255,255,255,0.78); letter-spacing: 2px; margin-bottom: 12px; }
-        .knock-layer { position: absolute; top: 50%; left: 43%; transform: translate(-50%, -50%); z-index: 5; display: flex; gap: 10px; pointer-events: none; }
+        .knock-layer { position: absolute; top: 62%; left: 43%; transform: translate(-50%, -50%); z-index: 5; display: flex; gap: 10px; pointer-events: none; }
         .knock-char { font-family: 'Noto Serif TC', serif; font-size: 30px; color: rgba(255,255,255,0.92); text-shadow: 0 2px 15px rgba(255,255,255,0.5); opacity: 0; transform: scale(0.5); transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
         .knock-char.pop { opacity: 1; transform: scale(1); }
         .knock-ripple { position: absolute; border-radius: 50%; border: 2px solid rgba(255,255,220,0.75); pointer-events: none; z-index: 6; width: 0; height: 0; transform: translate(-50%, -50%); animation: knockRippleAnim 0.9s ease-out forwards; }
         @keyframes knockRippleAnim { 0%{ width:0;height:0;opacity:0.88; } 100%{ width:140px;height:140px;opacity:0; } }
-        .window-glow { position: absolute; top: 50%; left: 43%; transform: translate(-50%,-50%); width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(255,218,95,0.72) 0%, rgba(255,135,28,0.22) 52%, transparent 78%); mix-blend-mode: screen; pointer-events: none; z-index: 3; opacity: 0; }
+        .window-glow { position: absolute; top: 62%; left: 43%; transform: translate(-50%,-50%); width: 125px; height: 125px; border-radius: 50%; background: radial-gradient(circle, rgba(255,218,95,0.72) 0%, rgba(255,135,28,0.22) 52%, transparent 78%); mix-blend-mode: screen; pointer-events: none; z-index: 3; opacity: 0; }
         .window-glow.lit { animation: glowFlicker 3.5s ease-in-out infinite alternate; }
         @keyframes glowFlicker { 0%{opacity:0.88;transform:translate(-50%,-50%) scale(1)} 35%{opacity:0.65;transform:translate(-50%,-50%) scale(0.93)} 70%{opacity:0.94;transform:translate(-50%,-50%) scale(1.05)} 100%{opacity:0.75;transform:translate(-50%,-50%) scale(0.97)} }
         .house-line-response { position: absolute; bottom: 18%; left: 0; width: 100%; text-align: center; font-family: 'Noto Serif TC', serif; font-size: 15px; color: rgba(255,255,255,0.9); letter-spacing: 1.5px; text-shadow: 0 2px 12px rgba(0,0,0,0.8); padding: 0 28px; pointer-events: none; z-index: 5; opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
@@ -163,6 +163,12 @@
         .mem-caption { font-family: 'Caveat', cursive; font-size: 21px; color: #555; text-align: center; margin-top: 10px; }
         .house-closing { font-family: 'Noto Serif TC', serif; font-size: 15px; color: #888; text-align: center; letter-spacing: 1px; line-height: 2.2; padding: 20px 28px 60px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
         .mem-heading { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 18px; color: #555; text-align: center; letter-spacing: 4px; padding: 48px 0 8px; }
+
+        /* === 2023 Chapter Extras === */
+        .slanted-img-wrap { width: 100%; margin: 28px 0; transform: rotate(-2deg); box-shadow: 0 8px 30px rgba(0,0,0,0.10); border-radius: 4px; overflow: hidden; }
+        .slanted-img-wrap img { width: 100%; height: auto; display: block; object-fit: cover; min-height: 180px; background: #f0ebe5; }
+        .pause-section { display: flex; align-items: center; justify-content: center; min-height: 65vh; padding: 40px 28px; }
+        .pause-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 38px; color: #aaa; text-align: center; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,255,255,0.9); }
 
         /* 滿版照片/影片機票 (Flip Container) */
         .flip-container { width: 100%; height: 180px; perspective: 1000px; cursor: pointer; -webkit-tap-highlight-color: transparent;}
@@ -807,13 +813,22 @@
             <!-- Inline Year 2023 -->
             <div class="chapter inline-year">
                 <div class="year-text">2023</div>
-                <div class="year-sub">Distance, reunions, and a promise.</div>
+                <div class="year-sub">我們的第一年</div>
             </div>
 
             <!-- Chapter 2 -->
             <div class="chapter" id="chap2">
                 <div class="time-badge">Jan, 2023</div>
-                <div class="story-text">妳去了 Perth，離開了我三天。<br>原本以為或許就此見不到了，但這三天的距離，反而讓我們更確信彼此。</div>
+                <p class="story-text">結果好不容易追回來的小寶（這時候還是姊姊），ㄧ眨眼又要離開了…</p>
+
+                <!-- 替換 src 為卡片照片路徑 -->
+                <div class="slanted-img-wrap">
+                    <img src="" alt="留言板卡片">
+                </div>
+
+                <p class="story-text">還記得這張卡片嗎？一張稱不上是卡片的卡片，卻是一張對我最重要的、紀錄了著我們的種種軌跡的心意留言板。</p>
+                <p class="story-text" style="margin-top:20px;">離開的那晚，我們彼此告別，你在機場爆哭，送走你後我在家裡爆哭，彷彿這就是最一次見面了…</p>
+
                 <div class="flip-container" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front">
@@ -860,8 +875,9 @@
 
             <!-- Chapter 3 -->
             <div class="chapter" id="chap3">
-                <div class="time-badge">Feb, 2023</div>
-                <div class="story-text">沒想到馬上就回來了。<br>原本以為要分開很久，結果驚喜來得這麼快。</div>
+                <div class="pause-section">
+                    <p class="pause-text">咦？這張是…</p>
+                </div>
                 <div class="flip-container" onclick="this.classList.toggle('flipped')">
                     <div class="flip-inner">
                         <div class="flip-front">
@@ -899,6 +915,7 @@
                     </div>
                 </div>
                 <span class="interactive-hint">Tap to flip ticket 👆</span>
+                <p class="story-text" style="margin-top:30px;">啊哈哈 結果三天就回來了～ 還得謝謝Perth是個爛地方跟謝謝當時不舒服的你，接下來還有很多精彩的事等著你們喔！</p>
             </div>
 
             <div id="flight-per-syd-area" class="flight-scroll-area">
@@ -2457,9 +2474,9 @@
             line1.classList.toggle('is-vis', p > 0.02 && p < 0.38);
             line2.classList.toggle('is-vis', p > 0.06 && p < 0.36);
 
-            // Day→Night crossfade: p=0.72→0.82
+            // Day→Night crossfade: completes before knocking starts (p=0.47)
             const nightPhoto = document.getElementById('housePhotoNight');
-            const nightOpacity = rm(p, 0.72, 0.82);
+            const nightOpacity = rm(p, 0.30, 0.45);
             if (nightPhoto) nightPhoto.style.opacity = nightOpacity;
 
             // Blur: 0→30px from 0.82→0.95 (after night photo settles)
@@ -2522,7 +2539,7 @@
             const r = document.createElement('div');
             r.className = 'knock-ripple';
             r.style.left = '43%';
-            r.style.top  = '50%';
+            r.style.top  = '62%';
             sticky.appendChild(r);
             setTimeout(() => { if (r.parentNode) r.remove(); }, 1000);
         }
