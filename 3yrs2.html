@@ -2495,76 +2495,79 @@
             const finalLine  = document.getElementById('houseFinalLine');
             const housePhoto = document.getElementById('housePhoto');
 
-            // Day→Night crossfade: happens BEFORE zoom so the viewer feels dusk settle.
-            // Night fully arrived by p=0.18; zoom doesn't start until p=0.22 (20vh gap).
+            // Sequence: day → text1 → text2 → texts fade → night → zoom → knock
+
             const nightPhoto = document.getElementById('housePhotoNight');
-            const nightOpacity = rm(p, 0.03, 0.18);
+
+            // Lines 1+2: appear during full day, both gone before night starts
+            line1.classList.toggle('is-vis', p > 0.03 && p < 0.28);
+            line2.classList.toggle('is-vis', p > 0.08 && p < 0.30);
+
+            // Day→Night crossfade: slow drift, starts after texts are gone, night fully set by p=0.52
+            const nightOpacity = rm(p, 0.33, 0.52);
             if (nightPhoto) nightPhoto.style.opacity = nightOpacity;
 
-            // Lines 1+2: visible while day turns to night, fade before zoom peak
-            line1.classList.toggle('is-vis', p > 0.02 && p < 0.38);
-            line2.classList.toggle('is-vis', p > 0.06 && p < 0.36);
-
-            // Zoom: starts after night is settled (p=0.22), finishes just before knocking (p=0.46)
-            const zoom = 1 + rm(p, 0.22, 0.46) * 1.6;
+            // Zoom: starts after night settles (p=0.55), finishes just before knocking (p=0.72)
+            const zoom = 1 + rm(p, 0.55, 0.72) * 1.6;
             photoWrap.style.transform = `scale(${zoom})`;
 
-            // Dim: darkens during zoom phase
-            dim.style.opacity = 0.42 + rm(p, 0.22, 0.46) * 0.34;
+            // Dim: stays light during day+text phase, darkens with zoom
+            dim.style.opacity = 0.18 + rm(p, 0.55, 0.72) * 0.58;
 
-            // Vignette: fades in during zoom
-            vignette.style.opacity = rm(p, 0.22, 0.44);
+            // Vignette: fades in during zoom only
+            vignette.style.opacity = rm(p, 0.55, 0.70);
 
-            // Blur: 0→30px from 0.82→0.95 (after night photo settles)
-            const blurAmt = rm(p, 0.82, 0.95) * 30;
-            housePhoto.style.filter = `brightness(0.72) blur(${blurAmt}px)`;
+            // Day photo stays full brightness until cream phase
+            const blurAmt = rm(p, 0.90, 0.98) * 30;
+            const dayBrightness = 1 - rm(p, 0.88, 0.96) * 0.28;
+            housePhoto.style.filter = `brightness(${dayBrightness.toFixed(2)}) blur(${blurAmt}px)`;
             if (nightPhoto) nightPhoto.style.filter = `blur(${blurAmt}px)`;
 
-            // Cream overlay: 0→1 from 0.82→0.95
-            cream.style.opacity = rm(p, 0.82, 0.95);
+            // Cream overlay: 0→1 from 0.90→0.98
+            cream.style.opacity = rm(p, 0.90, 0.98);
 
-            // Final interior text: 0→1 from 0.88→1.0
-            finalLine.style.opacity = rm(p, 0.88, 1.0);
+            // Final interior text: 0→1 from 0.94→1.0
+            finalLine.style.opacity = rm(p, 0.94, 1.0);
 
-            // Line 4: appears at 0.57, fades at 0.68
-            const l4 = rm(p, 0.57, 0.60) * (1 - rm(p, 0.68, 0.72));
+            // Line 4: appears after knock 3, fades before line 5
+            const l4 = rm(p, 0.84, 0.87) * (1 - rm(p, 0.89, 0.93));
             line4.style.opacity = l4;
             line4.style.transform = l4 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
 
-            // Line 5: reflective line, appears after line4 fades, gone before cream
+            // Line 5: reflective, appears as line 4 fades, gone before cream
             const line5 = document.getElementById('houseLine5');
             if (line5) {
-                const l5 = rm(p, 0.68, 0.73) * (1 - rm(p, 0.80, 0.84));
+                const l5 = rm(p, 0.90, 0.93) * (1 - rm(p, 0.94, 0.97));
                 line5.style.opacity = l5;
                 line5.style.transform = l5 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
             }
 
-            // Knock 1 at p=0.47 (fire-once, reset on scroll-back)
-            if (p >= 0.47 && !_knockFired[0]) {
+            // Knock 1 at p=0.74
+            if (p >= 0.74 && !_knockFired[0]) {
                 _knockFired[0] = true;
                 knock1el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
-            } else if (p < 0.47 && _knockFired[0]) {
+            } else if (p < 0.74 && _knockFired[0]) {
                 _knockFired[0] = false; knock1el.classList.remove('pop');
             }
-            // Knock 2 at p=0.51
-            if (p >= 0.51 && !_knockFired[1]) {
+            // Knock 2 at p=0.79
+            if (p >= 0.79 && !_knockFired[1]) {
                 _knockFired[1] = true;
                 knock2el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
-            } else if (p < 0.51 && _knockFired[1]) {
+            } else if (p < 0.79 && _knockFired[1]) {
                 _knockFired[1] = false; knock2el.classList.remove('pop');
             }
-            // Knock 3 at p=0.55 — also lights up window glow
-            if (p >= 0.55 && !_knockFired[2]) {
+            // Knock 3 at p=0.83 — also lights up window glow
+            if (p >= 0.83 && !_knockFired[2]) {
                 _knockFired[2] = true;
                 knock3el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
                 glow.classList.add('lit');
-            } else if (p < 0.55 && _knockFired[2]) {
+            } else if (p < 0.83 && _knockFired[2]) {
                 _knockFired[2] = false; knock3el.classList.remove('pop'); glow.classList.remove('lit');
             }
         }
