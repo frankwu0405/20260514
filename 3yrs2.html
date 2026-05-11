@@ -1190,6 +1190,112 @@
             flex-shrink: 0;
         }
 
+        /* === Chapter 9 — Sliding Door Gallery === */
+        #chap9 { transform: none !important; transition: opacity 1s ease-out; margin-bottom: 0; }
+        #chap9.is-visible { transform: none !important; opacity: 1; }
+        .sd-stage {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            margin-left: -50vw;
+            height: 400vh;
+        }
+        .sd-sticky { overflow: hidden; background: #fafafa; }
+        .sd-track {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 0 8vw;
+            height: 100vh;
+            will-change: transform;
+            position: relative;
+            z-index: 1;
+        }
+        .sd-item { display: flex; flex-direction: column; gap: 10px; flex: 0 0 auto; }
+        .sd-mask { height: 45vh; width: 0; overflow: hidden; flex-shrink: 0; }
+        .sd-img {
+            height: 45vh;
+            width: auto;
+            display: block;
+            object-fit: cover;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            flex-shrink: 0;
+        }
+        .sd-caption {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 13px;
+            color: #888;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            max-width: 240px;
+            line-height: 1.6;
+            padding-left: 2px;
+        }
+        .sd-caption.is-vis { opacity: 1; transform: translateY(0); }
+        .sd-year-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 5;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 40px;
+        }
+        .sd-year-copy {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 1.5px;
+            line-height: 2.4;
+            margin-top: 16px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+        .sd-final-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(253,248,240,0.96);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.2s ease;
+            z-index: 20;
+            text-align: center;
+            padding: 60px 40px;
+        }
+        .sd-final-overlay.is-visible { opacity: 1; pointer-events: auto; }
+        .sd-final-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .sd-final-inner p {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 15px;
+            color: #666;
+            letter-spacing: 1.5px;
+            line-height: 2.4;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+        .sd-final-sig {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 28px;
+            color: #333;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
     </style>
 </head>
 <body class="no-scroll">
@@ -2237,13 +2343,78 @@
                 </div>
             </div>
 
-            <!-- Chapter 10 -->
+            <!-- Inline Year 2026 -->
+            <div class="chapter inline-year" id="year2026">
+                <div class="year-text">2026</div>
+                <div class="year-sub">Together & Beyond</div>
+            </div>
+
+            <!-- Chapter 10 — Sliding Door Gallery -->
             <div class="chapter" id="chap9">
-                <div class="time-badge">2026 & Beyond</div>
-                <div class="story-text">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</div>
-                <div style="background: #fff; padding: 12px 12px 40px 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); transform: rotate(-1deg); border-radius: 4px;">
-                    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800&auto=format&fit=crop" class="cover-img" style="height: 250px;" alt="Latest Memory">
-                    <div style="text-align:center; margin-top:15px; font-family:'Caveat'; font-size:24px; color:#444;">Happy 3rd Anniversary.</div>
+                <div class="sd-stage" id="sdStage">
+                    <div class="sd-sticky" id="sdSticky">
+
+                        <!-- Year label: visible at p=0, fades as gallery begins -->
+                        <div class="sd-year-label" id="sdYearLabel">
+                            <div class="time-badge">2026 &amp; Beyond</div>
+                            <p class="sd-year-copy">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</p>
+                        </div>
+
+                        <!-- Horizontal reveal track -->
+                        <div class="sd-track" id="sdTrack">
+
+                            <div class="sd-item" style="align-self:flex-start">
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="https://picsum.photos/seed/sd1/300/400" alt=""></div>
+                                <p class="sd-caption">Sydney，2022</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:flex-end">
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="https://picsum.photos/seed/sd2/540/400" alt=""></div>
+                                <p class="sd-caption">相遇的第一年</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:center">
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="https://picsum.photos/seed/sd3/300/400" alt=""></div>
+                                <p class="sd-caption">在一起的日子</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:flex-start">
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="https://picsum.photos/seed/sd4/540/400" alt=""></div>
+                                <p class="sd-caption">每一個瞬間</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:flex-end">
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="https://picsum.photos/seed/sd5/300/400" alt=""></div>
+                                <p class="sd-caption">跨越距離</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:center">
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="https://picsum.photos/seed/sd6/540/400" alt=""></div>
+                                <p class="sd-caption">回到起點</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:flex-start">
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="https://picsum.photos/seed/sd7/300/400" alt=""></div>
+                                <p class="sd-caption">2024，在一起</p>
+                            </div>
+
+                            <div class="sd-item" style="align-self:flex-end">
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="https://picsum.photos/seed/sd8/540/400" alt=""></div>
+                                <p class="sd-caption">2026，繼續走下去</p>
+                            </div>
+
+                        </div>
+
+                        <!-- Final state: appears only when scrollProgress reaches 1 -->
+                        <div class="sd-final-overlay" id="sdFinalOverlay">
+                            <div class="sd-final-inner">
+                                <div class="time-badge">Happy 3rd Anniversary ♡</div>
+                                <p>時光在走，距離或許還在，<br>但愛妳的心，從未變過。</p>
+                                <div class="sd-final-sig">Love always, Frank</div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -3184,7 +3355,8 @@
                 
                 initCanvasStars(); // 初始化隨機星空畫布
                 initGlobe();
-                drawRoute(); 
+                drawRoute();
+                initSlidingDoor();
                 
                 landingView.style.opacity = '0'; 
                 setTimeout(() => { landingView.style.display = 'none'; }, 1500);
@@ -3720,6 +3892,100 @@
                 }, 900);
             }
         }
+
+        // ==========================================
+        // 7. Chapter 9 — Sliding Door Gallery
+        // ==========================================
+        let _sdTicking = false;
+        let _sdOpenWidths = [];
+
+        function initSlidingDoor() {
+            _sdOpenWidths = [];
+            document.querySelectorAll('.sd-mask').forEach(mask => {
+                const aspect = parseFloat(mask.dataset.aspect) || 1;
+                _sdOpenWidths.push(aspect * 0.45 * window.innerHeight);
+            });
+        }
+
+        function updateSlidingDoor() {
+            const stage = document.getElementById('sdStage');
+            if (!stage) return;
+
+            const rect = stage.getBoundingClientRect();
+            const stageScrollH = stage.offsetHeight - window.innerHeight;
+            if (stageScrollH <= 0) return;
+            const scrolled = -rect.top;
+
+            const sticky = document.getElementById('sdSticky');
+            if (sticky) {
+                if (rect.top >= 0) {
+                    sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;background:#fafafa;';
+                } else if (scrolled >= stageScrollH) {
+                    sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;background:#fafafa;`;
+                } else {
+                    sticky.style.cssText = 'position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;background:#fafafa;';
+                }
+            }
+
+            if (scrolled < -window.innerHeight || scrolled > stageScrollH + window.innerHeight) return;
+            const p = Math.max(0, Math.min(scrolled / stageScrollH, 1));
+
+            // Year label: fade out as gallery begins
+            const yearLabel = document.getElementById('sdYearLabel');
+            if (yearLabel) {
+                const labelOpacity = p < 0.06 ? 1 - p / 0.06 : 0;
+                yearLabel.style.opacity = String(labelOpacity);
+            }
+
+            // Translate track horizontally
+            const track = document.getElementById('sdTrack');
+            if (!track) return;
+            const maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth);
+            track.style.transform = `translateX(${-p * maxTranslate}px)`;
+
+            // Mask reveal per item
+            const masks = document.querySelectorAll('.sd-mask');
+            masks.forEach((mask, i) => {
+                const openW = _sdOpenWidths[i] || ((parseFloat(mask.dataset.aspect) || 1) * 0.45 * window.innerHeight);
+                const left = mask.getBoundingClientRect().left;
+                const vw = window.innerWidth;
+
+                let prog;
+                if (left < 0.5 * vw) {
+                    prog = 1;
+                } else {
+                    prog = (0.9 * vw - left) / (0.4 * vw);
+                    prog = Math.max(0, Math.min(prog, 1));
+                }
+
+                mask.style.width = (prog * openW) + 'px';
+
+                // Caption appears when mask is mostly open
+                const caption = mask.nextElementSibling;
+                if (caption && caption.classList.contains('sd-caption')) {
+                    caption.classList.toggle('is-vis', prog > 0.7);
+                }
+            });
+
+            // Final overlay: fades in only at scroll end
+            const finalOverlay = document.getElementById('sdFinalOverlay');
+            if (finalOverlay) {
+                const finalProg = Math.max(0, (p - 0.95) / 0.05);
+                finalOverlay.style.opacity = String(finalProg);
+                finalOverlay.style.pointerEvents = finalProg > 0.5 ? 'auto' : 'none';
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!_sdTicking) {
+                _sdTicking = true;
+                requestAnimationFrame(() => { updateSlidingDoor(); _sdTicking = false; });
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            initSlidingDoor();
+        });
 
         // ── Captcha + 2025 Story ──
         (function() {
