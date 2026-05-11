@@ -1267,17 +1267,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(253,248,240,0.96);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: #fafafa;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1.2s ease;
-            z-index: 20;
+            z-index: 50;
             text-align: center;
             padding: 60px 40px;
         }
-        .sd-final-overlay.is-visible { opacity: 1; pointer-events: auto; }
         .sd-final-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .sd-final-inner p {
             font-family: 'Noto Serif TC', serif;
@@ -2288,7 +2284,7 @@
             <!-- Inline Year 2025 -->
             <div class="chapter inline-year" id="year2025">
                 <div class="year-text">2025</div>
-                <div class="year-sub">Building our everyday life, step by step.</div>
+                <div class="year-sub">轉瞬即逝的第三年</div>
             </div>
 
             <!-- Chapter – 2025 Instagram Story Recap -->
@@ -2418,7 +2414,6 @@
                 </div>
             </div>
 
-            <div class="signature">Love always,<br>Frank</div>
 
         </div> <!-- end journey-container -->
 
@@ -3937,13 +3932,14 @@
                 yearLabel.style.opacity = String(labelOpacity);
             }
 
-            // Translate track horizontally
+            // Phase 1 (p 0→0.80): translate track until last item exits left edge
             const track = document.getElementById('sdTrack');
             if (!track) return;
-            const maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth);
-            track.style.transform = `translateX(${-p * maxTranslate}px)`;
+            const trackProg = Math.min(p / 0.80, 1);
+            const maxTranslate = track.scrollWidth;
+            track.style.transform = `translateX(${-trackProg * maxTranslate}px)`;
 
-            // Mask reveal per item
+            // Mask reveal per item (math unchanged)
             const masks = document.querySelectorAll('.sd-mask');
             masks.forEach((mask, i) => {
                 const openW = _sdOpenWidths[i] || ((parseFloat(mask.dataset.aspect) || 1) * 0.45 * window.innerHeight);
@@ -3960,19 +3956,18 @@
 
                 mask.style.width = (prog * openW) + 'px';
 
-                // Caption appears when mask is mostly open
                 const caption = mask.nextElementSibling;
                 if (caption && caption.classList.contains('sd-caption')) {
                     caption.classList.toggle('is-vis', prog > 0.7);
                 }
             });
 
-            // Final overlay: fades in only at scroll end
+            // Phase 2 (p 0.85→1.0): fade in final overlay over solid background
             const finalOverlay = document.getElementById('sdFinalOverlay');
             if (finalOverlay) {
-                const finalProg = Math.max(0, (p - 0.95) / 0.05);
-                finalOverlay.style.opacity = String(finalProg);
-                finalOverlay.style.pointerEvents = finalProg > 0.5 ? 'auto' : 'none';
+                const fadeProg = Math.max(0, Math.min((p - 0.85) / 0.15, 1));
+                finalOverlay.style.opacity = String(fadeProg);
+                finalOverlay.style.pointerEvents = fadeProg > 0.5 ? 'auto' : 'none';
             }
         }
 
@@ -4049,7 +4044,7 @@
                     if (c.dataset.correct === 'true') c.classList.add('is-correct');
                     else                              c.classList.add('is-wrong');
                 });
-                prompt.innerHTML = '驗證成功。我們終於一起回家了。';
+                prompt.innerHTML = '驗證成功，允許進入下一階段驗證。';
                 prompt.style.color = '#3a7a3a';
                 footer.style.display = 'none';
 
@@ -4091,7 +4086,7 @@
                     c.classList.remove('is-selected', 'is-wrong');
                     c.classList.add('is-correct');
                 });
-                prompt.innerHTML = '其實全都是。這真是美好的一年。';
+                prompt.innerHTML = '其實全都是，相信你一定也猜到了~';
                 prompt.style.color = '#3a7a3a';
                 btn.disabled = true;
                 footer.style.pointerEvents = 'none';
