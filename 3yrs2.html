@@ -1031,6 +1031,7 @@
             border-radius: 36px;
             overflow: hidden;
             box-shadow: 0 0 0 2px #2a2a2a, 0 24px 80px rgba(0,0,0,0.7);
+            z-index: 50;
         }
         /* Progress bars */
         .story-progress-row {
@@ -3917,7 +3918,7 @@
                     storyTimer = setTimeout(() => goTo(idx + 1), SLIDE_DURATION);
                 }
 
-                document.getElementById('storyTapLeft2025').addEventListener('click',  () => goTo(current - 1));
+                document.getElementById('storyTapLeft2025').addEventListener('click',  () => goTo(Math.max(0, current - 1)));
                 document.getElementById('storyTapRight2025').addEventListener('click', () => goTo(current + 1));
 
                 const observer = new IntersectionObserver((entries) => {
