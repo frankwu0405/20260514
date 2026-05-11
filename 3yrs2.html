@@ -1684,6 +1684,8 @@
                 </div>
             </div>
 
+            <div id="flight-syd-tpe-military" class="flight-scroll-area"><div class="flight-hint">Heading back to Taiwan for duty... ✈️</div></div>
+
             <!-- Chapter 6 (FaceTime) -->
             <div class="chapter" id="chap5">
                 <div class="time-badge">Feb - Jun, 2024</div>
@@ -1735,6 +1737,8 @@
                 </div>
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
+
+            <div id="flight-syd-tpe-reunion" class="flight-scroll-area"><div class="flight-hint">Closing the distance... ✈️</div></div>
 
             <!-- Chapter 7 (Filmstrip) -->
             <div class="chapter" id="chap6">
@@ -2760,9 +2764,11 @@
             const p1Area = document.getElementById('globe-scroll-area');
             const p2Area = document.getElementById('flight-syd-per-area');
             const p3Area = document.getElementById('flight-per-syd-area');
-            const p4Area = document.getElementById('flight-tpe-syd-area');
-            const p5Area = document.getElementById('zoom-tpe-area');
-            const p6Area = document.getElementById('flight-syd-tpe-area');
+            const p4Area      = document.getElementById('flight-tpe-syd-area');
+            const p5Area      = document.getElementById('zoom-tpe-area');
+            const p6Area      = document.getElementById('flight-syd-tpe-area');
+            const militaryArea = document.getElementById('flight-syd-tpe-military');
+            const reunionArea  = document.getElementById('flight-syd-tpe-reunion');
             const yearSection = document.getElementById('year2022');
             const voidOverlay = document.getElementById('black-void-overlay');
 
@@ -2771,11 +2777,13 @@
             let scrollY = window.scrollY || document.documentElement.scrollTop;
             let opacity = 0;
 
-            let p2Rect = p2Area.getBoundingClientRect();
-            let p3Rect = p3Area.getBoundingClientRect();
-            let p4Rect = p4Area.getBoundingClientRect();
-            let p5Rect = p5Area.getBoundingClientRect();
-            let p6Rect = p6Area.getBoundingClientRect();
+            let p2Rect       = p2Area.getBoundingClientRect();
+            let p3Rect       = p3Area.getBoundingClientRect();
+            let p4Rect       = p4Area.getBoundingClientRect();
+            let p5Rect       = p5Area.getBoundingClientRect();
+            let p6Rect       = p6Area.getBoundingClientRect();
+            let militaryRect = militaryArea ? militaryArea.getBoundingClientRect() : null;
+            let reunionRect  = reunionArea  ? reunionArea.getBoundingClientRect()  : null;
 
             planeSydPer.visible = false; planePerSyd.visible = false; planeTpeSyd.visible = false; planeSydTpe.visible = false;
             lineSydPer.geometry.setDrawRange(0, 0); linePerSyd.geometry.setDrawRange(0, 0); lineTpeSyd.geometry.setDrawRange(0, 0); lineSydTpe.geometry.setDrawRange(0, 0);
@@ -2912,6 +2920,52 @@
 
                 const hint = document.getElementById('flightHintTpeSyd');
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (reunionRect && reunionRect.top < window.innerHeight && reunionRect.bottom > 0) {
+                // SYD → TPE: Sydney flies to Taiwan for reunion
+                let prog = (window.innerHeight - reunionRect.top) / (window.innerHeight + reunionRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosFlightTpe, 0.1);
+                camera.lookAt(0, 0, 0);
+
+                sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
+                taiwanPin.visible = true; taiwanRing.visible = true;
+                taiwanPin.scale.set(1, 1, 1); taiwanRing.scale.set(1, 1, 1);
+
+                planeSydTpe.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineSydTpe.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeSydTpe.position.copy(curveSydTpe.getPoint(flightProg));
+
+                const hintReunion = reunionArea.querySelector('.flight-hint');
+                if(hintReunion) hintReunion.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (militaryRect && militaryRect.top < window.innerHeight && militaryRect.bottom > 0) {
+                // SYD → TPE: Frank flies back for military duty
+                let prog = (window.innerHeight - militaryRect.top) / (window.innerHeight + militaryRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosFlightTpe, 0.1);
+                camera.lookAt(0, 0, 0);
+
+                sydneyPin.scale.set(1, 1, 1); sydneyRing.scale.set(1, 1, 1);
+                taiwanPin.visible = true; taiwanRing.visible = true;
+                taiwanPin.scale.set(1, 1, 1); taiwanRing.scale.set(1, 1, 1);
+
+                planeSydTpe.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineSydTpe.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeSydTpe.position.copy(curveSydTpe.getPoint(flightProg));
+
+                const hintMilitary = militaryArea.querySelector('.flight-hint');
+                if(hintMilitary) hintMilitary.style.opacity = (opacity > 0.5) ? 1 : 0;
             }
             else if (p3Rect.top < window.innerHeight && p3Rect.bottom > 0) {
                 let prog = (window.innerHeight - p3Rect.top) / (window.innerHeight + p3Rect.height);
