@@ -1836,7 +1836,7 @@
                             <div class="flip-back">
                                 <video src="assets/IMG_8403.mov" class="flip-back-img" autoplay loop muted playsinline></video>
                                 <div class="flip-back-overlay">
-                                    <div class="handwriting">Graduation Trip 🎓</div>
+                                    <div class="handwriting">第一次一起搭飛機~開心</div>
                                 </div>
                             </div>
                         </div>
@@ -3784,38 +3784,53 @@
                 const SLIDES = 4;
                 const fills  = Array.from({length: SLIDES}, (_, i) => document.getElementById('sProg' + i));
                 const slides = Array.from({length: SLIDES}, (_, i) => document.getElementById('sSlide' + i));
-                const area   = chapStory;
                 if (!slides[0]) return;
 
+                const SLIDE_DURATION = 4000;
+                let storyTimer;
                 let current = 0;
 
                 function goTo(idx) {
+                    clearTimeout(storyTimer);
                     idx = Math.max(0, Math.min(SLIDES - 1, idx));
-                    slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-                    fills.forEach((f, i) => {
-                        if (i < idx) { f.style.width = '100%'; f.style.transition = 'none'; }
-                        else if (i > idx) { f.style.width = '0%'; f.style.transition = 'none'; }
-                    });
                     current = idx;
+
+                    slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+
+                    fills.forEach((f, i) => {
+                        if (i < idx) {
+                            f.style.transition = 'none';
+                            f.style.width = '100%';
+                        } else if (i > idx) {
+                            f.style.transition = 'none';
+                            f.style.width = '0%';
+                        } else {
+                            f.style.transition = 'none';
+                            f.style.width = '0%';
+                            void f.offsetWidth; // force reflow so the animation starts from 0
+                            f.style.transition = `width ${SLIDE_DURATION}ms linear`;
+                            f.style.width = '100%';
+                        }
+                    });
+
+                    if (idx >= SLIDES - 1) return;
+                    storyTimer = setTimeout(() => goTo(idx + 1), SLIDE_DURATION);
                 }
 
                 document.getElementById('storyTapLeft2025').addEventListener('click',  () => goTo(current - 1));
                 document.getElementById('storyTapRight2025').addEventListener('click', () => goTo(current + 1));
 
-                function onScroll() {
-                    const rect     = area.getBoundingClientRect();
-                    const total    = area.offsetHeight - window.innerHeight;
-                    const scrolled = -rect.top;
-                    const p = Math.max(0, Math.min(1, scrolled / total));
-                    const perSlide  = 1 / SLIDES;
-                    const activeIdx = Math.min(SLIDES - 1, Math.floor(p / perSlide));
-                    const segP      = (p - activeIdx * perSlide) / perSlide;
-                    if (activeIdx !== current) goTo(activeIdx);
-                    if (fills[activeIdx]) fills[activeIdx].style.width = (segP * 100).toFixed(1) + '%';
-                }
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            goTo(0);
+                        } else {
+                            clearTimeout(storyTimer);
+                        }
+                    });
+                }, { threshold: 0.3 });
 
-                window.addEventListener('scroll', onScroll, { passive: true });
-                goTo(0);
+                observer.observe(document.getElementById('chap-2025-story'));
             }
         })();
 
