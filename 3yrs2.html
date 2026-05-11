@@ -1200,7 +1200,7 @@
             margin-left: -50vw;
             height: 600vh;
         }
-        .sd-sticky { overflow: hidden; background: #fafafa; }
+        .sd-sticky { overflow: hidden; background: transparent; }
         .sd-track {
             display: flex;
             flex-direction: row;
@@ -3397,18 +3397,43 @@
             svg.setAttribute('width', container.offsetWidth);
             svg.setAttribute('height', container.offsetHeight);
 
+            // Returns the element's offsetTop summed up to (but not including) ancestor.
+            // Uses the offsetParent chain so it reflects layout position,
+            // not the viewport-relative getBoundingClientRect which shifts with scroll
+            // and breaks for elements inside position:absolute / sticky parents.
+            function layoutTop(el, ancestor) {
+                let top = 0;
+                while (el && el !== ancestor) { top += el.offsetTop; el = el.offsetParent; }
+                return top;
+            }
+            function layoutLeft(el, ancestor) {
+                let left = 0;
+                while (el && el !== ancestor) { left += el.offsetLeft; el = el.offsetParent; }
+                return left;
+            }
+
             let points = [];
             chapterElements.forEach((chap, index) => {
                 const badge = chap.querySelector('.time-badge');
-                if(!badge) return;
-                const badgeRect = badge.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                let x = badgeRect.left - containerRect.left + (badgeRect.width / 2);
-                let y = badgeRect.top - containerRect.top + badgeRect.height;
-                if(index % 2 === 1) x += 40; 
-                if(index % 2 === 0) x -= 20;
-                points.push({x, y});
+                if (!badge) return;
+                // Use layout-based offsets so the route is correct regardless of
+                // scroll position or getBoundingClientRect quirks inside sticky parents.
+                const bTop  = layoutTop(badge, container);
+                const bLeft = layoutLeft(badge, container);
+                let x = bLeft + badge.offsetWidth / 2;
+                // End each segment at the bottom of the badge so the path visually
+                // arrives at the badge; the last point is adjusted to center below.
+                let y = bTop + badge.offsetHeight;
+                if (index % 2 === 1) x += 40;
+                if (index % 2 === 0) x -= 20;
+                points.push({ x, y, bTop, bHeight: badge.offsetHeight });
             });
+
+            // Clamp the last point to badge center so the line doesn't poke out below.
+            if (points.length > 0) {
+                const last = points[points.length - 1];
+                last.y = last.bTop + last.bHeight / 2;
+            }
 
             if (points.length > 0) {
                 let pathString = `M ${points[0].x} ${points[0].y}`;
@@ -3914,16 +3939,19 @@
             const sticky = document.getElementById('sdSticky');
             if (sticky) {
                 if (rect.top >= 0) {
-                    sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;background:#fafafa;';
+                    sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;';
                 } else if (scrolled >= stageScrollH) {
-                    sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;background:#fafafa;`;
+                    sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;`;
                 } else {
-                    sticky.style.cssText = 'position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;background:#fafafa;';
+                    sticky.style.cssText = 'position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;';
                 }
             }
 
             if (scrolled < -window.innerHeight || scrolled > stageScrollH + window.innerHeight) return;
             const p = Math.max(0, Math.min(scrolled / stageScrollH, 1));
+
+            const bgAlpha = Math.min(p / 0.05, 1);
+            if (sticky) sticky.style.backgroundColor = `rgba(250,250,250,${bgAlpha})`;
 
             // Year label: fade out as gallery begins
             const yearLabel = document.getElementById('sdYearLabel');
