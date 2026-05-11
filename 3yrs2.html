@@ -1026,7 +1026,7 @@
             top: 50vh;
             transform: translateY(-50%);
             width: min(340px, 88vw);
-            aspect-ratio: 9 / 19.5;
+            aspect-ratio: 9 / 18.5;
             background: #0a0a0a;
             border-radius: 36px;
             overflow: hidden;
@@ -1121,6 +1121,73 @@
         }
         .story-tap-left { left: 0; }
         .story-tap-right { right: 0; }
+        /* Story bottom UI */
+        .story-bottom-ui {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 25;
+            padding: 0 10px 18px;
+            background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
+            pointer-events: none;
+        }
+        .story-comment-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(0,0,0,0.58);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 7px 13px 7px 7px;
+            margin-bottom: 10px;
+            max-width: 82%;
+        }
+        .story-tiny-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        #storyCommentText {
+            font-family: -apple-system, 'Helvetica Neue', sans-serif;
+            font-size: 11px;
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.2px;
+            line-height: 1.4;
+            transition: opacity 0.3s ease;
+        }
+        .story-input-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+        }
+        .story-input-pill {
+            flex: 1;
+            height: 34px;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            border-radius: 17px;
+            display: flex;
+            align-items: center;
+            padding: 0 13px;
+        }
+        .story-input-placeholder {
+            font-family: -apple-system, sans-serif;
+            font-size: 13px;
+            color: rgba(255,255,255,0.82);
+        }
+        .story-input-icons {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+        .story-icon {
+            width: 22px;
+            height: 22px;
+            fill: rgba(255,255,255,0.9);
+            flex-shrink: 0;
+        }
 
     </style>
 </head>
@@ -2149,6 +2216,22 @@
                     <!-- Tap zones -->
                     <div class="story-tap-left"  id="storyTapLeft2025"></div>
                     <div class="story-tap-right" id="storyTapRight2025"></div>
+
+                    <!-- IG-style bottom UI -->
+                    <div class="story-bottom-ui">
+                        <div class="story-comment-bubble">
+                            <img src="https://picsum.photos/seed/avatar/100/100" class="story-tiny-avatar" alt="">
+                            <span id="storyCommentText"></span>
+                        </div>
+                        <div class="story-input-bar">
+                            <div class="story-input-pill"><span class="story-input-placeholder">Send message...</span></div>
+                            <div class="story-input-icons">
+                                <svg class="story-icon" viewBox="0 0 24 24"><path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></svg>
+                                <svg class="story-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <svg class="story-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -3782,20 +3865,38 @@
             // ── Story init (called after reveal) ──
             function initStory2025() {
                 const SLIDES = 4;
-                const fills  = Array.from({length: SLIDES}, (_, i) => document.getElementById('sProg' + i));
-                const slides = Array.from({length: SLIDES}, (_, i) => document.getElementById('sSlide' + i));
+                const DESCRIPTIONS = [
+                    '終於在Sydney見到你了 💛',
+                    '一起去了好多地方，好多第一次',
+                    '你離開的那天，我捨不得',
+                    '2025 還沒結束，我們還在繼續'
+                ];
+                const fills       = Array.from({length: SLIDES}, (_, i) => document.getElementById('sProg' + i));
+                const slides      = Array.from({length: SLIDES}, (_, i) => document.getElementById('sSlide' + i));
+                const commentText = document.getElementById('storyCommentText');
                 if (!slides[0]) return;
 
                 const SLIDE_DURATION = 4000;
                 let storyTimer;
                 let current = 0;
 
+                function setCommentText(text) {
+                    if (!commentText) return;
+                    commentText.style.opacity = '0';
+                    setTimeout(() => {
+                        commentText.textContent = text;
+                        commentText.style.opacity = '1';
+                    }, 300);
+                }
+
                 function goTo(idx) {
                     clearTimeout(storyTimer);
-                    idx = Math.max(0, Math.min(SLIDES - 1, idx));
+                    if (idx >= SLIDES) idx = 0;
+                    if (idx < 0) idx = SLIDES - 1;
                     current = idx;
 
                     slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+                    setCommentText(DESCRIPTIONS[idx]);
 
                     fills.forEach((f, i) => {
                         if (i < idx) {
@@ -3807,13 +3908,12 @@
                         } else {
                             f.style.transition = 'none';
                             f.style.width = '0%';
-                            void f.offsetWidth; // force reflow so the animation starts from 0
+                            void f.offsetWidth;
                             f.style.transition = `width ${SLIDE_DURATION}ms linear`;
                             f.style.width = '100%';
                         }
                     });
 
-                    if (idx >= SLIDES - 1) return;
                     storyTimer = setTimeout(() => goTo(idx + 1), SLIDE_DURATION);
                 }
 
@@ -3831,6 +3931,7 @@
                 }, { threshold: 0.3 });
 
                 observer.observe(document.getElementById('chap-2025-story'));
+                goTo(0);
             }
         })();
 
