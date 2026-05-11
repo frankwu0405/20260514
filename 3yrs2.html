@@ -133,7 +133,7 @@
            instead of the viewport, which breaks the JS-driven sticky. */
         #chap1 { transform: none !important; transition: opacity 1s ease-out; }
         #chap1.is-visible { transform: none !important; opacity: 1; }
-        .house-stage { position: relative; width: 100vw; left: 50%; margin-left: -50vw; height: 500vh; margin-bottom: 60px; }
+        .house-stage { position: relative; width: 100vw; left: 50%; margin-left: -50vw; height: 600vh; margin-bottom: 60px; }
         .house-sticky { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
         .house-photo-wrap { position: absolute; inset: 0; transform-origin: 43% 50%; }
         .house-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -3217,26 +3217,26 @@
             vignette.style.opacity = rm(p, 0.55, 0.70);
 
             // Day photo stays full brightness until cream phase
-            const blurAmt = rm(p, 0.90, 0.98) * 30;
+            const blurAmt = rm(p, 0.95, 0.98) * 30;
             const dayBrightness = 1 - rm(p, 0.88, 0.96) * 0.28;
             housePhoto.style.filter = `brightness(${dayBrightness.toFixed(2)}) blur(${blurAmt}px)`;
             if (nightPhoto) nightPhoto.style.filter = `blur(${blurAmt}px)`;
 
-            // Cream overlay: 0→1 from 0.90→0.98
-            cream.style.opacity = rm(p, 0.90, 0.98);
+            // Cream overlay: 0→1 from 0.95→0.98
+            cream.style.opacity = rm(p, 0.95, 0.98);
 
-            // Final interior text: fades in as line5 starts exiting, holds until end
-            finalLine.style.opacity = rm(p, 0.93, 0.98);
+            // Final interior text: fades in 0.96→0.98, stays at 1 for remainder
+            finalLine.style.opacity = rm(p, 0.96, 0.98);
 
-            // Line 4: appears after knock 3, fades before line 5
-            const l4 = rm(p, 0.84, 0.87) * (1 - rm(p, 0.89, 0.93));
+            // Line 4: appears with knock 3, fully gone before line 5 starts
+            const l4 = rm(p, 0.83, 0.85) * (1 - rm(p, 0.88, 0.90));
             line4.style.opacity = l4;
             line4.style.transform = l4 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
 
-            // Line 5: reflective, appears as line 4 fades, gone before cream
+            // Line 5: enters right after line 4 leaves, exits as cream comes in
             const line5 = document.getElementById('houseLine5');
             if (line5) {
-                const l5 = rm(p, 0.85, 0.88) * (1 - rm(p, 0.93, 0.96));
+                const l5 = rm(p, 0.90, 0.92) * (1 - rm(p, 0.95, 0.97));
                 line5.style.opacity = l5;
                 line5.style.transform = l5 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
             }
