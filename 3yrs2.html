@@ -766,6 +766,32 @@
 
         /* ── Captcha Chapter ── */
         #chap-captcha { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; }
+        #captchaIntro {
+            text-align: center;
+            margin-bottom: 32px;
+            transition: opacity 1s ease;
+        }
+        #captchaIntro .ci-line1 {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 13px;
+            color: #a09080;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            text-shadow: 0 1px 8px rgba(255,255,255,0.9);
+        }
+        #captchaIntro .ci-line2 {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 17px;
+            color: #5a4838;
+            letter-spacing: 1px;
+            line-height: 1.7;
+            text-shadow: 0 1px 8px rgba(255,255,255,0.9);
+        }
+        #year2025 {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
         .captcha-dialog {
             background: #fdf8f0;
             border: 1px solid #e0d6c4;
@@ -1936,110 +1962,6 @@
                 <span class="interactive-hint">Tap to shoot 📷</span>
             </div>
 
-            <!-- Inline Year 2025 -->
-            <div class="chapter inline-year">
-                <div class="year-text">2025</div>
-                <div class="year-sub">轉瞬即逝的第二年</div>
-            </div>
-
-            <!-- Chapter – Captcha -->
-            <div class="chapter" id="chap-captcha">
-                <div class="captcha-dialog" id="captchaBox">
-                    <div class="captcha-titlebar">
-                        <span class="captcha-titlebar-text">安全驗證</span>
-                        <div class="captcha-titlebar-btn">✕</div>
-                    </div>
-                    <div class="captcha-body">
-                        <div class="captcha-prompt" id="captchaPrompt">請選取所有<strong>發生在 2024 年</strong>的畫面。</div>
-                        <div class="captcha-grid" id="captchaGrid">
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap1/300/300" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap2/300/300" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap3/300/300" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap4/300/300" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap5/300/300" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap6/300/300" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap7/300/300" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap8/300/300" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap9/300/300" alt=""></div>
-                        </div>
-                        <div class="captcha-error" id="captchaError"></div>
-
-                        <div class="captcha-footer" id="captchaFooter">
-                            <span class="captcha-status" id="captchaStatus">已選取 0 張</span>
-                            <button class="captcha-btn" id="captchaVerifyBtn">驗證</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phase 1 success: explanation rows + continue button (outside the dialog frame) -->
-                <div id="captchaExplanations">
-                    <!-- Row 1: pic left, text right -->
-                    <div class="cex-row">
-                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex1/200/200" alt="記憶一"></div>
-                        <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Spring</div>
-                            <div class="cex-caption">那個下午，我們第一次一起去超市，推著購物車把走道逛了一遍又一遍。</div>
-                        </div>
-                    </div>
-                    <!-- Row 2: text left, pic right -->
-                    <div class="cex-row">
-                        <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Summer</div>
-                            <div class="cex-caption">深夜的便利店，霓虹燈把馬路照得很亮，我們坐在外面吃關東煮。</div>
-                        </div>
-                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex2/200/200" alt="記憶二"></div>
-                    </div>
-                    <!-- Row 3: pic left, text right -->
-                    <div class="cex-row">
-                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex3/200/200" alt="記憶三"></div>
-                        <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Autumn</div>
-                            <div class="cex-caption">回到雪梨，走過那些熟悉的街道，才發現每一步都藏著我們的故事。</div>
-                        </div>
-                    </div>
-                    <div class="cex-footer">
-                        <button class="captcha-btn" id="btnToPhaseTwo">進入 2025 →</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chapter – 2025 Instagram Story Recap -->
-            <div class="story-chapter" id="chap-2025-story" style="height: 400vh;">
-                <div class="story-contained-wrapper" id="storySticky2025">
-
-                    <!-- Progress bars -->
-                    <div class="story-progress-row" id="storyProgressRow2025">
-                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg0"></div></div>
-                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg1"></div></div>
-                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg2"></div></div>
-                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg3"></div></div>
-                    </div>
-
-                    <!-- Header -->
-                    <div class="story-header">
-                        <img class="story-avatar" src="https://picsum.photos/seed/avatar/100/100" alt="Frank">
-                        <div>
-                            <div class="story-username">Frank &bull; 2025</div>
-                            <div class="story-time-label">今日</div>
-                        </div>
-                    </div>
-
-                    <!-- Media slides -->
-                    <div class="story-media-container" id="storyMediaContainer2025">
-                        <div class="story-slide is-active" id="sSlide0"><img src="https://picsum.photos/seed/st1/400/870" alt="Story 1"></div>
-                        <div class="story-slide" id="sSlide1"><img src="https://picsum.photos/seed/st2/400/870" alt="Story 2"></div>
-                        <div class="story-slide" id="sSlide2"><img src="https://picsum.photos/seed/st3/400/870" alt="Story 3"></div>
-                        <div class="story-slide" id="sSlide3"><img src="https://picsum.photos/seed/st4/400/870" alt="Story 4"></div>
-                    </div>
-
-                    <!-- Tap zones -->
-                    <div class="story-tap-left"  id="storyTapLeft2025"></div>
-                    <div class="story-tap-right" id="storyTapRight2025"></div>
-
-                </div>
-            </div>
-
-
             <!-- Chapter – Return Tickets (SYD → TPE) -->
             <div class="chapter" id="chap-syd-return">
                 <div class="time-badge">Nov, 2024</div>
@@ -2119,10 +2041,111 @@
                 <div class="flight-hint" id="flightHintSydTpe">Carrying home all those memories... ✈️</div>
             </div>
 
+            <!-- Chapter – Captcha -->
+            <div class="chapter" id="chap-captcha">
+                <div id="captchaIntro">
+                    <div class="ci-line1">在進入2025年之前...</div>
+                    <div class="ci-line2">要先看看在偷看這個網站的人是不是我的小寶</div>
+                </div>
+                <div class="captcha-dialog" id="captchaBox">
+                    <div class="captcha-titlebar">
+                        <span class="captcha-titlebar-text">安全驗證</span>
+                        <div class="captcha-titlebar-btn">✕</div>
+                    </div>
+                    <div class="captcha-body">
+                        <div class="captcha-prompt" id="captchaPrompt">請選取所有<strong>發生在 2024 年</strong>的畫面。</div>
+                        <div class="captcha-grid" id="captchaGrid">
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap1/300/300" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap2/300/300" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap3/300/300" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap4/300/300" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap5/300/300" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap6/300/300" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap7/300/300" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="https://picsum.photos/seed/cap8/300/300" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="https://picsum.photos/seed/cap9/300/300" alt=""></div>
+                        </div>
+                        <div class="captcha-error" id="captchaError"></div>
+
+                        <div class="captcha-footer" id="captchaFooter">
+                            <span class="captcha-status" id="captchaStatus">已選取 0 張</span>
+                            <button class="captcha-btn" id="captchaVerifyBtn">驗證</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 1 success: explanation rows + continue button (outside the dialog frame) -->
+                <div id="captchaExplanations">
+                    <!-- Row 1: pic left, text right -->
+                    <div class="cex-row">
+                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex1/200/200" alt="記憶一"></div>
+                        <div class="cex-text-wrap">
+                            <div class="cex-date">2024 · Spring</div>
+                            <div class="cex-caption">那個下午，我們第一次一起去超市，推著購物車把走道逛了一遍又一遍。</div>
+                        </div>
+                    </div>
+                    <!-- Row 2: text left, pic right -->
+                    <div class="cex-row">
+                        <div class="cex-text-wrap">
+                            <div class="cex-date">2024 · Summer</div>
+                            <div class="cex-caption">深夜的便利店，霓虹燈把馬路照得很亮，我們坐在外面吃關東煮。</div>
+                        </div>
+                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex2/200/200" alt="記憶二"></div>
+                    </div>
+                    <!-- Row 3: pic left, text right -->
+                    <div class="cex-row">
+                        <div class="cex-pic-wrap"><img src="https://picsum.photos/seed/ex3/200/200" alt="記憶三"></div>
+                        <div class="cex-text-wrap">
+                            <div class="cex-date">2024 · Autumn</div>
+                            <div class="cex-caption">回到雪梨，走過那些熟悉的街道，才發現每一步都藏著我們的故事。</div>
+                        </div>
+                    </div>
+                    <div class="cex-footer">
+                        <button class="captcha-btn" id="btnToPhaseTwo">進入 2025 →</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Inline Year 2025 -->
-            <div class="chapter inline-year">
+            <div class="chapter inline-year" id="year2025">
                 <div class="year-text">2025</div>
                 <div class="year-sub">Building our everyday life, step by step.</div>
+            </div>
+
+            <!-- Chapter – 2025 Instagram Story Recap -->
+            <div class="story-chapter" id="chap-2025-story" style="height: 400vh;">
+                <div class="story-contained-wrapper" id="storySticky2025">
+
+                    <!-- Progress bars -->
+                    <div class="story-progress-row" id="storyProgressRow2025">
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg0"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg1"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg2"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg3"></div></div>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="story-header">
+                        <img class="story-avatar" src="https://picsum.photos/seed/avatar/100/100" alt="Frank">
+                        <div>
+                            <div class="story-username">Frank &bull; 2025</div>
+                            <div class="story-time-label">今日</div>
+                        </div>
+                    </div>
+
+                    <!-- Media slides -->
+                    <div class="story-media-container" id="storyMediaContainer2025">
+                        <div class="story-slide is-active" id="sSlide0"><img src="https://picsum.photos/seed/st1/400/870" alt="Story 1"></div>
+                        <div class="story-slide" id="sSlide1"><img src="https://picsum.photos/seed/st2/400/870" alt="Story 2"></div>
+                        <div class="story-slide" id="sSlide2"><img src="https://picsum.photos/seed/st3/400/870" alt="Story 3"></div>
+                        <div class="story-slide" id="sSlide3"><img src="https://picsum.photos/seed/st4/400/870" alt="Story 4"></div>
+                    </div>
+
+                    <!-- Tap zones -->
+                    <div class="story-tap-left"  id="storyTapLeft2025"></div>
+                    <div class="story-tap-right" id="storyTapRight2025"></div>
+
+                </div>
             </div>
 
             <!-- Chapter 10 -->
@@ -3669,18 +3692,34 @@
                 footer.style.pointerEvents = 'none';
 
                 setTimeout(() => {
-                    // Dissolve captchaBox out
+                    const introEl   = document.getElementById('captchaIntro');
+                    const year2025El = document.getElementById('year2025');
+
+                    // Phase A: fade out captchaBox and intro text together
                     captchaBox.style.opacity = '0';
                     captchaBox.style.transform = 'scale(1.05)';
+                    if (introEl) introEl.style.opacity = '0';
 
+                    // Phase B: once captchaBox finishes fading, hide captcha section
+                    // and fade in the 2025 title
                     captchaBox.addEventListener('transitionend', function onDone(e) {
                         if (e.propertyName !== 'opacity') return;
                         captchaBox.removeEventListener('transitionend', onDone);
                         chapCaptcha.style.display = 'none';
-                        chapStory.style.display = 'block';
-                        void chapStory.offsetHeight; // reflow so transition fires
-                        chapStory.style.opacity = '1';
-                        initStory2025();
+
+                        if (year2025El) {
+                            void year2025El.offsetHeight; // reflow so transition fires
+                            year2025El.style.opacity = '1';
+                            year2025El.style.pointerEvents = '';
+                        }
+
+                        // Phase C: give 1.5 s to read the title, then reveal the story
+                        setTimeout(() => {
+                            chapStory.style.display = 'flex';
+                            void chapStory.offsetHeight; // reflow so transition fires
+                            chapStory.style.opacity = '1';
+                            initStory2025();
+                        }, 1500);
                     });
                 }, 2000);
             }
