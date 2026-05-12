@@ -2342,7 +2342,7 @@
             <!-- Inline Year 2026 -->
             <div class="chapter inline-year" id="year2026">
                 <div class="year-text">2026</div>
-                <div class="year-sub">Together & Beyond</div>
+                <div class="year-sub">Together & Beyond...</div>
             </div>
 
             <!-- Chapter 10 — Sliding Door Gallery -->
@@ -2365,12 +2365,12 @@
                             </div>
 
                             <div class="sd-item" style="align-self:flex-end">
-                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="https://picsum.photos/seed/sd2/540/400" alt=""></div>
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="assets/IMG_6155.jpeg" alt=""></div>
                                 <p class="sd-caption">相遇的第一年</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="https://picsum.photos/seed/sd3/300/400" alt=""></div>
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/fxn 2026-02-04 161041.852.jpeg" alt=""></div>
                                 <p class="sd-caption">在一起的日子</p>
                             </div>
 
@@ -3920,9 +3920,12 @@
         // Per-mask open widths — null until the image's natural dimensions are known.
         let _sdOpenWidths = [];
 
-        function sdAspectFromImg(img) {
-            if (img && img.naturalWidth > 0 && img.naturalHeight > 0) {
-                return img.naturalWidth / img.naturalHeight;
+        function sdAspectFromEl(el) {
+            if (!el) return null;
+            if (el.tagName === 'VIDEO') {
+                if (el.videoWidth > 0 && el.videoHeight > 0) return el.videoWidth / el.videoHeight;
+            } else {
+                if (el.naturalWidth > 0 && el.naturalHeight > 0) return el.naturalWidth / el.naturalHeight;
             }
             return null;
         }
@@ -3930,17 +3933,17 @@
         function initSlidingDoor() {
             _sdOpenWidths = [];
             document.querySelectorAll('.sd-mask').forEach((mask, i) => {
-                const img = mask.querySelector('.sd-img');
+                const el = mask.querySelector('.sd-img');
                 const fallback = parseFloat(mask.dataset.aspect) || 1;
 
-                // Seed with whatever we know right now (natural dims if cached, else data-aspect).
-                const aspect = sdAspectFromImg(img) || fallback;
+                const aspect = sdAspectFromEl(el) || fallback;
                 _sdOpenWidths[i] = aspect * 0.45 * window.innerHeight;
 
-                if (img && img.naturalWidth === 0) {
-                    // Image not yet decoded — update the slot once it loads.
-                    img.addEventListener('load', () => {
-                        const a = sdAspectFromImg(img) || fallback;
+                if (el && !sdAspectFromEl(el)) {
+                    // Image: wait for load. Video: wait for loadedmetadata.
+                    const evt = el.tagName === 'VIDEO' ? 'loadedmetadata' : 'load';
+                    el.addEventListener(evt, () => {
+                        const a = sdAspectFromEl(el) || fallback;
                         _sdOpenWidths[i] = a * 0.45 * window.innerHeight;
                     }, { once: true });
                 }
@@ -3993,7 +3996,7 @@
                 const img = mask.querySelector('.sd-img');
                 // Always prefer real image dimensions; fall back to cached value,
                 // then data-aspect if the image still hasn't loaded.
-                const liveAspect = sdAspectFromImg(img);
+                const liveAspect = sdAspectFromEl(img);
                 if (liveAspect) _sdOpenWidths[i] = liveAspect * 0.45 * window.innerHeight;
                 const openW = _sdOpenWidths[i] || ((parseFloat(mask.dataset.aspect) || 1) * 0.45 * window.innerHeight);
                 const left = mask.getBoundingClientRect().left;
@@ -4035,7 +4038,7 @@
             // Recalculate open widths on resize since they depend on window.innerHeight.
             document.querySelectorAll('.sd-mask').forEach((mask, i) => {
                 const img = mask.querySelector('.sd-img');
-                const aspect = sdAspectFromImg(img) || parseFloat(mask.dataset.aspect) || 1;
+                const aspect = sdAspectFromEl(img) || parseFloat(mask.dataset.aspect) || 1;
                 _sdOpenWidths[i] = aspect * 0.45 * window.innerHeight;
             });
         });
