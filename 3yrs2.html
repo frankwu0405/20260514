@@ -3917,13 +3917,33 @@
         // 7. Chapter 9 — Sliding Door Gallery
         // ==========================================
         let _sdTicking = false;
+        // Per-mask open widths — null until the image's natural dimensions are known.
         let _sdOpenWidths = [];
+
+        function sdAspectFromImg(img) {
+            if (img && img.naturalWidth > 0 && img.naturalHeight > 0) {
+                return img.naturalWidth / img.naturalHeight;
+            }
+            return null;
+        }
 
         function initSlidingDoor() {
             _sdOpenWidths = [];
-            document.querySelectorAll('.sd-mask').forEach(mask => {
-                const aspect = parseFloat(mask.dataset.aspect) || 1;
-                _sdOpenWidths.push(aspect * 0.45 * window.innerHeight);
+            document.querySelectorAll('.sd-mask').forEach((mask, i) => {
+                const img = mask.querySelector('.sd-img');
+                const fallback = parseFloat(mask.dataset.aspect) || 1;
+
+                // Seed with whatever we know right now (natural dims if cached, else data-aspect).
+                const aspect = sdAspectFromImg(img) || fallback;
+                _sdOpenWidths[i] = aspect * 0.45 * window.innerHeight;
+
+                if (img && img.naturalWidth === 0) {
+                    // Image not yet decoded — update the slot once it loads.
+                    img.addEventListener('load', () => {
+                        const a = sdAspectFromImg(img) || fallback;
+                        _sdOpenWidths[i] = a * 0.45 * window.innerHeight;
+                    }, { once: true });
+                }
             });
         }
 
@@ -3970,6 +3990,11 @@
             // Mask reveal per item (math unchanged)
             const masks = document.querySelectorAll('.sd-mask');
             masks.forEach((mask, i) => {
+                const img = mask.querySelector('.sd-img');
+                // Always prefer real image dimensions; fall back to cached value,
+                // then data-aspect if the image still hasn't loaded.
+                const liveAspect = sdAspectFromImg(img);
+                if (liveAspect) _sdOpenWidths[i] = liveAspect * 0.45 * window.innerHeight;
                 const openW = _sdOpenWidths[i] || ((parseFloat(mask.dataset.aspect) || 1) * 0.45 * window.innerHeight);
                 const left = mask.getBoundingClientRect().left;
                 const vw = window.innerWidth;
@@ -4007,7 +4032,12 @@
         }, { passive: true });
 
         window.addEventListener('resize', () => {
-            initSlidingDoor();
+            // Recalculate open widths on resize since they depend on window.innerHeight.
+            document.querySelectorAll('.sd-mask').forEach((mask, i) => {
+                const img = mask.querySelector('.sd-img');
+                const aspect = sdAspectFromImg(img) || parseFloat(mask.dataset.aspect) || 1;
+                _sdOpenWidths[i] = aspect * 0.45 * window.innerHeight;
+            });
         });
 
         // ── Captcha + 2025 Story ──
