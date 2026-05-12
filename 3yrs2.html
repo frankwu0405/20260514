@@ -228,6 +228,13 @@
         .hn-tl-body { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.8; }
         .hn-tl-img { width: 100%; height: 60px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); margin-top: 5px; }
 
+        /* Layout PS — Portrait + Square side-by-side */
+        .hn-layout-ps .hn-ps-grid { display: grid; grid-template-columns: 5fr 4fr; gap: 10px; margin-bottom: 10px; }
+        .hn-ps-left { display: flex; flex-direction: column; }
+        .hn-ps-right { display: flex; flex-direction: column; gap: 6px; }
+        .hn-portrait-photo { width: 100%; flex: 1; min-height: 160px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-square-photo { aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+
         /* === Jan–May 2023 Daily Moments === */
         .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
         .moment-item { display: flex; align-items: center; gap: 16px; }
@@ -1580,26 +1587,29 @@
                 <div class="hn-poster-stack">
 
                     <!-- Vol.1 – July 2023 · Layout A: masthead → hero photo → headline → 2-col -->
-                    <div class="home-newspaper" style="--hn-bg:#fdf8f0;--hn-border:#d4c4a8;--hn-accent:#8b6c50;">
+                    <div class="home-newspaper hn-layout-ps" style="--hn-bg:#fdf8f0;--hn-border:#d4c4a8;--hn-accent:#8b6c50;">
                         <div class="hn-masthead">
                             <div class="hn-kicker">VOL. 1 · JULY 2023</div>
                             <div class="hn-title" contenteditable="true" spellcheck="false">Bathurst Street Times</div>
                             <div class="hn-dateline">搬家特別號 · F &amp; S HOME EDITION</div>
                         </div>
-                        <img src="" class="hn-main-photo" alt="" style="background:#e8ddd0;">
+                        
                         <div class="hn-headline">「兩個人，一個家，從此柴米油鹽都成了故事。」</div>
-                        <div class="hn-columns">
-                            <div class="hn-col">
-                                <img src="" class="hn-col-photo" alt="" style="background:#e4d8cc;">
-                                <div class="hn-col-head">搬家日大作戰</div>
-                                <p class="hn-col-text">行李箱、紙箱、大包小包，終於把家當都搬進來了。看著空蕩蕩的房間慢慢被填滿，很踏實。</p>
+                        
+                        <div class="hn-ps-grid">
+                            <div class="hn-ps-left">
+                                <img src="assets/IMG_7199.png" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
                             </div>
-                            <div class="hn-col">
-                                <img src="" class="hn-col-photo" alt="" style="background:#ddd8cc;">
-                                <div class="hn-col-head">第一頓家常飯</div>
-                                <p class="hn-col-text">鍋碗瓢盆還沒到位，硬是湊出了第一頓飯。味道記不清，但那個笑聲記得一輩子。</p>
+                            
+                            <div class="hn-ps-right">
+                                <img src="assets/IMG_7200.png" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
+                                
+                                <div class="hn-col-label">新居落成</div>
+                                <div class="hn-sub-head">搬家日大作戰</div>
+                                <p class="hn-sub-text">行李箱、紙箱、大包小包，終於把家當搬進來了。鍋碗瓢盆還沒到位，硬湊出的第一頓飯，味道記不清，但笑聲記得一輩子。</p>
                             </div>
                         </div>
+                        
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
