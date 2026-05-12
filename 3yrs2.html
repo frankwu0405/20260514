@@ -185,7 +185,7 @@
         .hn-headline { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 500; color: #333; text-align: center; padding: 10px 4px; border-bottom: 1px solid var(--hn-border, #ddd); margin-bottom: 12px; letter-spacing: 0.5px; line-height: 1.8; }
         .hn-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .hn-col { display: flex; flex-direction: column; gap: 7px; }
-        .hn-col-photo { width: 100%; /*height: 85px;*/ object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
+        .hn-col-photo { width: 100%; height: 85px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
         .hn-col-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #444; line-height: 1.6; border-bottom: 1px solid var(--hn-border, #eee); padding-bottom: 4px; }
         .hn-col-text { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.9; letter-spacing: 0.3px; }
         .hn-footer { font-family: -apple-system, sans-serif; font-size: 9px; color: #bbb; letter-spacing: 2px; text-align: center; border-top: 1px solid var(--hn-border, #eee); margin-top: 14px; padding-top: 10px; }
@@ -227,13 +227,6 @@
         .hn-tl-head { font-family: 'Noto Serif TC', serif; font-size: 11px; font-weight: 500; color: #333; margin-bottom: 2px; }
         .hn-tl-body { font-family: 'Noto Serif TC', serif; font-size: 10px; color: #888; line-height: 1.8; }
         .hn-tl-img { width: 100%; height: 60px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); margin-top: 5px; }
-
-        /* Layout PS — Portrait + Square side-by-side */
-        .hn-layout-ps .hn-ps-grid { display: grid; grid-template-columns: 5fr 4fr; gap: 10px; margin-bottom: 10px; }
-        .hn-ps-left { display: flex; flex-direction: column; }
-        .hn-ps-right { display: flex; flex-direction: column; gap: 6px; }
-        .hn-portrait-photo { width: 100%; flex: 1; min-height: 160px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
-        .hn-square-photo { max-width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
 
         /* === Jan–May 2023 Daily Moments === */
         .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
@@ -1587,56 +1580,49 @@
                 <div class="hn-poster-stack">
 
                     <!-- Vol.1 – July 2023 · Layout A: masthead → hero photo → headline → 2-col -->
-                    <div class="home-newspaper hn-layout-ps" style="--hn-bg:#fdf8f0;--hn-border:#d4c4a8;--hn-accent:#8b6c50;">
+                    <div class="home-newspaper" style="--hn-bg:#fdf8f0;--hn-border:#d4c4a8;--hn-accent:#8b6c50;">
                         <div class="hn-masthead">
                             <div class="hn-kicker">VOL. 1 · JULY 2023</div>
                             <div class="hn-title" contenteditable="true" spellcheck="false">Bathurst Street Times</div>
                             <div class="hn-dateline">搬家特別號 · F &amp; S HOME EDITION</div>
                         </div>
-                        
+                        <img src="" class="hn-main-photo" alt="" style="background:#e8ddd0;">
                         <div class="hn-headline">「兩個人，一個家，從此柴米油鹽都成了故事。」</div>
-                        
-                        <div class="hn-ps-grid">
-                            <div class="hn-ps-left">
-                                <img src="assets/IMG_7199.jpeg" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
+                        <div class="hn-columns">
+                            <div class="hn-col">
+                                <img src="" class="hn-col-photo" alt="" style="background:#e4d8cc;">
+                                <div class="hn-col-head">搬家日大作戰</div>
+                                <p class="hn-col-text">行李箱、紙箱、大包小包，終於把家當都搬進來了。看著空蕩蕩的房間慢慢被填滿，很踏實。</p>
                             </div>
-                            
-                            <div class="hn-ps-right">
-                                <img src="assets/IMG_7200.jpeg" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
-                                
-                                <div class="hn-col-label">新居落成</div>
-                                <div class="hn-sub-head">搬家日大作戰</div>
-                                <p class="hn-sub-text">行李箱、紙箱、大包小包，終於把家當搬進來了。鍋碗瓢盆還沒到位，硬湊出的第一頓飯，味道記不清，但笑聲記得一輩子。</p>
+                            <div class="hn-col">
+                                <img src="" class="hn-col-photo" alt="" style="background:#ddd8cc;">
+                                <div class="hn-col-head">第一頓家常飯</div>
+                                <p class="hn-col-text">鍋碗瓢盆還沒到位，硬是湊出了第一頓飯。味道記不清，但那個笑聲記得一輩子。</p>
                             </div>
                         </div>
-                        
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
                     <!-- Vol.2 – August 2023 · Layout B: masthead → headline → left-heavy duo (big photo | small photo + text) -->
-                    <div class="home-newspaper" style="--hn-bg:#f2f6f1;--hn-border:#b4c8a8;--hn-accent:#5a7a50;">
+                    <div class="home-newspaper hn-layout-b" style="--hn-bg:#f2f6f1;--hn-border:#b4c8a8;--hn-accent:#5a7a50;">
                         <div class="hn-masthead">
                             <div class="hn-kicker">VOL. 2 · AUGUST 2023</div>
                             <div class="hn-title" contenteditable="true" spellcheck="false">Bathurst Street Times</div>
                             <div class="hn-dateline">家的模樣 · F &amp; S HOME EDITION</div>
                         </div>
-                        
                         <div class="hn-headline">「把家布置成我們喜歡的樣子，就是我們的事業。」</div>
-                        
-                        <div class="hn-columns">
-                            <div class="hn-col">
-                                <img src="assets/18343.jpeg" class="hn-col-photo" alt="客廳的角落" style="background:#ccd8c4;">
-                                <div class="hn-col-head">客廳的角落</div>
-                                <p class="hn-col-text">把喜歡的地毯鋪上，擺好沙發，家裡的模樣慢慢成形了。</p>
+                        <div class="hn-duo">
+                            <div>
+                                <img src="" class="hn-big-photo" alt="" style="background:#ccd8c4;">
+                                <div class="hn-col-label">客廳的角落</div>
                             </div>
-                            
-                            <div class="hn-col">
-                                <div class="hn-col-head">超市採買日記</div>
-                                <p class="hn-col-text">每週末推著推車逛超市，這個要那個也要，錢包一下就見底了。但每次都滿載而歸。</p>
-                                <img src="assets/IMG_7206.jpeg" class="hn-col-photo" alt="陽台的植物" style="background:#c4d4bc; margin-top: auto;">
+                            <div>
+                                <img src="" class="hn-sm-photo" alt="" style="background:#c4d4bc;">
+                                <div class="hn-col-label">陽台的植物</div>
+                                <div class="hn-sub-head" style="margin-top:8px;">超市採買日記</div>
+                                <p class="hn-sub-text">每週末推著推車逛超市，這個要那個也要，錢包一下就見底了。但每次都滿載而歸。</p>
                             </div>
                         </div>
-                        
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
@@ -1692,8 +1678,8 @@
                     <div class="home-newspaper hn-layout-f" style="--hn-bg:#f0f5f1;--hn-border:#9abcaa;--hn-accent:#3d6050;">
                         <div class="hn-masthead">
                             <div class="hn-kicker">VOL. 6 · DECEMBER 2023</div>
-                            <div class="hn-title" contenteditable="true" spellcheck="false">Homeless Times</div>
-                            <div class="hn-dateline">無家日特刊 · HOLIDAY EDITION</div>
+                            <div class="hn-title" contenteditable="true" spellcheck="false">Nomad Times</div>
+                            <div class="hn-dateline">跨年特刊 · HOLIDAY EDITION</div>
                         </div>
                         <div class="hn-headline">「這是我們在這個家過的第一個聖誕節。」</div>
                         <div class="hn-grid-2x2">
@@ -1912,7 +1898,7 @@
                             <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
                         </div>
                         <div class="ft-vertical-controls">
-                            <button class="ft-ctrl-btn ft-ctrl-video"><svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+                            <button class="ft-ctrl-btn ft-ctrl-video"><svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-mic"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-more"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg></button>
                             <button class="ft-ctrl-btn ft-ctrl-end" onclick="showEasterEgg()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
@@ -1961,28 +1947,28 @@
                     <div class="scrapbook-track">
                         <div class="sb-polaroid sb-p1">
                             <div class="sb-tape tape-style-a"></div>
-                            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=600&auto=format&fit=crop" alt="Cafe Date">
-                            <div class="sb-note note-pos-1">Coffee days ☕️</div>
+                            <img src="assets/IMG_7615.jpeg" alt="Cafe Date">
+                            <div class="sb-note note-pos-1">寶貝嘗試了萬惡的古拉爵...</div>
                         </div>
                         <div class="sb-polaroid sb-p2">
                             <div class="sb-tape tape-style-b"></div>
-                            <img src="https://images.unsplash.com/photo-1470004914212-05527e49370b?q=80&w=600&auto=format&fit=crop" alt="City Streets">
-                            <div class="sb-note note-pos-2">City walks...</div>
+                            <img src="assets/IMG_7608.jpeg" alt="City Streets">
+                            <div class="sb-note note-pos-2">我成為了幼稚園大哥哥...</div>
                         </div>
                         <div class="sb-polaroid sb-p3">
                             <div class="sb-tape tape-style-c"></div>
-                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=600&auto=format&fit=crop" alt="Holding Hands">
-                            <div class="sb-note note-pos-3">Always together.</div>
+                            <img src="assets/8769CCBC-E830-4D0F-92CA-DD177D47005D.jpeg" alt="Holding Hands">
+                            <div class="sb-note note-pos-3">寶貝第一次來給我探班❤️</div>
                         </div>
                         <div class="sb-polaroid sb-p4">
                             <div class="sb-tape tape-style-d"></div>
-                            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=600&auto=format&fit=crop" alt="Night Vibes">
-                            <div class="sb-note note-pos-4">Late night talks</div>
+                            <img src="assets/IMG_3485.jpeg" alt="Night Vibes">
+                            <div class="sb-note note-pos-4">第一次一起吃 WAKU🍳</div>
                         </div>
                         <div class="sb-polaroid sb-p5">
                             <div class="sb-tape tape-style-e"></div>
-                            <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop" alt="Cozy">
-                            <div class="sb-note note-pos-5">Our little pace ❤️</div>
+                            <img src="assets/IMG_7905.jpeg" alt="Cozy">
+                            <div class="sb-note note-pos-5">嘗試與黑妞做朋友🐶</div>
                         </div>
                     </div>
                 </div>
