@@ -235,6 +235,29 @@
         .hn-portrait-photo { width: 100%; flex: 1; min-height: 160px; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
         .hn-square-photo { max-width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--hn-border, #e0d6c4); }
 
+        /* === #chap-together-2023 unpack animation === */
+        @keyframes unpackBoxHop {
+            0%   { transform: translateX(50px) translateY(10px) rotate(8deg); opacity: 0; }
+            30%  { transform: translateX(0) translateY(-20px) rotate(-3deg); opacity: 1; }
+            50%  { transform: translateX(0) translateY(4px) rotate(1deg); }
+            65%  { transform: translateX(0) translateY(-10px) rotate(-1deg); }
+            80%  { transform: translateX(0) translateY(2px); }
+            100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+        }
+        @keyframes unpackEmojiSpring {
+            0%   { transform: translateY(20px) scale(0) rotate(-10deg); opacity: 0; }
+            45%  { transform: translateY(-22px) scale(1.25) rotate(5deg); opacity: 1; }
+            65%  { transform: translateY(5px) scale(0.88) rotate(-2deg); }
+            80%  { transform: translateY(-8px) scale(1.05) rotate(1deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+        }
+        .unpack-scene { display: flex; flex-direction: column; align-items: center; margin: 8px 0 32px; gap: 2px; }
+        .unpack-box { font-size: 56px; line-height: 1; animation: unpackBoxHop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both; animation-play-state: paused; }
+        .unpack-emojis { display: flex; gap: 8px; }
+        .unpack-emojis span { font-size: 26px; display: inline-block; animation: unpackEmojiSpring 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-play-state: paused; }
+        #chap-together-2023.is-visible .unpack-box { animation-play-state: running; }
+        #chap-together-2023.is-visible .unpack-emojis span { animation-play-state: running; }
+
         /* === Jan–May 2023 Daily Moments === */
         .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
         .moment-item { display: flex; align-items: center; gap: 16px; }
@@ -1638,6 +1661,18 @@
                 <div class="time-badge">Jul 2023 – Jan 2024</div>
                 <p class="story-text">幾經波折，我們決定搬去一起住了🏠</p>
                 <p class="story-text">意想不到的同居生活…會發生什麼事呢？</p>
+
+                <div class="unpack-scene">
+                    <div class="unpack-box">📦</div>
+                    <div class="unpack-emojis">
+                        <span style="animation-delay:0.85s">🛋️</span>
+                        <span style="animation-delay:1.00s">🥢</span>
+                        <span style="animation-delay:1.15s">🍲</span>
+                        <span style="animation-delay:1.30s">🪴</span>
+                        <span style="animation-delay:1.45s">🧺</span>
+                        <span style="animation-delay:1.60s">🔑</span>
+                    </div>
+                </div>
 
                 <div class="hn-poster-stack">
 
