@@ -119,7 +119,7 @@
         .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
         .chapter.is-visible { opacity: 1; transform: translateY(0); }
         .time-badge { display: inline-block; padding: 6px 15px; background: #fff; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; letter-spacing: 1px; border: 1px solid #f4e9ec; }
-        .story-text { line-height: 2.2; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        .story-text { padding: 1rem; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
         .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; font-family: -apple-system, sans-serif;}
 
         .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
@@ -257,11 +257,48 @@
         #chap-together-2023.is-visible .unpack-emojis span { animation-play-state: running; }
 
         /* === Jan–May 2023 Daily Moments === */
-        .moments-grid { display: flex; flex-direction: column; gap: 22px; margin: 28px 0 10px; }
+        .moments-grid { display: flex; flex-direction: column; gap: 32px; margin: 36px 0 10px; }
         .moment-item { display: flex; align-items: center; gap: 16px; }
         .moment-item:nth-child(even) { flex-direction: row-reverse; }
-        .moment-img-wrap { flex: 0 0 105px; height: 105px; border-radius: 4px; overflow: hidden; box-shadow: 0 5px 16px rgba(0,0,0,0.10); }
-        .moment-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* Use drop-shadow instead of box-shadow so it follows the irregular clip-path */
+        .moment-img-wrap {
+            position: relative;
+            flex: 0 0 115px;
+            height: 115px;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.12));
+        }
+
+        .moment-img-wrap img, .moment-img-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Unique torn paper shapes using polygon clip-paths */
+        .moment-item:nth-child(1) .moment-img-wrap img { clip-path: polygon(3% 5%, 98% 0%, 94% 97%, 0% 100%); }
+        .moment-item:nth-child(2) .moment-img-wrap img, .moment-item:nth-child(2) .moment-img-wrap video { clip-path: polygon(0% 0%, 100% 6%, 95% 100%, 4% 92%); }
+        .moment-item:nth-child(3) .moment-img-wrap img { clip-path: polygon(7% 0%, 100% 3%, 92% 98%, 0% 95%); }
+        .moment-item:nth-child(4) .moment-img-wrap img, .moment-item:nth-child(4) .moment-img-wrap video { clip-path: polygon(0% 4%, 96% 0%, 100% 96%, 3% 100%); }
+
+        /* Washi Tape styling */
+        .moment-tape {
+            position: absolute;
+            z-index: 5;
+            background: rgba(230, 220, 210, 0.85);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-left: 1px dashed rgba(255,255,255,0.4);
+            border-right: 1px dashed rgba(255,255,255,0.4);
+        }
+
+        /* Unique tape positions and colors for each item */
+        .moment-item:nth-child(1) .moment-tape { top: -6px; left: -8px; width: 45px; height: 18px; transform: rotate(-35deg); background: rgba(220, 190, 190, 0.8); }
+        .moment-item:nth-child(2) .moment-tape { top: -5px; right: -5px; width: 40px; height: 16px; transform: rotate(25deg); background: rgba(190, 200, 220, 0.8); }
+        .moment-item:nth-child(3) .moment-tape { bottom: -6px; right: -8px; width: 48px; height: 18px; transform: rotate(-20deg); background: rgba(200, 220, 200, 0.8); }
+        .moment-item:nth-child(4) .moment-tape { top: -8px; left: 12px; width: 45px; height: 18px; transform: rotate(-5deg); }
         .moment-caption { flex: 1; font-family: 'Noto Serif TC', serif; font-size: 13px; color: #888; line-height: 2.1; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255,255,255,0.8); }
         .moment-item:nth-child(even) .moment-caption { text-align: right; }
 
@@ -315,7 +352,7 @@
             pointer-events: none; 
         }
         .flip-back-overlay .handwriting { 
-            font-family: 'ChenYuluoyan', 'Caveat', cursive; 
+            font-family: 'YRDZST Semibold'; 
             font-size: 26px; 
             color: #fff; 
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
@@ -1588,7 +1625,7 @@
                     </div>
                 </div>
                 <span class="interactive-hint">Tap to flip ticket 👆</span>
-                <p class="story-text" style="margin-top:30px;">啊哈哈 結果三天就回來了～ 還得謝謝Perth是個爛地方跟謝謝當時不舒服的你，接下來還有很多精彩的事等著你們喔！</p>
+                <p class="story-text" style="margin-top:30px;">啊哈哈 結果三天就回來了～ 還得謝謝Perth不是個人待的地方跟謝謝當時不舒服的你，接下來還有很多精彩的事等著你們喔！</p>
             </div>
 
             <div id="flight-per-syd-area" class="flight-scroll-area">
@@ -1601,20 +1638,32 @@
                 <p class="story-text">每天每天的相處在一起，一起出門約會、陪我拍片、接你下班…</p>
                 <div class="moments-grid">
                     <div class="moment-item">
-                        <div class="moment-img-wrap"><img src="" alt="約會" style="background:#f0e8e4;"></div>
-                        <p class="moment-caption">一起出門約會的每一個午後</p>
+                        <div class="moment-img-wrap">
+                            <div class="moment-tape"></div>
+                            <img src="assets/IMG_7205.jpeg" alt="約會" style="background:#f0e8e4;">
+                        </div>
+                        <p class="moment-caption">接你下班慢慢的從驚喜變成了習慣</p>
                     </div>
                     <div class="moment-item">
-                        <div class="moment-img-wrap"><img src="" alt="拍片" style="background:#e5ece8;"></div>
+                        <div class="moment-img-wrap">
+                            <div class="moment-tape"></div>
+                            <img src="" alt="拍片" style="background:#e5ece8;">
+                        </div>
                         <p class="moment-caption">在旁邊陪你拍片的那些夜晚</p>
                     </div>
                     <div class="moment-item">
-                        <div class="moment-img-wrap"><img src="" alt="接下班" style="background:#e5e8ec;"></div>
+                        <div class="moment-img-wrap">
+                            <div class="moment-tape"></div>
+                            <img src="" alt="接下班" style="background:#e5e8ec;">
+                        </div>
                         <p class="moment-caption">下班時等在路口的那個身影</p>
                     </div>
                     <div class="moment-item">
-                        <div class="moment-img-wrap"><video src="assets/16244.mov" alt="日常" style="background:#ece8e5;" autoplay loop muted playsinline></video></div>
-                        <p class="moment-caption">最平凡的日子，卻是最幸福的時光</p>
+                        <div class="moment-img-wrap">
+                            <div class="moment-tape"></div>
+                            <img src="assets/IMG_7231.jpeg" alt="日常" style="background:#ece8e5;">
+                        </div>
+                        <p class="moment-caption">就連我生病長得像鐘樓怪人的時候，你都陪著我、照顧著我</p>
                     </div>
                 </div>
             </div>
