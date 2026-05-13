@@ -116,10 +116,10 @@
 
         .journey-container { position: relative; max-width: 500px; margin: 0 auto; padding: 50px 20px 150px 20px; }
         #route-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
+        .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; content-visibility: auto; contain-intrinsic-size: 0 1000px; }
         .chapter.is-visible { opacity: 1; transform: translateY(0); }
         .time-badge { display: inline-block; padding: 6px 15px; background: #fff; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; letter-spacing: 1px; border: 1px solid #f4e9ec; }
-        .story-text { padding: 1rem; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        .story-text { padding: 1rem; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); line-height: 2rem;}
         .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; font-family: -apple-system, sans-serif;}
 
         .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
@@ -1446,8 +1446,8 @@
                 <div class="house-stage" id="houseStage">
                     <div class="house-sticky" id="houseSticky">
                         <div class="house-photo-wrap" id="housePhotoWrap">
-                            <img class="house-photo" id="housePhoto" src="assets/IMG_7169.jpeg" alt="The share house - morning">
-                            <img class="house-photo house-photo-night" id="housePhotoNight" src="assets/IMG_7159.jpeg" alt="The share house - night">
+                            <img loading="lazy" decoding="async"class="house-photo" id="housePhoto" src="assets/IMG_7169.jpeg" alt="The share house - morning">
+                            <img loading="lazy" decoding="async"class="house-photo house-photo-night" id="housePhotoNight" src="assets/IMG_7159.jpeg" alt="The share house - night">
                         </div>
                         <div class="house-dim" id="houseDim"></div>
                         <div class="house-vignette" id="houseVignette"></div>
@@ -1486,23 +1486,23 @@
                 <h3 class="mem-heading">一開始的我們</h3>
                 <div class="mem-wall">
                     <div class="mem-card" style="transform:rotate(-3deg)">
-                        <img src="assets/14884.jpeg" alt="">
+                        <img loading="lazy" decoding="async"src="assets/14884.jpeg" alt="">
                         <div class="mem-caption">你最喜歡起床就可以吃的麵麵</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(2deg)">
-                        <img src="assets/15944.jpeg" alt="">
+                        <img loading="lazy" decoding="async"src="assets/15944.jpeg" alt="">
                         <div class="mem-caption">剛剪完頭髮的我</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(-2deg)">
-                        <img src="assets/16262.jpeg" alt="">
+                        <img loading="lazy" decoding="async"src="assets/16262.jpeg" alt="">
                         <div class="mem-caption">出門買菜喽!</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(4deg)">
-                        <video src="assets/16244.mov" autoplay loop muted playsinline></video>
+                        <video preload="none" src="assets/16244.mov" loop muted playsinline></video>
                         <div class="mem-caption">偷跑去你家住~</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(-1deg)">
-                        <img src="assets/16401.jpeg" alt="">
+                        <img loading="lazy" decoding="async"src="assets/16401.jpeg" alt="">
                         <div class="mem-caption">熱衷了好一陣子的Movie Night🎬</div>
                     </div>
                 </div>
@@ -1527,11 +1527,11 @@
                     <div class="tall-card-inner">
                         <!-- Front Side (Stretches the container) -->
                         <div class="tall-card-front">
-                            <img src="assets/IMG_7219.png" alt="留言板正面">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7219.png" alt="留言板正面">
                         </div>
                         <!-- Back Side (Overlays exactly over the front) -->
                         <div class="tall-card-back">
-                            <img src="assets/IMG_7228.png" alt="留言板背面">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7228.png" alt="留言板背面">
                         </div>
                     </div>
                 </div>
@@ -1569,7 +1569,7 @@
                             </div>
                         </div>
                         <div class="flip-back">
-                            <img src="assets/IMG_7226.jpeg" class="flip-back-img" alt="Perth">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7226.jpeg" class="flip-back-img" alt="Perth">
                             <div class="flip-back-overlay">
                                 <div class="handwriting">Missed you so much...</div>
                             </div>
@@ -1617,7 +1617,7 @@
                             </div>
                         </div>
                         <div class="flip-back">
-                            <video src="assets/16246.mov" class="flip-back-img" alt="Sydney" autoplay loop muted playsinline></video>
+                            <video preload="none" src="assets/16246.mov" class="flip-back-img" alt="Sydney" loop muted playsinline></video>
                             <div class="flip-back-overlay">
                                 <div class="handwriting">呀比~可以回來見面了</div>
                             </div>
@@ -1640,28 +1640,28 @@
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img src="assets/IMG_7205.jpeg" alt="約會" style="background:#f0e8e4;">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7205.jpeg" alt="約會" style="background:#f0e8e4;">
                         </div>
                         <p class="moment-caption">接你下班慢慢的從驚喜變成了習慣</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img src="assets/IMG_7203.jpeg" alt="拍片" style="background:#e5ece8;">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7203.jpeg" alt="拍片" style="background:#e5ece8;">
                         </div>
-                        <p class="moment-caption">我們的第一個特別約會行程－New Town 🌇</p>
+                        <p class="moment-caption">我們的第一個特別約會行程<br>－New Town 🌇</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img src="assets/16769.jpeg" alt="接下班" style="background:#e5e8ec;">
+                            <img loading="lazy" decoding="async"src="assets/16769.jpeg" alt="接下班" style="background:#e5e8ec;">
                         </div>
                         <p class="moment-caption">一起的合照開始變多了!<br>(那天還特別穿了黑襯衫)</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img src="assets/IMG_7231.jpeg" alt="日常" style="background:#ece8e5;">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7231.jpeg" alt="日常" style="background:#ece8e5;">
                         </div>
                         <p class="moment-caption">就連我生病長得像鐘樓怪人的時候，你都陪著我、照顧著我</p>
                     </div>
@@ -1691,7 +1691,7 @@
                             </div>
                         </div>
                         <div class="printed-photo">
-                            <img src="assets/17772.jpeg" class="cover-img" alt="Memory">
+                            <img loading="lazy" decoding="async"src="assets/17772.jpeg" class="cover-img" alt="Memory">
                             <div class="date">2023.05.14</div>
                         </div>
                         <div class="cam-bottom"><div class="cam-label">PRESS TO SHOOT</div></div>
@@ -1731,11 +1731,11 @@
                         
                         <div class="hn-ps-grid">
                             <div class="hn-ps-left">
-                                <img src="assets/IMG_7199.jpeg" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7199.jpeg" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
                             </div>
                             
                             <div class="hn-ps-right">
-                                <img src="assets/IMG_7200.jpeg" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7200.jpeg" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
                                 
                                 <div class="hn-col-label">新的生活</div>
                                 <div class="hn-sub-head">一起住的第一個月</div>
@@ -1758,7 +1758,7 @@
                         
                         <div class="hn-columns">
                             <div class="hn-col">
-                                <img src="assets/18343.jpeg" class="hn-col-photo" alt="客廳的角落" style="background:#ccd8c4;">
+                                <img loading="lazy" decoding="async"src="assets/18343.jpeg" class="hn-col-photo" alt="客廳的角落" style="background:#ccd8c4;">
                                 <div class="hn-col-head">粉色的Bondi🌅</div>
                                 <p class="hn-col-text">這天的約會很難忘，千里迢迢的轉車卻迷路在荒郊野外，最後終於到了Bondi看到了粉紅色的天空，一起喝著machi在海邊放鬆，最後再回Timezone豪賭了一把！</p>
                             </div>
@@ -1766,7 +1766,7 @@
                             <div class="hn-col">
                                 <div class="hn-col-head">憤怒的愛心❤️‍🔥</div>
                                 <p class="hn-col-text">學期的剛開始寶貝就提議要幫我帶便當去學校野餐，做了這麼漂亮的飯糰餐盒早上我卻又惹你生氣了，但還是要我好好吃飯，怎麼有這麼棒的小寶～</p>
-                                <img src="assets/IMG_7206.jpeg" class="hn-col-photo" alt="陽台的植物" style="background:#c4d4bc; margin-top: auto;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7206.jpeg" class="hn-col-photo" alt="陽台的植物" style="background:#c4d4bc; margin-top: auto;">
                             </div>
                         </div>
                         
@@ -1781,7 +1781,7 @@
                             <div class="hn-dateline">日常特輯 · DAILY LIFE EDITION</div>
                         </div>
                         <div class="hn-headline">「我下課、你下班，到了半夜就是我們的時間啦哇哈哈!」</div>
-                        <video src="assets/18550.mov" class="hn-feature-photo" alt="" style="background:#e0ccd4;" autoplay loop muted playsinline></video>
+                        <video preload="none" src="assets/18550.mov" class="hn-feature-photo" alt="" style="background:#e0ccd4;" loop muted playsinline></video>
                         <p class="hn-prose">住在一起經過了兩個月了，晚上開發出的料理越來越多，也慢慢養成了你煮飯 我洗碗的習慣，我們從一開始偶爾的Movie Night，到一步步把漫威全系列看完的壯舉，只有我們的生活，真的好像活在夢裡...</p>
                         <hr class="hn-divider">
                         <p class="hn-prose-em">原來，幸福這麼具體。</p>
@@ -1797,8 +1797,8 @@
                         </div>
                         <div class="hn-quote-row">
                             <div class="hn-stacked">
-                                <img src="assets/IMG_7212.jpeg" class="hn-sm-photo" alt="" style="background:#e4d0bc;">
-                                <img src="assets/IMG_7213.jpeg" class="hn-sm-photo" alt="" style="background:#dcc8b0;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7212.jpeg" class="hn-sm-photo" alt="" style="background:#e4d0bc;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7213.jpeg" class="hn-sm-photo" alt="" style="background:#dcc8b0;">
                             </div>
                             <div class="hn-quote-box">
                                 <p class="hn-pull-quote">「窩在一起的每個夜晚，是我最喜歡的地方。」</p>
@@ -1818,7 +1818,7 @@
                         <div class="hn-headline">「舞台上的花束，與平凡的漢堡之夜」</div>
                         
                         <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
-                            <img src="assets/IMG_2444.jpeg" alt="Summit Performance" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #c8d4e0; flex-shrink: 0;">
+                            <img loading="lazy" decoding="async"src="assets/IMG_2444.jpeg" alt="Summit Performance" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #c8d4e0; flex-shrink: 0;">
                             <div style="flex: 1;">
                                 <div class="hn-sub-head" style="color: var(--hn-accent);">最後的舞台</div>
                                 <p class="hn-prose" style="line-height: 1.8;">妳來看我最後一次的 Summit 表演，還帶著美麗的花束在台下為我加油。看著妳的身影，那份感動與驕傲，是這個月最閃耀的瞬間。</p>
@@ -1832,7 +1832,7 @@
                                 <div class="hn-sub-head" style="color: var(--hn-accent); padding-top: 4px;">日常的模樣</div>
                                 <p class="hn-prose" style="line-height: 1.8;">下了舞台，繼續我們平凡又快樂的日子。拍完片去 Darling Harbour 咬下罪惡的 Betty's Burger，或是晚上在家裡慵懶地靠著彼此，這才是生活最踏實的模樣。</p>
                             </div>
-                            <img src="assets/5E8D1968-59E1-4DCE-9F42-C33B0D7562D9.jpeg" alt="Betty's Burgers" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #b8c8d8; flex-shrink: 0;">
+                            <img loading="lazy" decoding="async"src="assets/5E8D1968-59E1-4DCE-9F42-C33B0D7562D9.jpeg" alt="Betty's Burgers" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #b8c8d8; flex-shrink: 0;">
                         </div>
                         
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
@@ -1847,17 +1847,17 @@
                         </div>
                         <div class="hn-headline">「意外被趕出家門，卻成了到處探險的一個月」</div>
                         
-                        <video src="assets/IMG_4015.mp4" class="hn-wide-photo" alt="Newcastle" style="background:#c4d8cc;" autoplay loop muted playsinline></video>
+                        <video preload="none" src="assets/IMG_4015.mp4" class="hn-wide-photo" alt="Newcastle" style="background:#c4d8cc;" loop muted playsinline></video>
                         <div class="hn-sub-head" style="text-align: center; margin-bottom: 10px; color: #3d6050;">Newcastle Roadtrip~</div>
                             <p class="hn-col-text">到處流浪借住的日子裡，我們還是努力去看了一間又一間未來的家。雖然辛苦，但一起想像未來模樣的感覺很好。</p>
                         <div class="hn-columns" style="margin-top: 12px;">
                             <div class="hn-col">
                                 <div class="hn-col-head">找尋下一個避風港</div>
                                 <p class="hn-col-text">到處流浪借住的日子裡，我們還是努力去看了一間又一間未來的家。雖然辛苦，但一起想像未來模樣的感覺很好。</p>
-                                <video src="assets/IMG_3539.mov" class="hn-col-photo" alt="看房" style="background:#bcccc4; margin-top: auto;" autoplay loop muted playsinline></video>
+                                <video preload="none" src="assets/IMG_3539.mov" class="hn-col-photo" alt="看房" style="background:#bcccc4; margin-top: auto;" loop muted playsinline></video>
                             </div>
                             <div class="hn-col">
-                                <img src="assets/IMG_7236.jpeg" class="hn-col-photo" alt="苦中作樂" style="background:#c0d4c8;">
+                                <img loading="lazy" decoding="async"src="assets/IMG_7236.jpeg" class="hn-col-photo" alt="苦中作樂" style="background:#c0d4c8;">
                                 <div class="hn-col-head" style="margin-top: 6px;">苦中作樂的日常</div>
                                 <p class="hn-col-text">行李散落各地，生活節奏全亂，但只要兩個人在一起，好像不管在哪裡都能找到開心的事。</p>
                             </div>
@@ -1886,8 +1886,8 @@
                                     <div class="hn-tl-head">雪梨跨年煙火</div>
                                     <p class="hn-tl-body">擠在人群中看著絢爛的煙火綻放，慶幸身邊牽著的是妳，一起迎接充滿希望的新年。</p>
                                     <div style="display: flex; gap: 6px; margin-top: 5px;">
-                                        <img src="assets/4FC97029-6858-4180-AEB2-EB3DB933276A.jpeg" class="hn-tl-img" alt="NYE 1" style="background:#ccd0d8; margin-top: 0; flex: 1;">
-                                        <video src="assets/IMG_4791.mov" class="hn-tl-img" alt="NYE 2" style="background:#c4c8d0; margin-top: 0; flex: 1; width: 20px;" autoplay loop muted playsinline></video>
+                                        <img loading="lazy" decoding="async"src="assets/4FC97029-6858-4180-AEB2-EB3DB933276A.jpeg" class="hn-tl-img" alt="NYE 1" style="background:#ccd0d8; margin-top: 0; flex: 1;">
+                                        <video preload="none" src="assets/IMG_4791.mov" class="hn-tl-img" alt="NYE 2" style="background:#c4c8d0; margin-top: 0; flex: 1; width: 20px;" loop muted playsinline></video>
                                     </div>
                                 </div>
                             </div>
@@ -1901,7 +1901,7 @@
                                     <div class="hn-tl-date-label">JAN MID</div>
                                     <div class="hn-tl-head">午夜拖車任務</div>
                                     <p class="hn-tl-body">為了搬進新家，我們在半夜拉著小推車，一趟又一趟地在街道上運送家當。累得半死，卻又覺得好荒謬、好想笑。</p>
-                                    <video src="assets/IMG_4813.mp4" class="hn-tl-img" alt="Wagon moving" style="background:#c4c8d0; width:100%; height: auto;" autoplay loop muted playsinline></video>
+                                    <video preload="none" src="assets/IMG_4813.mp4" class="hn-tl-img" alt="Wagon moving" style="background:#c4c8d0; width:100%; height: auto;" loop muted playsinline></video>
                                 </div>
                             </div>
                             
@@ -1914,8 +1914,8 @@
                                     <div class="hn-tl-head">殺青與驚喜</div>
                                     <p class="hn-tl-body">我的 Solo Project 終於拍攝結束！沒想到妳偷偷準備了蛋糕和豐盛的晚餐為我慶祝，所有的疲憊瞬間都被治癒了。</p>
                                     <div style="display: flex; gap: 6px; margin-top: 5px;">
-                                        <img src="assets/IMG_7239.jpeg" class="hn-tl-img" alt="Cake celebration" style="background:#c8ccd4; margin-top: 0; flex: 1;">
-                                        <img src="assets/IMG_7240.jpeg" class="hn-tl-img" alt="Dinner" style="background:#d0d4dc; margin-top: 0; flex: 1;">
+                                        <img loading="lazy" decoding="async"src="assets/IMG_7239.jpeg" class="hn-tl-img" alt="Cake celebration" style="background:#c8ccd4; margin-top: 0; flex: 1;">
+                                        <img loading="lazy" decoding="async"src="assets/IMG_7240.jpeg" class="hn-tl-img" alt="Dinner" style="background:#d0d4dc; margin-top: 0; flex: 1;">
                                     </div>
                                 </div>
                             </div>
@@ -2037,13 +2037,13 @@
                     每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
-                    <video class="ft-bg-layer" src="assets/742539708.620992.mp4" autoplay loop muted playsinline></video>
+                    <video preload="none" class="ft-bg-layer" src="assets/742539708.620992.mp4" loop muted playsinline></video>
                     
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
                                 <div class="avatar-ripple"></div><div class="avatar-ripple"></div>
-                                <img src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
+                                <img loading="lazy" decoding="async"src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
                             </div>
                             <h2>Frank</h2>
                             <p class="ft-video-txt">FaceTime Video</p>
@@ -2063,10 +2063,10 @@
                     </div>
 
                     <div class="ft-active-ui">
-                        <div class="ft-top-pill"><img src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
+                        <div class="ft-top-pill"><img loading="lazy" decoding="async"src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
                         <div class="ft-pip">
-                            <img src="assets/IMG_5722.jpeg" class="cover-img" alt="My Camera">
+                            <img loading="lazy" decoding="async"src="assets/IMG_5722.jpeg" class="cover-img" alt="My Camera">
                             <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
                         </div>
                         <div class="ft-vertical-controls">
@@ -2090,17 +2090,17 @@
                 <div class="filmstrip-wrapper">
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <video src="assets/IMG_0291.mov" class="cover-img" autoplay loop muted playsinline></video>
+                        <video preload="none" src="assets/IMG_0291.mov" class="cover-img" loop muted playsinline></video>
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <img src="assets/1D23B52C-EB73-439C-B12F-89B234D61846.jpeg" class="cover-img" alt="Memory">
+                        <img loading="lazy" decoding="async"src="assets/1D23B52C-EB73-439C-B12F-89B234D61846.jpeg" class="cover-img" alt="Memory">
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <video src="assets/511747188628390229.mp4" class="cover-img" autoplay loop muted playsinline></video>
+                        <video preload="none" src="assets/511747188628390229.mp4" class="cover-img" loop muted playsinline></video>
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                 </div>
@@ -2119,27 +2119,27 @@
                     <div class="scrapbook-track">
                         <div class="sb-polaroid sb-p1">
                             <div class="sb-tape tape-style-a"></div>
-                            <img src="assets/IMG_7615.jpeg" alt="Cafe Date">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7615.jpeg" alt="Cafe Date">
                             <div class="sb-note note-pos-1">寶貝嘗試了萬惡的古拉爵...</div>
                         </div>
                         <div class="sb-polaroid sb-p2">
                             <div class="sb-tape tape-style-b"></div>
-                            <img src="assets/IMG_7608.jpeg" alt="City Streets">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7608.jpeg" alt="City Streets">
                             <div class="sb-note note-pos-2">我成為了幼稚園大哥哥...</div>
                         </div>
                         <div class="sb-polaroid sb-p3">
                             <div class="sb-tape tape-style-c"></div>
-                            <img src="assets/8769CCBC-E830-4D0F-92CA-DD177D47005D.jpeg" alt="Holding Hands">
+                            <img loading="lazy" decoding="async"src="assets/8769CCBC-E830-4D0F-92CA-DD177D47005D.jpeg" alt="Holding Hands">
                             <div class="sb-note note-pos-3">寶貝第一次來給我探班❤️</div>
                         </div>
                         <div class="sb-polaroid sb-p4">
                             <div class="sb-tape tape-style-d"></div>
-                            <img src="assets/IMG_3485.jpeg" alt="Night Vibes">
+                            <img loading="lazy" decoding="async"src="assets/IMG_3485.jpeg" alt="Night Vibes">
                             <div class="sb-note note-pos-4">第一次一起吃 WAKU🍳</div>
                         </div>
                         <div class="sb-polaroid sb-p5">
                             <div class="sb-tape tape-style-e"></div>
-                            <img src="assets/IMG_7905.jpeg" alt="Cozy">
+                            <img loading="lazy" decoding="async"src="assets/IMG_7905.jpeg" alt="Cozy">
                             <div class="sb-note note-pos-5">嘗試與黑妞做朋友🐶</div>
                         </div>
                     </div>
@@ -2177,7 +2177,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <video src="assets/IMG_8403.mov" class="flip-back-img" autoplay loop muted playsinline></video>
+                                <video preload="none" src="assets/IMG_8403.mov" class="flip-back-img" loop muted playsinline></video>
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">第一次一起搭飛機~開心</div>
                                 </div>
@@ -2209,7 +2209,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <video src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" autoplay loop muted playsinline></video>
+                                <video preload="none" src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" loop muted playsinline></video>
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">終於一起回去了！</div>
                                 </div>
@@ -2342,7 +2342,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <img src="assets/IMG_0070.heic" class="flip-back-img" alt="Airport">
+                                <img loading="lazy" decoding="async"src="assets/IMG_0070.heic" class="flip-back-img" alt="Airport">
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">什麼時候會再來呢...?</div>
                                 </div>
@@ -2373,7 +2373,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <img src="assets/att.Z_nMEDgQiqmPkAf-py1NLrFpfiLgJYxHypghhz9CsFo.jpeg" class="flip-back-img" alt="Sydney Farewell">
+                                <img loading="lazy" decoding="async"src="assets/att.Z_nMEDgQiqmPkAf-py1NLrFpfiLgJYxHypghhz9CsFo.jpeg" class="flip-back-img" alt="Sydney Farewell">
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">要回家了 好難過...😢</div>
                                 </div>
@@ -2403,15 +2403,15 @@
                     <div class="captcha-body">
                         <div class="captcha-prompt" id="captchaPrompt">請選取所有<strong>發生在 2024 年</strong>的畫面。</div>
                         <div class="captcha-grid" id="captchaGrid">
-                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/IMG_7940.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_4032.heic" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_1963.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_2275.heic" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/IMG_1137.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_2410.heic" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/fxn 2024-09-28 134749.640.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_2810.heic" alt=""></div>
-                            <div class="captcha-cell c-img"><img src="assets/IMG_6936.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/IMG_7940.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_4032.heic" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_1963.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2275.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/IMG_1137.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2410.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/fxn 2024-09-28 134749.640.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2810.heic" alt=""></div>
+                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_6936.heic" alt=""></div>
                         </div>
                         <div class="captcha-error" id="captchaError"></div>
 
@@ -2426,7 +2426,7 @@
                 <div id="captchaExplanations">
                     <!-- Row 1: pic left, text right -->
                     <div class="cex-row">
-                        <div class="cex-pic-wrap"><img src="assets/IMG_7940.jpeg" alt="記憶一"></div>
+                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/IMG_7940.jpeg" alt="記憶一"></div>
                         <div class="cex-text-wrap">
                             <div class="cex-date">2024 · Spring</div>
                             <div class="cex-caption">那個下午，我們第一次一起去超市，推著購物車把走道逛了一遍又一遍。</div>
@@ -2438,11 +2438,11 @@
                             <div class="cex-date">2024 · Summer</div>
                             <div class="cex-caption">深夜的便利店，霓虹燈把馬路照得很亮，我們坐在外面吃關東煮。</div>
                         </div>
-                        <div class="cex-pic-wrap"><img src="assets/IMG_1137.jpeg" alt="記憶二"></div>
+                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/IMG_1137.jpeg" alt="記憶二"></div>
                     </div>
                     <!-- Row 3: pic left, text right -->
                     <div class="cex-row">
-                        <div class="cex-pic-wrap"><img src="assets/fxn 2024-09-28 134749.640.jpeg" alt="記憶三"></div>
+                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/fxn 2024-09-28 134749.640.jpeg" alt="記憶三"></div>
                         <div class="cex-text-wrap">
                             <div class="cex-date">2024 · Autumn</div>
                             <div class="cex-caption">回到雪梨，走過那些熟悉的街道，才發現每一步都藏著我們的故事。</div>
@@ -2474,7 +2474,7 @@
 
                     <!-- Header -->
                     <div class="story-header">
-                        <img class="story-avatar" src="https://picsum.photos/seed/avatar/100/100" alt="Frank">
+                        <img loading="lazy" decoding="async"class="story-avatar" src="assets/B5E039C4-91BD-4F48-9D1D-281A7178449B.jpeg" alt="Frank">
                         <div>
                             <div class="story-username">Frank &bull; 2025</div>
                             <div class="story-time-label">今日</div>
@@ -2483,10 +2483,10 @@
 
                     <!-- Media slides -->
                     <div class="story-media-container" id="storyMediaContainer2025">
-                        <div class="story-slide is-active" id="sSlide0"><img src="https://picsum.photos/seed/st1/400/870" alt="Story 1"></div>
-                        <div class="story-slide" id="sSlide1"><img src="https://picsum.photos/seed/st2/400/870" alt="Story 2"></div>
-                        <div class="story-slide" id="sSlide2"><img src="https://picsum.photos/seed/st3/400/870" alt="Story 3"></div>
-                        <div class="story-slide" id="sSlide3"><img src="https://picsum.photos/seed/st4/400/870" alt="Story 4"></div>
+                        <div class="story-slide is-active" id="sSlide0"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st1/400/870" alt="Story 1"></div>
+                        <div class="story-slide" id="sSlide1"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st2/400/870" alt="Story 2"></div>
+                        <div class="story-slide" id="sSlide2"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st3/400/870" alt="Story 3"></div>
+                        <div class="story-slide" id="sSlide3"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st4/400/870" alt="Story 4"></div>
                     </div>
 
                     <!-- Tap zones -->
@@ -2496,7 +2496,7 @@
                     <!-- IG-style bottom UI -->
                     <div class="story-bottom-ui">
                         <div class="story-comment-bubble">
-                            <img src="https://picsum.photos/seed/avatar/100/100" class="story-tiny-avatar" alt="">
+                            <img loading="lazy" decoding="async"src="assets/B5E039C4-91BD-4F48-9D1D-281A7178449B.jpeg" class="story-tiny-avatar" alt="">
                             <span id="storyCommentText"></span>
                         </div>
                         <div class="story-input-bar">
@@ -2533,42 +2533,42 @@
                         <div class="sd-track" id="sdTrack">
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_5324.jpeg" alt=""></div>
+                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_5324.jpeg" alt=""></div>
                                 <p class="sd-caption">Sydney，2022</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-end">
-                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="assets/IMG_6155.jpeg" alt=""></div>
+                                <div class="sd-mask" data-aspect="1.35"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6155.jpeg" alt=""></div>
                                 <p class="sd-caption">相遇的第一年</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_6148.jpeg" alt=""></div>
+                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6148.jpeg" alt=""></div>
                                 <p class="sd-caption">在一起的日子</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="1.35"><video class="sd-img" src="assets/video_600325566083629127-AQWShdvc.mov" autoplay loop muted playsinline></video></div>
+                                <div class="sd-mask" data-aspect="1.35"><video preload="none" class="sd-img" src="assets/video_600325566083629127-AQWShdvc.mov" loop muted playsinline></video></div>
                                 <p class="sd-caption">每一個瞬間</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-end">
-                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_2770.jpeg" style="width: auto; height: 30vh;" alt=""></div>
+                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_2770.jpeg" style="width: auto; height: 30vh;" alt=""></div>
                                 <p class="sd-caption">跨越距離</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="assets/IMG_6668.jpeg" alt=""></div>
+                                <div class="sd-mask" data-aspect="1.35"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6668.jpeg" alt=""></div>
                                 <p class="sd-caption">回到起點</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_6152.jpeg" alt=""></div>
+                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6152.jpeg" alt=""></div>
                                 <p class="sd-caption">2024，在一起</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="1.35" style="height:65vh; width: auto;"><video class="sd-img" src="assets/dji_fly_20260205_124642_231_1770267189808_video 2.mp4" autoplay loop muted playsinline style="height:65vh; width: 100%;"></video></div>
+                                <div class="sd-mask" data-aspect="1.35" style="height:65vh; width: auto;"><video preload="none" class="sd-img" src="assets/dji_fly_20260205_124642_231_1770267189808_video 2.mp4" loop muted playsinline style="height:65vh; width: 100%;"></video></div>
                                 <p class="sd-caption">2026，繼續走下去</p>
                             </div>
 
@@ -2615,43 +2615,43 @@
             
             <div class="vm-track" id="vmTrack">
                 <div class="vm-slide is-active">
-                    <img src="assets/E93E032E-314F-4910-B54F-124D106A2738.jpeg" alt="">
+                    <img loading="lazy" decoding="async"src="assets/E93E032E-314F-4910-B54F-124D106A2738.jpeg" alt="">
                     <div class="vm-caption">大半夜的 只有我們走在USYD的校園裡</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5866.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5866.heic" alt="">
                     <div class="vm-caption">路過了可愛的蘑菇一家人🍄‍🟫</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5858.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5858.heic" alt="">
                     <div class="vm-caption">那天晚上有好多星星喔</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5385.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5385.heic" alt="">
                     <div class="vm-caption">這是我們第一次見面坐的長椅喔</div>
                 </div>
                 <div class="vm-slide">
-                    <video src="assets/IMG_5389 2.mp4" autoplay loop muted playsinline></video>
+                    <video preload="none" src="assets/IMG_5389 2.mp4" loop muted playsinline></video>
                     <div class="vm-caption">還近距離抓到袋貂了！</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5886.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5886.heic" alt="">
                     <div class="vm-caption">還有這朵牆角的玫瑰花，下次再回去的時候就不見了</div>
                 </div>
                 <div class="vm-slide">
-                    <video src="assets/IMG_5474.mov" autoplay loop muted playsinline></video>
+                    <video preload="none" src="assets/IMG_5474.mov" loop muted playsinline></video>
                     <div class="vm-caption">隔天跑去吃最後一次火鍋的我們</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5969.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5969.heic" alt="">
                     <div class="vm-caption">拍了最後一組的拍貼機</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/IMG_5984.heic" alt="">
+                    <img loading="lazy" decoding="async"src="assets/IMG_5984.heic" alt="">
                     <div class="vm-caption">到機場了…</div>
                 </div>
                 <div class="vm-slide">
-                    <img src="assets/05A9D49B-8386-427D-857B-CDA979B8A33C.jpeg" alt="">
+                    <img loading="lazy" decoding="async"src="assets/05A9D49B-8386-427D-857B-CDA979B8A33C.jpeg" alt="">
                     <div class="vm-caption">真的要起飛了…小寶你要照顧好自己喔🥹</div>
                 </div>
             </div>
@@ -2882,7 +2882,7 @@
                 
                 if (item.type === 'photo') {
                     el.classList.add('sandbox-photo');
-                    el.innerHTML = `<img src="${item.src}" alt="Memory">`;
+                    el.innerHTML = `<img loading="lazy" decoding="async"src="${item.src}" alt="Memory">`;
                 } else {
                     el.classList.add('sandbox-note');
                     el.innerHTML = item.text;
@@ -4043,14 +4043,14 @@
             frame.className = 'disp-polaroid';
 
             if (shot.type === 'photo') {
-                frame.innerHTML = '<img class="disp-polaroid-img" src="' + shot.src + '" alt="">' + grain + datEl + ovEl;
+                frame.innerHTML = '<img loading="lazy" decoding="async"class="disp-polaroid-img" src="' + shot.src + '" alt="">' + grain + datEl + ovEl;
                 const cap = document.createElement('div');
                 cap.className = 'disp-polaroid-caption';
                 cap.textContent = shot.note;
                 print.appendChild(frame);
                 print.appendChild(cap);
             } else if (shot.type === 'video') {
-                frame.innerHTML = '<video class="disp-polaroid-img" src="' + shot.src + '" autoplay loop muted playsinline></video>' + grain + datEl + ovEl;
+                frame.innerHTML = '<video preload="none" class="disp-polaroid-img" src="' + shot.src + '" loop muted playsinline></video>' + grain + datEl + ovEl;
                 const cap = document.createElement('div');
                 cap.className = 'disp-polaroid-caption';
                 cap.textContent = shot.note;
@@ -4236,6 +4236,19 @@
             const chapStory    = document.getElementById('chap-2025-story');
             if (!grid) return;
 
+            // 2025 phase images — replace with real asset paths when ready
+            const PHASE2_IMAGES = [
+                'assets/2025_01.jpeg',
+                'assets/2025_02.jpeg',
+                'assets/2025_03.jpeg',
+                'assets/2025_04.jpeg',
+                'assets/2025_05.jpeg',
+                'assets/2025_06.jpeg',
+                'assets/2025_07.jpeg',
+                'assets/2025_08.jpeg',
+                'assets/2025_09.jpeg'
+            ];
+
             const allCells = Array.from(grid.querySelectorAll('.captcha-cell'));
             let phase = 1;
 
@@ -4299,8 +4312,10 @@
                 explanations.classList.remove('is-visible');
                 setTimeout(() => { explanations.style.display = 'none'; }, 600);
 
-                allCells.forEach(c => {
+                allCells.forEach((c, i) => {
                     c.classList.remove('is-correct', 'is-wrong', 'is-selected');
+                    const img = c.querySelector('img');
+                    if (img && PHASE2_IMAGES[i]) img.src = PHASE2_IMAGES[i];
                 });
                 updateStatus();
                 prompt.style.color = '';
@@ -4434,6 +4449,30 @@
                 observer.observe(document.getElementById('chap-2025-story'));
                 goTo(0);
             }
+        })();
+
+        // ── Video autoplay via IntersectionObserver ──
+        (function() {
+            const vObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) e.target.play().catch(function(){});
+                    else                  e.target.pause();
+                });
+            }, { threshold: 0.1 });
+
+            function watchVideo(v) { v.muted = true; vObs.observe(v); }
+
+            document.querySelectorAll('video').forEach(watchVideo);
+
+            // Also observe videos injected dynamically (e.g. disposable camera)
+            new MutationObserver(function(muts) {
+                muts.forEach(function(m) {
+                    m.addedNodes.forEach(function(n) {
+                        if (n.nodeName === 'VIDEO') watchVideo(n);
+                        else if (n.querySelectorAll) n.querySelectorAll('video').forEach(watchVideo);
+                    });
+                });
+            }).observe(document.body, { childList: true, subtree: true });
         })();
 
     </script>
