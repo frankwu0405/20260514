@@ -3631,74 +3631,74 @@
             const nightPhoto = document.getElementById('housePhotoNight');
 
             // Lines 1+2: appear during full day, both gone before night starts
-            line1.classList.toggle('is-vis', p > 0.03 && p < 0.28);
-            line2.classList.toggle('is-vis', p > 0.08 && p < 0.30);
+            line1.classList.toggle('is-vis', p > 0.03 && p < 0.20);
+            line2.classList.toggle('is-vis', p > 0.06 && p < 0.22);
 
             // Day→Night crossfade: slow drift, starts after texts are gone, night fully set by p=0.52
-            const nightOpacity = rm(p, 0.33, 0.52);
+            const nightOpacity = rm(p, 0.25, 0.40);
             if (nightPhoto) nightPhoto.style.opacity = nightOpacity;
 
             // Zoom: starts after night settles (p=0.55), finishes just before knocking (p=0.72)
-            const zoom = 1 + rm(p, 0.55, 0.72) * 1.6;
+            const zoom = 1 + rm(p, 0.45, 0.60) * 1.6;
             photoWrap.style.transform = `scale(${zoom})`;
 
             // Dim: stays light during day+text phase, darkens with zoom
-            dim.style.opacity = 0.18 + rm(p, 0.55, 0.72) * 0.58;
+            dim.style.opacity = 0.18 + rm(p, 0.45, 0.60) * 0.58;
 
             // Vignette: fades in during zoom only
-            vignette.style.opacity = rm(p, 0.55, 0.70);
+            vignette.style.opacity = rm(p, 0.45, 0.58);
 
             // Day photo stays full brightness until cream phase
-            const blurAmt = rm(p, 0.95, 0.98) * 30;
-            const dayBrightness = 1 - rm(p, 0.88, 0.96) * 0.28;
+            const blurAmt = rm(p, 0.88, 0.93) * 30;
+            const dayBrightness = 1 - rm(p, 0.80, 0.90) * 0.28;
             housePhoto.style.filter = `brightness(${dayBrightness.toFixed(2)}) blur(${blurAmt}px)`;
             if (nightPhoto) nightPhoto.style.filter = `blur(${blurAmt}px)`;
 
             // Cream overlay: 0→1 from 0.95→0.98
-            cream.style.opacity = rm(p, 0.95, 0.98);
+            cream.style.opacity = rm(p, 0.88, 0.93);
 
             // Final interior text: fades in 0.96→0.98, stays at 1 for remainder
-            finalLine.style.opacity = rm(p, 0.96, 0.98);
+            finalLine.style.opacity = rm(p, 0.92, 0.95);
 
             // Line 4: appears with knock 3, fully gone before line 5 starts
-            const l4 = rm(p, 0.83, 0.85) * (1 - rm(p, 0.88, 0.90));
+            const l4 = rm(p, 0.70, 0.73) * (1 - rm(p, 0.78, 0.81));
             line4.style.opacity = l4;
             line4.style.transform = l4 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
 
             // Line 5: enters right after line 4 leaves, exits as cream comes in
             const line5 = document.getElementById('houseLine5');
             if (line5) {
-                const l5 = rm(p, 0.90, 0.92) * (1 - rm(p, 0.95, 0.97));
+                const l5 = rm(p, 0.81, 0.84) * (1 - rm(p, 0.88, 0.91));
                 line5.style.opacity = l5;
                 line5.style.transform = l5 > 0.01 ? 'translateY(0)' : 'translateY(14px)';
             }
 
             // Knock 1 at p=0.74
-            if (p >= 0.74 && !_knockFired[0]) {
+            if (p >= 0.62 && !_knockFired[0]) {
                 _knockFired[0] = true;
                 knock1el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
-            } else if (p < 0.74 && _knockFired[0]) {
+            } else if (p < 0.62 && _knockFired[0]) {
                 _knockFired[0] = false; knock1el.classList.remove('pop');
             }
             // Knock 2 at p=0.79
-            if (p >= 0.79 && !_knockFired[1]) {
+            if (p >= 0.66 && !_knockFired[1]) {
                 _knockFired[1] = true;
                 knock2el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
-            } else if (p < 0.79 && _knockFired[1]) {
+            } else if (p < 0.66 && _knockFired[1]) {
                 _knockFired[1] = false; knock2el.classList.remove('pop');
             }
             // Knock 3 at p=0.83 — also lights up window glow
-            if (p >= 0.83 && !_knockFired[2]) {
+            if (p >= 0.70 && !_knockFired[2]) {
                 _knockFired[2] = true;
                 knock3el.classList.add('pop');
                 spawnKnockRipple();
                 if (navigator.vibrate) navigator.vibrate(40);
                 glow.classList.add('lit');
-            } else if (p < 0.83 && _knockFired[2]) {
+            } else if (p < 0.70 && _knockFired[2]) {
                 _knockFired[2] = false; knock3el.classList.remove('pop'); glow.classList.remove('lit');
             }
         }
