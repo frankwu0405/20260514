@@ -132,8 +132,7 @@
         /* #chap1 must NOT use transform — any non-none transform on an ancestor
            makes position:fixed children positioned relative to that ancestor
            instead of the viewport, which breaks the JS-driven sticky. */
-        #chap1 { transform: none !important; transition: opacity 1s ease-out; }
-        #chap1.is-visible { transform: none !important; opacity: 1; }
+        #chap1 { transform: none !important; opacity: 1; }
         .house-stage { position: relative; width: 100vw; left: 50%; margin-left: -50vw; height: 600vh; margin-bottom: 60px; }
         .house-sticky { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
         .house-photo-wrap { position: absolute; inset: 0; transform-origin: 43% 50%; }
@@ -1487,6 +1486,7 @@
                 <p class="story-text">結果好不容易追回來的小寶（這時候還是姊姊），ㄧ眨眼又要離開了…</p>
 
                 <!-- 替換 src 為卡片照片路徑 -->
+                <span class="interactive-hint">翻過去看看吧 👇</span>
                 <div class="tall-card-wrapper" onclick="this.classList.toggle('is-flipped')">
                     <div class="tall-card-inner">
                         <!-- Front Side (Stretches the container) -->
@@ -1499,7 +1499,6 @@
                         </div>
                     </div>
                 </div>
-                <span class="interactive-hint">翻過去看看吧 👆</span>
 
                 <p class="story-text">還記得這張卡片嗎？一張稱不上是卡片的卡片，卻是一張對我最重要的、紀錄了著我們的種種軌跡的心意留言板。這是一張我無論看幾次眼淚都會在眼眶打轉的一封信，很對不起我曾經讓你這麼難過，但也正是因為你這麼無條件的愛我 為我著想，才更讓我想要在之後的日子裡讓你可以幸福的笑著。</p>
                 <p class="story-text" style="margin-top:20px;">離開的那晚，我們彼此告別，你在機場爆哭，送走你後我在家裡爆哭，彷彿這就是最後一次見面了…</p>
@@ -3595,16 +3594,21 @@
             // Driving it via fixed/absolute is reliable on all browsers including iOS Safari.
             const sticky = document.getElementById('houseSticky');
             if (sticky) {
+                let entryOpacity = 1;
                 if (rect.top >= 0) {
                     // Stage not yet at viewport top — rest at stage origin
                     sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;';
+                    // Calculate fade-in as it scrolls up into view (multiplied by 1.5 to reach full opacity early)
+                    entryOpacity = Math.min(1, (1 - (rect.top / window.innerHeight)) * 1.5);
                 } else if (scrolled >= stageScrollH) {
                     // Scroll track exhausted — park at track end so it exits with stage
                     sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;`;
                 } else {
-                    // Active zone — pin to viewport (top/right/bottom/left avoids 100vh iOS quirks)
+                    // Active zone — pin to viewport
                     sticky.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;overflow:hidden;';
                 }
+                // Apply the scroll-tied opacity directly
+                sticky.style.opacity = Math.max(0, entryOpacity);
             }
 
             if (scrolled < -window.innerHeight || scrolled > stageScrollH + window.innerHeight) return;
