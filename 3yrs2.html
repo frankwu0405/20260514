@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -3599,7 +3598,7 @@
                     // Stage not yet at viewport top — rest at stage origin
                     sticky.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;';
                     // Calculate fade-in as it scrolls up into view (multiplied by 1.5 to reach full opacity early)
-                    entryOpacity = Math.min(1, (1 - (rect.top / window.innerHeight)) * 1.5);
+                    entryOpacity = Math.min(1, (1 - (rect.top / window.innerHeight)) * 1.0);
                 } else if (scrolled >= stageScrollH) {
                     // Scroll track exhausted — park at track end so it exits with stage
                     sticky.style.cssText = `position:absolute;top:${stageScrollH}px;left:0;width:100%;height:100vh;overflow:hidden;`;
