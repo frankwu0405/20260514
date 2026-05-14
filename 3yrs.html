@@ -1166,10 +1166,11 @@
             transition: opacity 0.25s ease;
         }
         .story-slide.is-active { opacity: 1; }
-        .story-slide img {
+        .story-slide img,
+        .story-slide video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* Prevents media from being cut off */
             display: block;
         }
         /* Tap zones */
