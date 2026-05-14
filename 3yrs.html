@@ -4331,9 +4331,35 @@
                 explanations.classList.remove('is-visible');
                 setTimeout(() => { explanations.style.display = 'none'; }, 600);
 
-                allCells.forEach(c => {
+                // 2025 Dataset: 9 new memories for the Phase 2 Captcha
+                const images2025 = [
+                    'assets/IMG_7262.jpeg',
+                    'assets/IMG_7260.jpeg',
+                    'assets/IMG_7263.jpeg',
+                    'assets/IMG_7269.jpeg',
+                    'assets/IMG_7255.jpeg',
+                    'assets/IMG_7253.jpeg',
+                    'assets/IMG_3511.jpeg',
+                    'assets/IMG_7264.jpeg',
+                    'assets/IMG_7259.jpeg'
+                ];
+
+                allCells.forEach((c, index) => {
                     c.classList.remove('is-correct', 'is-wrong', 'is-selected');
+                    
+                    // Swap the image source to the 2025 dataset
+                    const imgEl = c.querySelector('img');
+                    if (imgEl && images2025[index]) {
+                        // Optional: Add a quick fade effect for a smooth transition
+                        imgEl.style.opacity = 0;
+                        setTimeout(() => {
+                            imgEl.src = images2025[index];
+                            imgEl.style.opacity = 1;
+                            imgEl.style.transition = 'opacity 0.3s ease';
+                        }, 300);
+                    }
                 });
+
                 updateStatus();
                 prompt.style.color = '';
                 prompt.innerHTML = '最終驗證：請選取所有<strong>發生在 2025 年</strong>的美好回憶。';
