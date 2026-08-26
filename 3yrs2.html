@@ -116,14 +116,14 @@
 
         .journey-container { position: relative; max-width: 500px; margin: 0 auto; padding: 50px 20px 150px 20px; }
         #route-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; content-visibility: auto; contain-intrinsic-size: 0 1000px; }
+        .chapter { position: relative; z-index: 2; margin-bottom: 150px; opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
         .chapter.is-visible { opacity: 1; transform: translateY(0); }
         .time-badge { display: inline-block; padding: 6px 15px; background: #fff; color: #d1bfae; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; letter-spacing: 1px; border: 1px solid #f4e9ec; }
-        .story-text { padding: 1rem; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); line-height: 2rem;}
+        .story-text { padding: 0 1rem; color: #555; font-size: 15px; letter-spacing: 1.5px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8); line-height: 1.75rem;}
         .interactive-hint { display: block; text-align: center; font-size: 12px; color: #d1bfae; margin-top: 15px; letter-spacing: 2px; animation: breathe 2s infinite; pointer-events: none; font-family: -apple-system, sans-serif;}
 
         .flight-scroll-area { width: 100%; height: 200vh; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 150px; z-index: 10; }
-        .flight-hint { position: sticky; top: 50vh; color: #7a6050; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; letter-spacing: 2px; opacity: 0; transition: opacity 0.5s; text-shadow: 0 2px 14px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.9); font-weight: 400; }
+        .flight-hint { position: sticky; top: 50vh; color: #7a6050; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; letter-spacing: 2px; opacity: 0; transition: opacity 0.5s; text-shadow: 0 2px 14px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.9); font-weight: 400; text-align: center; padding: 0 1.5rem;}
 
         /* --- UI 元件庫 --- */
         
@@ -737,13 +737,12 @@
             z-index: 5;
         }
 
-        /* 散落的記憶碎片 (可拖曳) */
         .drag-item {
             position: absolute;
             touch-action: none; /* 必須加上，防止觸控拖曳時滾動頁面 */
             user-select: none;
             cursor: grab;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             transition: box-shadow 0.2s, transform 0.1s; /* 拖曳時取消 transform 動畫避免卡頓，放下時恢復 */
             will-change: transform;
             border-radius: 4px;
@@ -751,7 +750,8 @@
 
         .drag-item:active {
             cursor: grabbing;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            /* Use a sharp, non-blurred offset shadow during drag to completely eliminate layout thrashing */
+            box-shadow: 10px 15px 0px rgba(0,0,0,0.2); 
         }
 
         /* 純粹的相片 (無白邊) */
@@ -802,16 +802,17 @@
 
         .final-letter p {
             font-family: 'ChenYuluoyan', 'Caveat', cursive;
-            font-size: 24px;
+            font-size: 12px;
             color: #444;
             margin-bottom: 10px;
             text-shadow: 0 0 1px rgba(0,0,0,0.1);
+            line-height: 1.2rem;
         }
 
         .final-letter .sig {
             text-align: right;
             margin-top: 30px;
-            font-size: 28px;
+            font-size: 12px;
         }
 
         /* 觸發出現時的動畫 */
@@ -1166,10 +1167,11 @@
             transition: opacity 0.25s ease;
         }
         .story-slide.is-active { opacity: 1; }
-        .story-slide img {
+        .story-slide img,
+        .story-slide video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* Prevents media from being cut off */
             display: block;
         }
         /* Tap zones */
@@ -1399,6 +1401,323 @@
                 filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.15));
         }
 
+        /* ============================================================
+           澎湖 · 國內線登機證
+           Deliberately unlike the international F&S passes: thermal
+           paper instead of gloss, monospace ink instead of bold sans,
+           bilingual labels, and the two stubs sit SIDE BY SIDE rather
+           than stacked — same flight, nobody in front.
+           ============================================================ */
+        /* Same stack machinery as the international pairs — .double-ticket-wrapper,
+           .ticket-layer, .flip-container, .flip-inner all reused unchanged.
+           Only the face styling below differs. */
+        .double-ticket-wrapper.dp-wrap { height: 232px; }
+        .dp-flip { height: 152px; }
+
+        /* --- front: thermal-printed pass, torn vertically at the stub --- */
+        .flip-front.dp-front {
+            background: #f7f4ed;
+            /* faint thermal-paper banding */
+            background-image: repeating-linear-gradient(0deg, rgba(90,80,60,0.022) 0 1px, transparent 1px 3px);
+            border-left: none;
+            border: 1px solid #d9d3c4;
+            border-radius: 2px;
+            display: flex; flex-direction: row;
+            font-family: 'Courier New', Courier, monospace;
+            color: #4d4840;
+        }
+        .dp-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; padding: 9px 11px; }
+        .dp-band {
+            display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
+            border-bottom: 1px solid #cfc7b5; padding-bottom: 5px;
+        }
+        .dp-carrier { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #6d6656; white-space: nowrap; }
+        .dp-sector  { font-size: 7px; letter-spacing: 1.2px; color: #9a9382; white-space: nowrap; }
+
+        .dp-route { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0 6px; }
+        .dp-code  { font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; color: #3d3931; }
+        .dp-city  { font-size: 7px; letter-spacing: 1px; color: #8b8474; margin-top: 3px; white-space: nowrap; }
+        .dp-arrow { font-size: 11px; color: #b6ac97; transform: rotate(45deg); margin-top: 7px; }
+
+        .dp-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 8px;
+            border-top: 1px solid #e3ddcf; padding-top: 6px; margin-top: auto;
+        }
+        .dp-cell { display: flex; flex-direction: column; min-width: 0; }
+        .dp-lab  { font-size: 6px; letter-spacing: 0.5px; color: #a49c8a; line-height: 1.3; white-space: nowrap; }
+        .dp-val  { font-size: 11px; font-weight: 700; color: #3d3931; line-height: 1.3; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* vertical perforation + tear-off stub */
+        .dp-stub {
+            flex: 0 0 62px; border-left: 1px dashed #c3bbaa;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2px; padding: 9px 6px; background: rgba(90,80,60,0.015);
+        }
+        .dp-stub-flight { font-size: 8.5px; letter-spacing: 0.5px; color: #8b8474; }
+        .dp-stub-seat   { font-size: 20px; font-weight: 700; color: #3d3931; line-height: 1; }
+        .dp-barcode {
+            width: 100%; height: 34px; margin-top: 4px; opacity: 0.5;
+            background-image: repeating-linear-gradient(0deg,
+                #3d3931 0 1px, transparent 1px 3px,
+                #3d3931 3px 4px, transparent 4px 7px,
+                #3d3931 7px 9px, transparent 9px 11px);
+        }
+
+        /* --- back: the moment, revealed on tap --- */
+        .flip-back.dp-back {
+            background: #2a2724;
+            border-right: none;
+            border-radius: 2px;
+            display: block;
+        }
+        .dp-back-cap {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 26px 12px 8px;
+            background: linear-gradient(to top, rgba(0,0,0,0.78), transparent);
+            font-family: 'ChenYuluoyan', 'Caveat', cursive;
+            font-size: 19px; color: #fff; text-align: center; line-height: 1.2;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+        }
+
+        /* ── generic placeholder block: swap for a real <img> later ── */
+        .ph {
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            width: 100%; height: 100%; padding: 10px;
+            background-color: #c6bdae;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0 6px, transparent 6px 12px);
+            color: rgba(255,255,255,0.92);
+            font-family: -apple-system, sans-serif;
+            font-size: 8.5px; letter-spacing: 0.5px; line-height: 1.6; word-break: break-all;
+        }
+
+        /* ============================================================
+           澎湖 Acts 1–4.  Every scroll-driven property here is transform
+           or opacity only — the day/night skies are stacked fixed
+           gradients cross-fading, never a re-serialised gradient string.
+           ============================================================ */
+        .pg-stage    { position: relative; z-index: 2; width: 100vw; left: 50%; margin-left: -50vw; }
+        .pg-sticky   { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
+
+        /* One fixed backdrop carries every Penghu sky. Because it lives outside
+           the stages, no two opaque panels ever butt against each other — each
+           day's sky is driven by that stage's UNCLAMPED progress, so a stage's
+           tone starts rising before its block arrives and lingers after it
+           leaves, and adjacent days overlap and blend through the seam. */
+        #pgBackdrop    { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        .pgb-group     { position: absolute; inset: 0; opacity: 0; }
+        .pgb-group > i { position: absolute; inset: 0; display: block; opacity: 0; }
+        .pgb-group > i:first-child { opacity: 1; }
+
+        /* short night between days — the boundary is a beat, not a cut */
+        .pg-bridge  { height: 150vh; }
+        .brg-a { background: linear-gradient(180deg, #2b2b45 0%, #7b4a63 46%, #d4694a 78%, #f0925a 100%); }
+        .brg-b { background: linear-gradient(180deg, #05070e 0%, #080b16 60%, #0b0f1c 100%); }
+        .brg-date {
+            position: absolute; top: 50%; left: 0; width: 100%; text-align: center; z-index: 25;
+            transform: translateY(-50%); pointer-events: none;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 34px; letter-spacing: 8px; color: rgba(255,255,255,0.82);
+            opacity: 0; text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+        }
+        .pg-day-tag  { position: absolute; top: 22px; left: 0; width: 100%; text-align: center; z-index: 30; pointer-events: none;
+                       font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; letter-spacing: 3px; }
+        .pg-line     { position: absolute; left: 0; width: 100%; text-align: center; padding: 0 30px; z-index: 25; pointer-events: none;
+                       font-family: 'Noto Serif TC', serif; font-size: 15px; letter-spacing: 1.5px; line-height: 2.1;
+                       opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .pg-line.is-vis { opacity: 1; transform: translateY(0); }
+
+        /* ── 08.11 夜 · 火鍋 ── */
+        .pg-hotpot { max-width: 340px; margin: 30px auto 0; }
+        .pg-hotpot .pg-frame { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.16); }
+        .pg-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 19px; color: #8d8375; text-align: center; margin-top: 10px; line-height: 1.3; }
+
+        /* ── 08.11 夜 · 花火 ── */
+        /* Stage heights are the pacing. Usable scroll is (height - 100vh), so
+           anything at or under 100vh has no scroll range at all and is skipped. */
+        .fw-stage  { height: 320vh; }
+        /* sky lives in #pgBackdrop now — stickies carry content only */
+        .fw-dusk   { background: linear-gradient(180deg, #1e2338 0%, #131725 55%, #0a0d16 100%); }
+        .fw-night  { background: linear-gradient(180deg, #080b14 0%, #05070e 60%, #04060c 100%); }
+        .fw-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+        /* children are all absolute, so the wrapper needs its own height or the
+           -50% centring resolves against zero */
+        .fw-photo-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(300px, 78vw); aspect-ratio: 3 / 4; z-index: 6; }
+        /* opacity/transform are written every frame from scroll, so no CSS
+           transition here — it would fight the scroll position */
+        .fw-photo {
+            position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 3 / 4;
+            overflow: hidden; border-radius: 3px; opacity: 0;
+            will-change: transform, opacity;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+        }
+        .fw-photo-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 12px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #fff; text-align: center; line-height: 1.25; }
+        .fw-timer {
+            position: absolute; top: 24px; left: 0; width: 100%; text-align: center; z-index: 20;
+            font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px;
+            color: rgba(255,255,255,0.5); transition: color 0.4s ease;
+        }
+        .fw-timer.urgent { color: #ffb347; }
+        .fw-escape {
+            position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%) translateY(10px);
+            z-index: 40; padding: 10px 26px; border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 30px; background: rgba(0,0,0,0.45);
+            font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 4px; color: #fff;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fw-escape.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; animation: breathe 2s infinite; }
+        /* the escape itself: sky slides away, the two of you are already moving */
+        .fw-sky-group { position: absolute; inset: 0; z-index: 5; transition: transform 1.1s cubic-bezier(0.4,0,0.2,1), opacity 1.1s ease, filter 1.1s ease; }
+        .fw-sticky.escaped .fw-sky-group { transform: translateX(-22%) scale(1.08); opacity: 0.35; filter: blur(6px); }
+        .fw-after { position: absolute; inset: 0; z-index: 12; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 18px; padding: 0 32px; opacity: 0; pointer-events: none; transition: opacity 1.1s ease 0.25s; }
+        .fw-sticky.escaped .fw-after { opacity: 1; }
+        .fw-after .pg-frame { width: min(280px, 74vw); aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 18px 45px rgba(0,0,0,0.6); }
+        .fw-after p { font-family: 'Noto Serif TC', serif; font-size: 14px; color: rgba(255,255,255,0.9); text-align: center; letter-spacing: 1.5px; line-height: 2.1; }
+
+        /* ── 08.12 · 天亮之前 ── */
+        .dawn-stage { height: 200vh; }
+        .dawn-a { background: linear-gradient(180deg, #05070e 0%, #0a1020 60%, #101a2e 100%); }
+        .dawn-b { background: linear-gradient(180deg, #142138 0%, #2b3f5e 55%, #4a5f7d 100%); }
+        .dawn-c { background: linear-gradient(180deg, #43597c 0%, #9d8397 45%, #e0a878 78%, #f2c48c 100%); }
+        .dawn-sun { position: absolute; left: 50%; bottom: 26%; width: 74px; height: 74px; margin-left: -37px; border-radius: 50%; z-index: 3;
+            background: radial-gradient(circle, #fff3d0 0%, #ffcf87 45%, rgba(255,190,110,0) 72%); opacity: 0; transform: translateY(40px); }
+        .dawn-sea { position: absolute; left: 0; bottom: 0; width: 100%; height: 26%; z-index: 4;
+            background: linear-gradient(180deg, rgba(10,18,32,0.55) 0%, #060a12 100%); }
+
+        /* ── 08.12 · 跳島 ── */
+        .iso-stage  { height: 420vh; }
+        .iso-a { background: linear-gradient(180deg, #bcd6e6 0%, #dcebf2 52%, #eaf3f6 100%); }
+        .iso-horizon { position: absolute; left: 0; top: 55%; width: 100%; height: 45%; z-index: 2;
+            background: linear-gradient(180deg, #7fa8bd 0%, #4d7d99 45%, #305d77 100%); }
+        .iso-horizon::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.5); }
+        .iso-sway { position: absolute; inset: 0; z-index: 5; will-change: transform; }
+        /* centring lives in the JS transform (translateX(-50%)) so it can't
+           fight the scroll-driven translateY/scale */
+        .iso-item { position: absolute; left: 50%; top: 55%; width: min(268px, 72vw);
+            opacity: 0; will-change: transform, opacity; }
+        .iso-item .pg-frame { width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
+        .iso-time { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.85);
+            text-align: center; margin-top: 7px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .iso-still { z-index: 8; }
+        .iso-closing { position: absolute; left: 0; bottom: 12%; width: 100%; z-index: 20; color: #eaf3f6; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+
+        /* ── 08.13 · 追著太陽往西開 ── */
+        .drv-stage  { height: 480vh; }
+        .drv-a { background: linear-gradient(180deg, #9dc6dd 0%, #cfe3ea 58%, #e6eff0 100%); }
+        .drv-b { background: linear-gradient(180deg, #a7bcd0 0%, #e6cfa8 55%, #f6dfae 100%); }
+        .drv-c { background: linear-gradient(180deg, #8f7f9c 0%, #e08c5a 52%, #f7b26a 100%); }
+        .drv-d { background: linear-gradient(180deg, #2b2b45 0%, #7b4a63 46%, #d4694a 78%, #f0925a 100%); }
+
+        /* ── sunset on water ──────────────────────────────────────────────
+           Layer order below the photo frame (z 6):
+             2 glow spread · 3 sun · 4 land→sea · 5 reflection, glitter, haze
+           Every blur here is a STATIC value so each layer rasterises once and
+           is then only transformed and faded — no per-frame filter recompute. */
+        .drv-sun {
+            position: absolute; left: 50%; top: 20%; width: 92px; height: 92px; margin-left: -46px;
+            border-radius: 50%; z-index: 3; opacity: 0; will-change: transform;
+            background: radial-gradient(circle, #fffdf4 0%, #fff2c8 38%, #ffcf85 62%, rgba(255,180,110,0) 76%);
+        }
+        /* wide low bloom that flattens and spreads as the sun nears the water */
+        .drv-glow {
+            position: absolute; left: 50%; top: 20%; width: 150vw; height: 54vh;
+            margin-left: -75vw; margin-top: -27vh; z-index: 2;
+            transform-origin: 50% 50%; opacity: 0; pointer-events: none;
+            will-change: transform, opacity;
+            background: radial-gradient(ellipse at 50% 50%,
+                rgba(255,240,200,0.92) 0%,
+                rgba(255,206,130,0.52) 20%,
+                rgba(255,158,84,0.26) 42%,
+                rgba(255,120,64,0.10) 62%,
+                rgba(255,110,60,0) 80%);
+        }
+        .drv-ground { position: absolute; left: 0; bottom: 0; width: 100%; height: 24%; z-index: 4;
+            background: linear-gradient(180deg, rgba(40,34,30,0.5) 0%, #23201d 100%); }
+        /* the land becomes the sea as we reach the west coast */
+        .drv-sea { position: absolute; left: 0; bottom: 0; width: 100%; height: 24%; z-index: 4; opacity: 0;
+            background: linear-gradient(180deg, #7a5f66 0%, #4a3c56 38%, #2a2438 72%, #1b1828 100%); }
+        /* the glitter path: a blurred column of light on the water under the sun */
+        .drv-pillar {
+            position: absolute; left: 50%; bottom: 0; width: 30vw; height: 24%;
+            margin-left: -15vw; z-index: 5; transform-origin: 50% 0%;
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
+            filter: blur(10px);
+            background: linear-gradient(180deg,
+                rgba(255,236,180,0.9) 0%,
+                rgba(255,196,116,0.5) 30%,
+                rgba(255,160,86,0.22) 62%,
+                rgba(255,140,70,0) 100%);
+        }
+        /* broken horizontal streaks so the column reads as water, not a beam */
+        .drv-glitter {
+            position: absolute; left: 50%; bottom: 0; width: 44vw; height: 24%;
+            margin-left: -22vw; z-index: 5; transform-origin: 50% 0%;
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
+            filter: blur(2.5px);
+            background-image: repeating-linear-gradient(0deg,
+                rgba(255,230,175,0.6) 0 1px, rgba(255,230,175,0) 1px 6px);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0,0,0,0.6) 42%, transparent 78%);
+                    mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0,0,0,0.6) 42%, transparent 78%);
+        }
+        /* the bright seam where sky meets water */
+        .drv-haze {
+            position: absolute; left: 0; bottom: 24%; width: 100%; height: 4px; margin-bottom: -2px;
+            z-index: 5; opacity: 0; pointer-events: none; filter: blur(3px);
+            background: linear-gradient(90deg, transparent 6%, rgba(255,224,168,0.85) 50%, transparent 94%);
+        }
+        /* the photos the two of you took, once the sun is down on the water */
+        .drv-final {
+            position: absolute; left: 0; top: 27%; width: 100%; z-index: 7;
+            display: flex; justify-content: center; align-items: flex-start; gap: 12px;
+            padding: 0 22px; opacity: 0; pointer-events: none; will-change: transform, opacity;
+        }
+        .drv-final .pg-frame {
+            width: min(148px, 37vw); aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px;
+            box-shadow: 0 16px 40px rgba(60,20,10,0.5);
+        }
+        .drv-final .drv-final-b { margin-top: 26px; }
+        .drv-final-cap {
+            position: absolute; left: 0; top: calc(100% + 14px); width: 100%; text-align: center;
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 19px; color: #ffeede;
+            text-shadow: 0 2px 12px rgba(80,30,10,0.85);
+        }
+        /* the window: a fixed letterbox that content passes through */
+        .drv-frame { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100%; height: 58vh; z-index: 6; overflow: hidden; }
+        .drv-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 9;
+            box-shadow: inset 0 0 60px 24px rgba(20,16,14,0.32); }
+        /* full-width row with the frame centred inside, so translateX(0) really
+           is centre regardless of the frame's max-width cap */
+        .drv-item { position: absolute; top: 50%; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; will-change: transform, opacity; }
+        .drv-item .pg-frame { overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.3); }
+        /* passing scenery: landscape, clipped by the frame edge */
+        .drv-pass .pg-frame { width: 62vw; max-width: 300px; aspect-ratio: 3 / 2; }
+        /* a real stop: portrait, centred, still */
+        .drv-stop .pg-frame { width: 46vw; max-width: 210px; aspect-ratio: 3 / 4; }
+        .drv-odo { position: absolute; bottom: 8%; left: 0; width: 100%; text-align: center; z-index: 20;
+            font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.82);
+            text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
+        .drv-closing { position: absolute; left: 0; top: 62%; width: 100%; z-index: 22; color: #fff3e4; text-shadow: 0 2px 12px rgba(80,30,10,0.7); }
+
+        /* ── 08.14 · 早餐 + 第 1188 天 ── */
+        .bf-wrap { max-width: 340px; margin: 0 auto; }
+        .bf-wrap .pg-frame { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.10); }
+        .d88-stage  { height: 240vh; }
+        .d88-a { background: linear-gradient(180deg, #fdfbf8 0%, #fbf8f4 55%, #f7f2ec 100%); }
+        .d88-sticky { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 30px; }
+        .d88-date   { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #a89c8c; letter-spacing: 3px; }
+        .d88-count  { font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: #333; line-height: 1;
+                      margin: 6px 0 2px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); font-variant-numeric: tabular-nums; }
+        .d88-unit   { font-size: 15px; color: #7d7365; letter-spacing: 5px; font-family: -apple-system, sans-serif; }
+        .d88-note   { font-family: 'Noto Serif TC', serif; font-size: 14px; color: #6b6355; letter-spacing: 1.5px; line-height: 2.2;
+                      text-align: center; margin-top: 34px; opacity: 0; transform: translateY(12px);
+                      transition: opacity 0.8s ease, transform 0.8s ease; }
+        .d88-note.is-vis { opacity: 1; transform: translateY(0); }
+
     </style>
 </head>
 <body class="no-scroll">
@@ -1446,8 +1765,8 @@
                 <div class="house-stage" id="houseStage">
                     <div class="house-sticky" id="houseSticky">
                         <div class="house-photo-wrap" id="housePhotoWrap">
-                            <img loading="lazy" decoding="async"class="house-photo" id="housePhoto" src="assets/IMG_7169.jpeg" alt="The share house - morning">
-                            <img loading="lazy" decoding="async"class="house-photo house-photo-night" id="housePhotoNight" src="assets/IMG_7159.jpeg" alt="The share house - night">
+                            <img class="house-photo" id="housePhoto" src="assets/IMG_7169.jpeg" alt="The share house - morning">
+                            <img class="house-photo house-photo-night" id="housePhotoNight" src="assets/IMG_7159.jpeg" alt="The share house - night">
                         </div>
                         <div class="house-dim" id="houseDim"></div>
                         <div class="house-vignette" id="houseVignette"></div>
@@ -1486,23 +1805,23 @@
                 <h3 class="mem-heading">一開始的我們</h3>
                 <div class="mem-wall">
                     <div class="mem-card" style="transform:rotate(-3deg)">
-                        <img loading="lazy" decoding="async"src="assets/14884.jpeg" alt="">
-                        <div class="mem-caption">你最喜歡起床就可以吃的麵麵</div>
+                        <img src="assets/14884.jpeg" alt="">
+                        <div class="mem-caption">你最喜歡起床就可以吃到的麵麵</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(2deg)">
-                        <img loading="lazy" decoding="async"src="assets/15944.jpeg" alt="">
+                        <img src="assets/15944.jpeg" alt="">
                         <div class="mem-caption">剛剪完頭髮的我</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(-2deg)">
-                        <img loading="lazy" decoding="async"src="assets/16262.jpeg" alt="">
+                        <img src="assets/16262.jpeg" alt="">
                         <div class="mem-caption">出門買菜喽!</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(4deg)">
-                        <video preload="none" src="assets/16244.mov" loop muted playsinline></video>
+                        <video src="assets/16244.mov" autoplay loop muted playsinline></video>
                         <div class="mem-caption">偷跑去你家住~</div>
                     </div>
                     <div class="mem-card" style="transform:rotate(-1deg)">
-                        <img loading="lazy" decoding="async"src="assets/16401.jpeg" alt="">
+                        <img src="assets/16401.jpeg" alt="">
                         <div class="mem-caption">熱衷了好一陣子的Movie Night🎬</div>
                     </div>
                 </div>
@@ -1527,11 +1846,11 @@
                     <div class="tall-card-inner">
                         <!-- Front Side (Stretches the container) -->
                         <div class="tall-card-front">
-                            <img loading="lazy" decoding="async"src="assets/IMG_7219.png" alt="留言板正面">
+                            <img src="assets/IMG_7219.png" alt="留言板正面">
                         </div>
                         <!-- Back Side (Overlays exactly over the front) -->
                         <div class="tall-card-back">
-                            <img loading="lazy" decoding="async"src="assets/IMG_7228.png" alt="留言板背面">
+                            <img src="assets/IMG_7228.png" alt="留言板背面">
                         </div>
                     </div>
                 </div>
@@ -1569,7 +1888,7 @@
                             </div>
                         </div>
                         <div class="flip-back">
-                            <img loading="lazy" decoding="async"src="assets/IMG_7226.jpeg" class="flip-back-img" alt="Perth">
+                            <img src="assets/IMG_7226.jpeg" class="flip-back-img" alt="Perth">
                             <div class="flip-back-overlay">
                                 <div class="handwriting">Missed you so much...</div>
                             </div>
@@ -1617,7 +1936,7 @@
                             </div>
                         </div>
                         <div class="flip-back">
-                            <video preload="none" src="assets/16246.mov" class="flip-back-img" alt="Sydney" loop muted playsinline></video>
+                            <video src="assets/16246.mov" class="flip-back-img" alt="Sydney" autoplay loop muted playsinline></video>
                             <div class="flip-back-overlay">
                                 <div class="handwriting">呀比~可以回來見面了</div>
                             </div>
@@ -1640,28 +1959,28 @@
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7205.jpeg" alt="約會" style="background:#f0e8e4;">
+                            <img src="assets/IMG_7205.jpeg" alt="約會" style="background:#f0e8e4;">
                         </div>
                         <p class="moment-caption">接你下班慢慢的從驚喜變成了習慣</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7203.jpeg" alt="拍片" style="background:#e5ece8;">
+                            <img src="assets/IMG_7203.jpeg" alt="拍片" style="background:#e5ece8;">
                         </div>
                         <p class="moment-caption">我們的第一個特別約會行程<br>－New Town 🌇</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img loading="lazy" decoding="async"src="assets/16769.jpeg" alt="接下班" style="background:#e5e8ec;">
+                            <img src="assets/16769.jpeg" alt="接下班" style="background:#e5e8ec;">
                         </div>
                         <p class="moment-caption">一起的合照開始變多了!<br>(那天還特別穿了黑襯衫)</p>
                     </div>
                     <div class="moment-item">
                         <div class="moment-img-wrap">
                             <div class="moment-tape"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7231.jpeg" alt="日常" style="background:#ece8e5;">
+                            <img src="assets/IMG_7231.jpeg" alt="日常" style="background:#ece8e5;">
                         </div>
                         <p class="moment-caption">就連我生病長得像鐘樓怪人的時候，你都陪著我、照顧著我</p>
                     </div>
@@ -1691,7 +2010,7 @@
                             </div>
                         </div>
                         <div class="printed-photo">
-                            <img loading="lazy" decoding="async"src="assets/17772.jpeg" class="cover-img" alt="Memory">
+                            <img src="assets/17772.jpeg" class="cover-img" alt="Memory">
                             <div class="date">2023.05.14</div>
                         </div>
                         <div class="cam-bottom"><div class="cam-label">PRESS TO SHOOT</div></div>
@@ -1731,11 +2050,11 @@
                         
                         <div class="hn-ps-grid">
                             <div class="hn-ps-left">
-                                <img loading="lazy" decoding="async"src="assets/IMG_7199.jpeg" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
+                                <img src="assets/IMG_7199.jpeg" class="hn-portrait-photo" alt="搬家日" style="background:#e8ddd0;">
                             </div>
                             
                             <div class="hn-ps-right">
-                                <img loading="lazy" decoding="async"src="assets/IMG_7200.jpeg" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
+                                <img src="assets/IMG_7200.jpeg" class="hn-square-photo" alt="第一頓家常飯" style="background:#e4d8cc;">
                                 
                                 <div class="hn-col-label">新的生活</div>
                                 <div class="hn-sub-head">一起住的第一個月</div>
@@ -1758,7 +2077,7 @@
                         
                         <div class="hn-columns">
                             <div class="hn-col">
-                                <img loading="lazy" decoding="async"src="assets/18343.jpeg" class="hn-col-photo" alt="客廳的角落" style="background:#ccd8c4;">
+                                <img src="assets/18343.jpeg" class="hn-col-photo" alt="客廳的角落" style="background:#ccd8c4;">
                                 <div class="hn-col-head">粉色的Bondi🌅</div>
                                 <p class="hn-col-text">這天的約會很難忘，千里迢迢的轉車卻迷路在荒郊野外，最後終於到了Bondi看到了粉紅色的天空，一起喝著machi在海邊放鬆，最後再回Timezone豪賭了一把！</p>
                             </div>
@@ -1766,7 +2085,7 @@
                             <div class="hn-col">
                                 <div class="hn-col-head">憤怒的愛心❤️‍🔥</div>
                                 <p class="hn-col-text">學期的剛開始寶貝就提議要幫我帶便當去學校野餐，做了這麼漂亮的飯糰餐盒早上我卻又惹你生氣了，但還是要我好好吃飯，怎麼有這麼棒的小寶～</p>
-                                <img loading="lazy" decoding="async"src="assets/IMG_7206.jpeg" class="hn-col-photo" alt="陽台的植物" style="background:#c4d4bc; margin-top: auto;">
+                                <img src="assets/IMG_7206.jpeg" class="hn-col-photo" alt="陽台的植物" style="background:#c4d4bc; margin-top: auto;">
                             </div>
                         </div>
                         
@@ -1781,10 +2100,10 @@
                             <div class="hn-dateline">日常特輯 · DAILY LIFE EDITION</div>
                         </div>
                         <div class="hn-headline">「我下課、你下班，到了半夜就是我們的時間啦哇哈哈!」</div>
-                        <video preload="none" src="assets/18550.mov" class="hn-feature-photo" alt="" style="background:#e0ccd4;" loop muted playsinline></video>
+                        <video src="assets/18550.mov" class="hn-feature-photo" alt="" style="background:#e0ccd4;" autoplay loop muted playsinline></video>
                         <p class="hn-prose">住在一起經過了兩個月了，晚上開發出的料理越來越多，也慢慢養成了你煮飯 我洗碗的習慣，我們從一開始偶爾的Movie Night，到一步步把漫威全系列看完的壯舉，只有我們的生活，真的好像活在夢裡...</p>
                         <hr class="hn-divider">
-                        <p class="hn-prose-em">原來，幸福這麼具體。</p>
+                        <p class="hn-prose-em">原來，幸福就是有你、有我。</p>
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
@@ -1797,14 +2116,14 @@
                         </div>
                         <div class="hn-quote-row">
                             <div class="hn-stacked">
-                                <img loading="lazy" decoding="async"src="assets/IMG_7212.jpeg" class="hn-sm-photo" alt="" style="background:#e4d0bc;">
-                                <img loading="lazy" decoding="async"src="assets/IMG_7213.jpeg" class="hn-sm-photo" alt="" style="background:#dcc8b0;">
+                                <img src="assets/IMG_7212.jpeg" class="hn-sm-photo" alt="" style="background:#e4d0bc;">
+                                <img src="assets/IMG_7213.jpeg" class="hn-sm-photo" alt="" style="background:#dcc8b0;">
                             </div>
                             <div class="hn-quote-box">
-                                <p class="hn-pull-quote">「窩在一起的每個夜晚，是我最喜歡的地方。」</p>
+                                <p class="hn-pull-quote">「出門走走，總會看見只有我們才會發現的小事。」</p>
                             </div>
                         </div>
-                        <div class="hn-headline" style="margin-bottom:0;">秋天了，我們的沙發正式成為我們的宇宙</div>
+                        <div class="hn-prose" style="margin-bottom:0;">這一天天氣很好，我們睡到很晚才出門，解果兩個人都還是好累好累哈哈。我們去看了當季的紫色花花。那時候你每次看到就會拍張照片、撿幾片花瓣留起來。我們遇見了一朵在我們頭頂像愛心的雲，也遇到了停在你手上的可愛小瓢蟲，真希望每天都是像這樣的愜意下午~</div>
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
@@ -1815,13 +2134,13 @@
                             <div class="hn-title" contenteditable="true" spellcheck="false">Bathurst Street Times</div>
                             <div class="hn-dateline">雙重生活 · DOUBLE LIFE EDITION</div>
                         </div>
-                        <div class="hn-headline">「舞台上的花束，與平凡的漢堡之夜」</div>
+                        <div class="hn-headline">「打扮精緻? 放鬆自在? 我全都要哈哈哈」</div>
                         
                         <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
-                            <img loading="lazy" decoding="async"src="assets/IMG_2444.jpeg" alt="Summit Performance" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #c8d4e0; flex-shrink: 0;">
+                            <img src="assets/IMG_2444.jpeg" alt="Summit Performance" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #c8d4e0; flex-shrink: 0;">
                             <div style="flex: 1;">
                                 <div class="hn-sub-head" style="color: var(--hn-accent);">最後的舞台</div>
-                                <p class="hn-prose" style="line-height: 1.8;">妳來看我最後一次的 Summit 表演，還帶著美麗的花束在台下為我加油。看著妳的身影，那份感動與驕傲，是這個月最閃耀的瞬間。</p>
+                                <p class="hn-prose" style="line-height: 1.8;">這是最後一次的Summit了，寶貝當天特別把班排開來為我加油。見到時手上竟然還帶了超漂亮的驚喜花花，好開心~ 那天晚上我們打扮的漂漂亮亮，回家繼續可可愛愛，希望不是因為帥帥的寶貝才愛我啦哈哈</p>
                             </div>
                         </div>
                         
@@ -1829,10 +2148,10 @@
                         
                         <div style="display: flex; gap: 12px; align-items: center; margin-top: 12px; margin-bottom: 10px;">
                             <div style="flex: 1; text-align: right;">
-                                <div class="hn-sub-head" style="color: var(--hn-accent); padding-top: 4px;">日常的模樣</div>
-                                <p class="hn-prose" style="line-height: 1.8;">下了舞台，繼續我們平凡又快樂的日子。拍完片去 Darling Harbour 咬下罪惡的 Betty's Burger，或是晚上在家裡慵懶地靠著彼此，這才是生活最踏實的模樣。</p>
+                                <div class="hn-sub-head" style="color: var(--hn-accent); padding-top: 4px;">我們的日常</div>
+                                <p class="hn-prose" style="line-height: 1.8;">這天不曉得是不是沒班，我早上拍片後來接寶貝吃午餐，現在還是很想念Betty’s Burger 的味道，想念兩個人守著食物，努力堤防海鷗攻擊的一頓飯 (還有半夜的時候也是哈哈哈)</p>
                             </div>
-                            <img loading="lazy" decoding="async"src="assets/5E8D1968-59E1-4DCE-9F42-C33B0D7562D9.jpeg" alt="Betty's Burgers" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #b8c8d8; flex-shrink: 0;">
+                            <img src="assets/5E8D1968-59E1-4DCE-9F42-C33B0D7562D9.jpeg" alt="Betty's Burgers" style="width: 45%; height: 130px; object-fit: cover; border: 1px solid var(--hn-border); background: #b8c8d8; flex-shrink: 0;">
                         </div>
                         
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
@@ -1847,19 +2166,19 @@
                         </div>
                         <div class="hn-headline">「意外被趕出家門，卻成了到處探險的一個月」</div>
                         
-                        <video preload="none" src="assets/IMG_4015.mp4" class="hn-wide-photo" alt="Newcastle" style="background:#c4d8cc;" loop muted playsinline></video>
+                        <video src="assets/IMG_4015.mp4" class="hn-wide-photo" alt="Newcastle" style="background:#c4d8cc;" autoplay loop muted playsinline></video>
                         <div class="hn-sub-head" style="text-align: center; margin-bottom: 10px; color: #3d6050;">Newcastle Roadtrip~</div>
-                            <p class="hn-col-text">到處流浪借住的日子裡，我們還是努力去看了一間又一間未來的家。雖然辛苦，但一起想像未來模樣的感覺很好。</p>
+                            <p class="hn-col-text">這個月還是先從好說起好了哈哈，感謝Powei邀我們一起去聖誕Roadtrip。寶貝終於在New Castle見到靈魂動物了! 看你開心了好久。這趟還有好吃的冰淇淋、很棒的房間、還有很多有的沒的可愛動物。希望以後我們兩個人還可以再去~</p>
                         <div class="hn-columns" style="margin-top: 12px;">
                             <div class="hn-col">
                                 <div class="hn-col-head">找尋下一個避風港</div>
-                                <p class="hn-col-text">到處流浪借住的日子裡，我們還是努力去看了一間又一間未來的家。雖然辛苦，但一起想像未來模樣的感覺很好。</p>
-                                <video preload="none" src="assets/IMG_3539.mov" class="hn-col-photo" alt="看房" style="background:#bcccc4; margin-top: auto;" loop muted playsinline></video>
+                                <p class="hn-col-text">多虧了Ruan先生，我們在這個月變成了無家可歸的難民了... 到現在還是很生氣。我們輾轉住了小旅社、短租、還把東西寄放在Iris那裡，這個月的一切都好混亂。不過也是這樣我們才在看了一間又一間的房子之後，找到了我們接下來真正屬於我們自己的甜蜜的家💑</p>
+                                <video src="assets/IMG_3539.mov" class="hn-col-photo" alt="看房" style="background:#bcccc4; margin-top: auto;" autoplay loop muted playsinline></video>
                             </div>
                             <div class="hn-col">
-                                <img loading="lazy" decoding="async"src="assets/IMG_7236.jpeg" class="hn-col-photo" alt="苦中作樂" style="background:#c0d4c8;">
+                                <img src="assets/IMG_7236.jpeg" class="hn-col-photo" alt="苦中作樂" style="background:#c0d4c8;">
                                 <div class="hn-col-head" style="margin-top: 6px;">苦中作樂的日常</div>
-                                <p class="hn-col-text">行李散落各地，生活節奏全亂，但只要兩個人在一起，好像不管在哪裡都能找到開心的事。</p>
+                                <p class="hn-col-text">即使生活一團亂，上班、拍片依然沒有停止，我們還是讓我們的每一天充滿著我們自己的小確幸。記得這裡嗎?那個對我們很好的印度小哥不知道去哪了，每次的休息、每次的半夜覓食時間、我們都努力地把握住所剩不多的相處時間...</p>
                             </div>
                         </div>
                         
@@ -1873,7 +2192,7 @@
                             <div class="hn-title" contenteditable="true" spellcheck="false">Ultimo Road Times</div>
                             <div class="hn-dateline">新起點 · NEW CHAPTER EDITION</div>
                         </div>
-                        <div class="hn-headline">「搬進新家的第一個月，也是滿載感動的一個月。」</div>
+                        <div class="hn-headline">「最後的時光，倒數一個月...」</div>
                         <div class="hn-timeline">
                             
                             <div class="hn-tl-item">
@@ -1884,10 +2203,10 @@
                                 <div class="hn-tl-content">
                                     <div class="hn-tl-date-label">DEC 31 - JAN 1</div>
                                     <div class="hn-tl-head">雪梨跨年煙火</div>
-                                    <p class="hn-tl-body">擠在人群中看著絢爛的煙火綻放，慶幸身邊牽著的是妳，一起迎接充滿希望的新年。</p>
+                                    <p class="hn-tl-body">新年快樂寶貝!今年的跨年難得只有我們讓氣氛好像格外的不一樣。晚上的街道上塞滿了人，我背著背包，跟你到處尋匿等等看煙火的位置。我們走到了一個小山丘，剛好時間還早，我們算好時間在長椅上看完了馬力歐，緊接著倒數2024的到來。</p>
                                     <div style="display: flex; gap: 6px; margin-top: 5px;">
-                                        <img loading="lazy" decoding="async"src="assets/4FC97029-6858-4180-AEB2-EB3DB933276A.jpeg" class="hn-tl-img" alt="NYE 1" style="background:#ccd0d8; margin-top: 0; flex: 1;">
-                                        <video preload="none" src="assets/IMG_4791.mov" class="hn-tl-img" alt="NYE 2" style="background:#c4c8d0; margin-top: 0; flex: 1; width: 20px;" loop muted playsinline></video>
+                                        <img src="assets/4FC97029-6858-4180-AEB2-EB3DB933276A.jpeg" class="hn-tl-img" alt="NYE 1" style="background:#ccd0d8; margin-top: 0; flex: 1;">
+                                        <video src="assets/IMG_4791.mov" class="hn-tl-img" alt="NYE 2" style="background:#c4c8d0; margin-top: 0; flex: 1; width: 20px;" autoplay loop muted playsinline></video>
                                     </div>
                                 </div>
                             </div>
@@ -1900,8 +2219,8 @@
                                 <div class="hn-tl-content">
                                     <div class="hn-tl-date-label">JAN MID</div>
                                     <div class="hn-tl-head">午夜拖車任務</div>
-                                    <p class="hn-tl-body">為了搬進新家，我們在半夜拉著小推車，一趟又一趟地在街道上運送家當。累得半死，卻又覺得好荒謬、好想笑。</p>
-                                    <video preload="none" src="assets/IMG_4813.mp4" class="hn-tl-img" alt="Wagon moving" style="background:#c4c8d0; width:100%; height: auto;" loop muted playsinline></video>
+                                    <p class="hn-tl-body">即使到了最後一個月，我們依然沒有閒下來。晚上多了喜歡的新活動，那就是拉著我們的小拖車，來來回回的把東西搬入我們的新家。晚上的街道上，只有我們兩個小瘋子在累死累活，但還是嘻嘻哈哈，沿路還發現了蝙蝠!最後的這幾個晚上真的真的好難忘...</p>
+                                    <video src="assets/IMG_4813.mp4" class="hn-tl-img" alt="Wagon moving" style="background:#c4c8d0; width:100%; height: auto;" autoplay loop muted playsinline></video>
                                 </div>
                             </div>
                             
@@ -1911,16 +2230,17 @@
                                 </div>
                                 <div class="hn-tl-content">
                                     <div class="hn-tl-date-label">JAN LATE</div>
-                                    <div class="hn-tl-head">殺青與驚喜</div>
-                                    <p class="hn-tl-body">我的 Solo Project 終於拍攝結束！沒想到妳偷偷準備了蛋糕和豐盛的晚餐為我慶祝，所有的疲憊瞬間都被治癒了。</p>
+                                    <div class="hn-tl-head">還有什麼沒做的呢?</div>
+                                    <p class="hn-tl-body">最後的這個月迎來了我的solo，很碰巧的也發生在我們的紀念日當天，拍攝結束後寶貝煮了麵麵，買了蛋糕給我慶祝，那天真的好幸福。最後的最後，我們還挑了一天，帶你去了一直很想跟你去的Hyjinx Hotel玩了一天、打了迷你高爾夫。</p>
                                     <div style="display: flex; gap: 6px; margin-top: 5px;">
-                                        <img loading="lazy" decoding="async"src="assets/IMG_7239.jpeg" class="hn-tl-img" alt="Cake celebration" style="background:#c8ccd4; margin-top: 0; flex: 1;">
-                                        <img loading="lazy" decoding="async"src="assets/IMG_7240.jpeg" class="hn-tl-img" alt="Dinner" style="background:#d0d4dc; margin-top: 0; flex: 1;">
+                                        <img src="assets/IMG_7239.jpeg" class="hn-tl-img" alt="Cake celebration" style="background:#c8ccd4; margin-top: 0; flex: 1;">
+                                        <img src="assets/IMG_7240.jpeg" class="hn-tl-img" alt="Dinner" style="background:#d0d4dc; margin-top: 0; flex: 1;">
                                     </div>
                                 </div>
                             </div>
                             
                         </div>
+                        <div class="hn-headline">澳洲的篇章....好像還是來到了尾聲了</div>
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
@@ -1937,8 +2257,8 @@
             <div class="chapter" id="chap-usyd">
                 <div class="time-badge">Jan 28, 2024</div>
                 <div class="story-text">
-                    2024 年初，我即將離開澳洲，把妳一個人留在了雪梨。<br>
-                    在離別的前一晚，我們回到了故事的起點——夜晚的 USYD，在那裡留下了我們在澳洲最後的回憶。
+                    終於還是來到了這一天。一月底，我準備一個人先回台灣了...<br>
+                    在離開的前一晚，我們決定回到我們的起點－USYD－重新複習我們最重要的一晚，留下我們在澳洲最後的回憶。
                 </div>
                 
                 <!-- View-Master Trigger -->
@@ -2027,23 +2347,23 @@
                 </div>
             </div>
 
-            <div id="flight-syd-tpe-military" class="flight-scroll-area"><div class="flight-hint">Heading back to Taiwan for duty... ✈️</div></div>
+            <div id="flight-syd-tpe-military" class="flight-scroll-area"><div class="flight-hint">不曉得這樣的遠距離...<br>還要過多久...</div></div>
 
             <!-- Chapter 6 (FaceTime) -->
             <div class="chapter" id="chap5">
                 <div class="time-badge">Feb - Jun, 2024</div>
                 <div class="story-text">
-                    我畢業回台灣，緊接著的入伍讓我們連聯繫都變得奢侈。<br>
-                    每當拿到手機，最期待的就是螢幕亮起，看到妳的名字。跨越赤道的距離與時差，是最大的考驗。
+                    回到台灣後沒多久，我就入伍當兵去了，變成了限量版的尖頭拉瑞哈哈。<br>
+                    一開始連打電話都很難，沒有手機，寶貝還苦苦等待我的越洋電話，終於接通的時候我們兩個都好興奮，一天一天艮你分享著日記中寫給你的內容。後來有手機了，每次離營最期待的就是螢幕亮起，看到你的名字。
                 </div>
                 <div class="facetime-wrapper" id="facetimeBox">
-                    <video preload="none" class="ft-bg-layer" src="assets/742539708.620992.mp4" loop muted playsinline></video>
+                    <video class="ft-bg-layer" src="assets/742539708.620992.mp4" autoplay loop muted playsinline></video>
                     
                     <div class="ft-incoming-ui">
                         <div class="ft-header">
                             <div class="ft-avatar-wrapper">
                                 <div class="avatar-ripple"></div><div class="avatar-ripple"></div>
-                                <img loading="lazy" decoding="async"src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
+                                <img src="assets/IMG_4725.jpeg" class="ft-avatar" alt="Avatar">
                             </div>
                             <h2>Frank</h2>
                             <p class="ft-video-txt">FaceTime Video</p>
@@ -2063,10 +2383,10 @@
                     </div>
 
                     <div class="ft-active-ui">
-                        <div class="ft-top-pill"><img loading="lazy" decoding="async"src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
+                        <div class="ft-top-pill"><img src="assets/IMG_4725.jpeg" alt="Avatar">Frank 〉</div>
                         <div class="ft-top-right-btn"></div>
                         <div class="ft-pip">
-                            <img loading="lazy" decoding="async"src="assets/IMG_5722.jpeg" class="cover-img" alt="My Camera">
+                            <img src="assets/IMG_5722.jpeg" class="cover-img" alt="My Camera">
                             <div class="ft-pip-cam-btn"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg></div>
                         </div>
                         <div class="ft-vertical-controls">
@@ -2080,77 +2400,81 @@
                 </div>
                 <span class="interactive-hint">Slide to answer your call 👆</span>
             </div>
+            <div class="story-text">
+                這段時間裡你常常狀態很差，跟我訴苦店裡的事，常常講到崩潰大哭，說沒有我在你旁邊讓你覺得很無力，讓我看了都覺得心疼。<br>
+                不過，很快的，我們也迎來了好消息。退伍後的隔天馬上就可以見面啦!!每天在電話中、在日記中都不斷地倒數著...
+            </div>
 
-            <div id="flight-syd-tpe-reunion" class="flight-scroll-area"><div class="flight-hint">Closing the distance... ✈️</div></div>
+            <div id="flight-syd-tpe-reunion" class="flight-scroll-area"><div class="flight-hint">寶貝來啦!!! ✈️</div></div>
 
             <!-- Chapter 7 (Filmstrip) -->
             <div class="chapter" id="chap6">
                 <div class="time-badge">Jun, 2024</div>
-                <div class="story-text">終於又見面了。<br>突然的陌生感真的很尷尬，但再次擁抱時，感動瞬間蓋過了一切。</div>
+                <div class="story-text">
+                    終於見面了~<br>
+                    哈喽，你是誰? 當兵讓我變成了徹頭徹尾的台客，帶著醜醜的花、醜醜的卡片、醜醜的小平頭在機場接到了你。這個瞬間連擁抱都尷尬哈哈。不過很快的，我們去慶祝了紀念日、彼此的生日，也得到了這個讓我好幸福好幸福的戒指💍</div>
                 <div class="filmstrip-wrapper">
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <video preload="none" src="assets/IMG_0291.mov" class="cover-img" loop muted playsinline></video>
+                        <video src="assets/IMG_0291.mov" class="cover-img" autoplay loop muted playsinline></video>
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <img loading="lazy" decoding="async"src="assets/1D23B52C-EB73-439C-B12F-89B234D61846.jpeg" class="cover-img" alt="Memory">
+                        <img src="assets/1D23B52C-EB73-439C-B12F-89B234D61846.jpeg" class="cover-img" alt="Memory">
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                     <div class="film-frame">
                         <div class="film-holes left"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-                        <video preload="none" src="assets/511747188628390229.mp4" class="cover-img" loop muted playsinline></video>
+                        <video src="assets/511747188628390229.mp4" class="cover-img" autoplay loop muted playsinline></video>
                         <div class="film-holes right"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
                     </div>
                 </div>
-                <span class="interactive-hint">Swipe to view memories 👈 👉</span>
             </div>
 
             <!-- Chapter 8 (Scrapbook) -->
             <div class="chapter" id="chap7">
                 <div class="time-badge">Aug, 2024</div>
                 <div class="story-text">
-                    我們慢慢的適應了回到台灣的新生活，找到了新的步調。<br>
-                    一開始有了些摩擦，但還是因為彼此的陪伴，在忙碌又充滿挫折的每一天獲得了小確幸。
+                    在經歷了一些波折後，我們都慢慢適應了回到台灣的生活，找到了新的步調。<br>對於我們新的生活，一開始有了些摩擦，
+                    但還是因為彼此的陪伴，在忙碌又充滿挫折的每一天獲得了小確幸。
                 </div>
 
                 <div class="scrapbook-track-wrapper">
                     <div class="scrapbook-track">
                         <div class="sb-polaroid sb-p1">
                             <div class="sb-tape tape-style-a"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7615.jpeg" alt="Cafe Date">
+                            <img src="assets/IMG_7615.jpeg" alt="Cafe Date">
                             <div class="sb-note note-pos-1">寶貝嘗試了萬惡的古拉爵...</div>
                         </div>
                         <div class="sb-polaroid sb-p2">
                             <div class="sb-tape tape-style-b"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7608.jpeg" alt="City Streets">
+                            <img src="assets/IMG_7608.jpeg" alt="City Streets">
                             <div class="sb-note note-pos-2">我成為了幼稚園大哥哥...</div>
                         </div>
                         <div class="sb-polaroid sb-p3">
                             <div class="sb-tape tape-style-c"></div>
-                            <img loading="lazy" decoding="async"src="assets/8769CCBC-E830-4D0F-92CA-DD177D47005D.jpeg" alt="Holding Hands">
+                            <img src="assets/8769CCBC-E830-4D0F-92CA-DD177D47005D.jpeg" alt="Holding Hands">
                             <div class="sb-note note-pos-3">寶貝第一次來給我探班❤️</div>
                         </div>
                         <div class="sb-polaroid sb-p4">
                             <div class="sb-tape tape-style-d"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_3485.jpeg" alt="Night Vibes">
+                            <img src="assets/IMG_3485.jpeg" alt="Night Vibes">
                             <div class="sb-note note-pos-4">第一次一起吃 WAKU🍳</div>
                         </div>
                         <div class="sb-polaroid sb-p5">
                             <div class="sb-tape tape-style-e"></div>
-                            <img loading="lazy" decoding="async"src="assets/IMG_7905.jpeg" alt="Cozy">
+                            <img src="assets/IMG_7905.jpeg" alt="Cozy">
                             <div class="sb-note note-pos-5">嘗試與黑妞做朋友🐶</div>
                         </div>
                     </div>
                 </div>
-                <span class="interactive-hint" style="margin-top: 5px;">Swipe to explore our days 👈 👉</span>
             </div>
 
             <!-- Chapter 9 (Double Ticket) -->
             <div class="chapter" id="chap8">
                 <div class="time-badge">Oct, 2024</div>
-                <div class="story-text">2024 的 10 月，我們因為我的畢業典禮，終於回到了澳洲。</div>
+                <div class="story-text">來到了2024 的 10 月，因為我的畢業典禮，我們終於要回澳洲啦!!</div>
                 
                 <div class="double-ticket-wrapper" id="doubleTicket" data-front="2">
                     <div class="flip-container ticket-layer ticket-1" onclick="handleDoubleTicketClick(1, this)">
@@ -2177,7 +2501,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <video preload="none" src="assets/IMG_8403.mov" class="flip-back-img" loop muted playsinline></video>
+                                <video src="assets/IMG_8403.mov" class="flip-back-img" autoplay loop muted playsinline></video>
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">第一次一起搭飛機~開心</div>
                                 </div>
@@ -2209,7 +2533,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <video preload="none" src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" loop muted playsinline></video>
+                                <video src="assets/d98f3016bf074cceb3a8996fe4f887f1.mov" class="flip-back-img" autoplay loop muted playsinline></video>
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">終於一起回去了！</div>
                                 </div>
@@ -2222,16 +2546,17 @@
 
             <!-- 台灣飛雪梨 3D 航線緩衝區 -->
             <div id="flight-tpe-syd-area" class="flight-scroll-area">
-                <div class="flight-hint" id="flightHintTpeSyd">Back to where it all began... ✈️</div>
+                <div class="flight-hint" id="flightHintTpeSyd">好期待又好懷念的感覺~ ✈️</div>
             </div>
 
             <!-- Chapter – Sydney Revisited (Disposable Camera) -->
             <div class="chapter" id="chap-syd-revisit">
                 <div class="time-badge">Oct, 2024 · Sydney</div>
                 <div class="story-text">
-                    回到了起點，每一條街道都把記憶搖醒。<br>
-                    這一次不再是告別，而是一起把所有的遺憾都補回來。
+                    回到了熟悉的地方，曾經在這裡生活過的痕跡彷彿就像昨天一樣。只有短短的十天，我們努力著把清單上的想做的事一一去做完。<br>
+                    <br>從來沒用過這種底片相機，就假裝我們當初帶著這台，一起看看我們都去了哪裡吧!
                 </div>
+                <span class="interactive-hint">Tap to shoot 📷</span>
                 <div class="disp-cam-section">
                     <div class="disp-cam-body" id="dispCamBody" onclick="shootDispCam()">
                         <svg viewBox="0 0 246 152" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;filter:drop-shadow(0 12px 28px rgba(0,0,0,0.42))">
@@ -2305,17 +2630,16 @@
                     </div>
                     <div class="disp-cam-roll" id="dispCamRoll"></div>
                     <div class="disp-cam-final" id="dispCamFinal"></div>
-                    <div class="disp-cam-done" id="dispCamDone">🎞️ 底片用完了… 每一格都是你。</div>
+                    <div class="disp-cam-done" id="dispCamDone">🎞️ 底片用完了… 好像也該回家了。</div>
                 </div>
-                <span class="interactive-hint">Tap to shoot 📷</span>
             </div>
 
             <!-- Chapter – Return Tickets (SYD → TPE) -->
             <div class="chapter" id="chap-syd-return">
                 <div class="time-badge">Nov, 2024</div>
                 <div class="story-text">
-                    行李箱又重新塞滿了。<br>
-                    這次不再是遺憾，而是滿滿的回憶，一起飛回家。
+                    十天好快就過了，還不想回家。<br>
+                    寶貝謝謝你，不僅僅是陪我來這一趟，更是陪著我走過了在到這裡之前這漫長又顛簸的日子，最愛你了呦~
                 </div>
                 <div class="double-ticket-wrapper" id="doubleTicketReturn" data-front="2">
                     <div class="flip-container ticket-layer ticket-1" onclick="handleDoubleTicketReturnClick(1, this)">
@@ -2342,7 +2666,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <img loading="lazy" decoding="async"src="assets/IMG_0070.heic" class="flip-back-img" alt="Airport">
+                                <img src="assets/IMG_0070.heic" class="flip-back-img" alt="Airport">
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">什麼時候會再來呢...?</div>
                                 </div>
@@ -2373,7 +2697,7 @@
                                 </div>
                             </div>
                             <div class="flip-back">
-                                <img loading="lazy" decoding="async"src="assets/att.Z_nMEDgQiqmPkAf-py1NLrFpfiLgJYxHypghhz9CsFo.jpeg" class="flip-back-img" alt="Sydney Farewell">
+                                <img src="assets/att.Z_nMEDgQiqmPkAf-py1NLrFpfiLgJYxHypghhz9CsFo.jpeg" class="flip-back-img" alt="Sydney Farewell">
                                 <div class="flip-back-overlay">
                                     <div class="handwriting">要回家了 好難過...😢</div>
                                 </div>
@@ -2386,7 +2710,7 @@
 
             <!-- SYD → TPE 返台航線緩衝區 -->
             <div id="flight-syd-tpe-area" class="flight-scroll-area">
-                <div class="flight-hint" id="flightHintSydTpe">Carrying home all those memories... ✈️</div>
+                <div class="flight-hint" id="flightHintSydTpe"> 掰掰 我們的家，下次見! ✈️</div>
             </div>
 
             <!-- Chapter – Captcha -->
@@ -2403,15 +2727,15 @@
                     <div class="captcha-body">
                         <div class="captcha-prompt" id="captchaPrompt">請選取所有<strong>發生在 2024 年</strong>的畫面。</div>
                         <div class="captcha-grid" id="captchaGrid">
-                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/IMG_7940.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_4032.heic" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_1963.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2275.heic" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/IMG_1137.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2410.heic" alt=""></div>
-                            <div class="captcha-cell c-img" data-correct="true"><img loading="lazy" decoding="async"src="assets/fxn 2024-09-28 134749.640.jpeg" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_2810.heic" alt=""></div>
-                            <div class="captcha-cell c-img"><img loading="lazy" decoding="async"src="assets/IMG_6936.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/IMG_7940.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_4032.heic" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_1963.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_2275.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/IMG_1137.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_2410.heic" alt=""></div>
+                            <div class="captcha-cell c-img" data-correct="true"><img src="assets/fxn 2024-09-28 134749.640.jpeg" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_2810.heic" alt=""></div>
+                            <div class="captcha-cell c-img"><img src="assets/IMG_6936.heic" alt=""></div>
                         </div>
                         <div class="captcha-error" id="captchaError"></div>
 
@@ -2426,26 +2750,26 @@
                 <div id="captchaExplanations">
                     <!-- Row 1: pic left, text right -->
                     <div class="cex-row">
-                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/IMG_7940.jpeg" alt="記憶一"></div>
+                        <div class="cex-pic-wrap"><img src="assets/IMG_7940.jpeg" alt="記憶一"></div>
                         <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Spring</div>
-                            <div class="cex-caption">那個下午，我們第一次一起去超市，推著購物車把走道逛了一遍又一遍。</div>
+                            <div class="cex-date">2024 · September</div>
+                            <div class="cex-caption">這是9月某天的約會，去妳家玩的時候你拿出了你的舊相機，說這個拍出來有美顏，於是就有了這個瞬間哈哈。</div>
                         </div>
                     </div>
                     <!-- Row 2: text left, pic right -->
                     <div class="cex-row">
                         <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Summer</div>
-                            <div class="cex-caption">深夜的便利店，霓虹燈把馬路照得很亮，我們坐在外面吃關東煮。</div>
+                            <div class="cex-date">2024 · December</div>
+                            <div class="cex-caption">這是聖誕節的時候我們憶起在信義走走，坐在階梯上兩個人努力底與寒風的樣子哈哈。(寶貝這天很漂亮呦~)</div>
                         </div>
-                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/IMG_1137.jpeg" alt="記憶二"></div>
+                        <div class="cex-pic-wrap"><img src="assets/IMG_1137.jpeg" alt="記憶二"></div>
                     </div>
                     <!-- Row 3: pic left, text right -->
                     <div class="cex-row">
-                        <div class="cex-pic-wrap"><img loading="lazy" decoding="async"src="assets/fxn 2024-09-28 134749.640.jpeg" alt="記憶三"></div>
+                        <div class="cex-pic-wrap"><img src="assets/fxn 2024-09-28 134749.640.jpeg" alt="記憶三"></div>
                         <div class="cex-text-wrap">
-                            <div class="cex-date">2024 · Autumn</div>
-                            <div class="cex-caption">回到雪梨，走過那些熟悉的街道，才發現每一步都藏著我們的故事。</div>
+                            <div class="cex-date">2024 · September</div>
+                            <div class="cex-caption">這是9月的教師節約會~那天寶貝買了迷你小花花，才在說怎麼剛當老師的人就馬上可以過教師節</div>
                         </div>
                     </div>
                     <div class="cex-footer">
@@ -2459,7 +2783,6 @@
                 <div class="year-text">2025</div>
                 <div class="year-sub">轉瞬即逝的第三年</div>
             </div>
-
             <!-- Chapter – 2025 Instagram Story Recap -->
             <div class="story-chapter" id="chap-2025-story" style="height: 100vh;">
                 <div class="story-contained-wrapper" id="storySticky2025">
@@ -2470,23 +2793,49 @@
                         <div class="story-prog-track"><div class="story-prog-fill" id="sProg1"></div></div>
                         <div class="story-prog-track"><div class="story-prog-fill" id="sProg2"></div></div>
                         <div class="story-prog-track"><div class="story-prog-fill" id="sProg3"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg4"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg5"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg6"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg7"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg8"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg9"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg10"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg11"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg12"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg13"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg14"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg15"></div></div>
+                        <div class="story-prog-track"><div class="story-prog-fill" id="sProg16"></div></div>
                     </div>
 
                     <!-- Header -->
                     <div class="story-header">
-                        <img loading="lazy" decoding="async"class="story-avatar" src="assets/B5E039C4-91BD-4F48-9D1D-281A7178449B.jpeg" alt="Frank">
+                        <img loading="lazy" decoding="async" class="story-avatar" src="assets/IMG_7269.jpeg" alt="Frank">
                         <div>
-                            <div class="story-username">Frank &bull; 2025</div>
+                            <div class="story-username">Frank &amp Sydney &bull; 2025</div>
                             <div class="story-time-label">今日</div>
                         </div>
                     </div>
 
                     <!-- Media slides -->
                     <div class="story-media-container" id="storyMediaContainer2025">
-                        <div class="story-slide is-active" id="sSlide0"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st1/400/870" alt="Story 1"></div>
-                        <div class="story-slide" id="sSlide1"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st2/400/870" alt="Story 2"></div>
-                        <div class="story-slide" id="sSlide2"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st3/400/870" alt="Story 3"></div>
-                        <div class="story-slide" id="sSlide3"><img loading="lazy" decoding="async"src="https://picsum.photos/seed/st4/400/870" alt="Story 4"></div>
+                        <div class="story-slide is-active" id="sSlide0"><img loading="lazy" decoding="async" src="assets/IMG_7262.jpeg" alt="Story 1"></div>
+                        <div class="story-slide" id="sSlide1"><video preload="none" src="assets/IMG_1323.mov" loop muted playsinline></video></div>
+                        <div class="story-slide" id="sSlide2"><img loading="lazy" decoding="async" src="assets/IMG_7260.jpeg" alt="Story 3"></div>
+                        <div class="story-slide" id="sSlide3"><img loading="lazy" decoding="async" src="assets/IMG_7263.jpeg" alt="Story 4"></div>
+                        <div class="story-slide" id="sSlide4"><img loading="lazy" decoding="async" src="assets/IMG_7269.jpeg" alt="Story 5"></div>
+                        <div class="story-slide" id="sSlide5"><img loading="lazy" decoding="async" src="assets/IMG_7255.jpeg" alt="Story 6"></div>
+                        <div class="story-slide" id="sSlide6"><img loading="lazy" decoding="async" src="assets/IMG_7253.jpeg" alt="Story 7"></div>
+                        <div class="story-slide" id="sSlide7"><video preload="none" src="assets/bWlvAYYBFMPf.mp4" loop muted playsinline></video></div>
+                        <div class="story-slide" id="sSlide8"><img loading="lazy" decoding="async" src="assets/IMG_3511.jpeg" alt="Story 9"></div>
+                        <div class="story-slide" id="sSlide9"><img loading="lazy" decoding="async" src="assets/IMG_7264.jpeg" alt="Story 10"></div>
+                        <div class="story-slide" id="sSlide10"><img loading="lazy" decoding="async" src="assets/IMG_7259.jpeg" alt="Story 11"></div>
+                        <div class="story-slide" id="sSlide11"><video preload="none" src="assets/568873104768499934.mp4" loop muted playsinline></video></div>
+                        <div class="story-slide" id="sSlide12"><img loading="lazy" decoding="async" src="assets/IMG_7256.jpeg" alt="Story 13"></div>
+                        <div class="story-slide" id="sSlide13"><img loading="lazy" decoding="async" src="assets/IMG_7257.jpeg" alt="Story 14"></div>
+                        <div class="story-slide" id="sSlide14"><img loading="lazy" decoding="async" src="assets/IMG_7265.jpeg" alt="Story 15"></div>
+                        <div class="story-slide" id="sSlide15"><img loading="lazy" decoding="async" src="assets/IMG_7267.jpeg" alt="Story 16"></div>
+                        <div class="story-slide" id="sSlide16"><img loading="lazy" decoding="async" src="assets/IMG_7266.jpeg" alt="Story 17"></div>
                     </div>
 
                     <!-- Tap zones -->
@@ -2496,7 +2845,7 @@
                     <!-- IG-style bottom UI -->
                     <div class="story-bottom-ui">
                         <div class="story-comment-bubble">
-                            <img loading="lazy" decoding="async"src="assets/B5E039C4-91BD-4F48-9D1D-281A7178449B.jpeg" class="story-tiny-avatar" alt="">
+                            <img src="assets/IMG_7269.jpeg" class="story-tiny-avatar" alt="">
                             <span id="storyCommentText"></span>
                         </div>
                         <div class="story-input-bar">
@@ -2518,6 +2867,427 @@
                 <div class="year-sub">Together & Beyond...</div>
             </div>
 
+            <!-- ============================================================
+                 澎湖 · 2026.08.11 – 08.14
+                 Bookended by the domestic boarding passes and the two
+                 shortest globe arcs on the page. Acts 1–4 slot between
+                 the departure and the return.
+                 ============================================================ -->
+
+            <!-- 08.11 · 出發 -->
+            <div class="chapter" id="chap-penghu-depart">
+                <div class="time-badge">Aug 11, 2026 · 台北松山</div>
+                <p class="story-text">
+                    八月十一號，我們各自下了班，在台北車站會合。<br>
+                    第一次去松山機場，也是第一次一起搭國內線。<br>
+                    沒有護照、沒有轉機、沒有時差 —— 只有一張薄薄的登機證，和五十分鐘。
+                </p>
+
+                <div class="double-ticket-wrapper dp-wrap" id="penghuTicketOut" data-front="2" data-auto-reveal>
+                    <div class="flip-container dp-flip ticket-layer ticket-1" onclick="handleTicketStackClick(1, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">FRANK</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS811</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">11AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3A</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">05</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">17:50</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS811</span>
+                                    <span class="dp-stub-seat">3A</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <!-- REPLACE: assets/penghu/d1-tsa-frank.jpg -->
+                                <div class="ph">08.11 · 松山 · FRANK</div>
+                                <div class="dp-back-cap">第一次飛國內線</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-container dp-flip ticket-layer ticket-2" onclick="handleTicketStackClick(2, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">SYDNEY</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS811</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">11AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3B</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">05</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">17:50</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS811</span>
+                                    <span class="dp-stub-seat">3B</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <!-- REPLACE: assets/penghu/d1-tsa-sydney.jpg -->
+                                <div class="ph">08.11 · 松山 · SYDNEY</div>
+                                <div class="dp-back-cap">出發嘍！</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">點後面那張換到前面，點前面那張翻背面 👆</span>
+            </div>
+
+            <!-- 松山 → 馬公：本頁最短的一段航線 -->
+            <div id="flight-tsa-mzg-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintTsaMzg">以前每一條線，都是一個人飛向另一個人。<br>這次，我們一起上飛機。</div>
+            </div>
+
+            <!-- Every Penghu sky lives here, outside the stages, so the days
+                 dissolve into each other instead of cutting. -->
+            <div id="pgBackdrop" aria-hidden="true">
+                <div class="pgb-group" id="pgbFw">
+                    <i class="fw-dusk"></i><i class="fw-night" id="fwNight"></i>
+                </div>
+                <div class="pgb-group" id="pgbDawn">
+                    <i class="dawn-a"></i><i class="dawn-b" id="dawnB"></i><i class="dawn-c" id="dawnC"></i>
+                </div>
+                <div class="pgb-group" id="pgbIso">
+                    <i class="iso-a"></i>
+                </div>
+                <div class="pgb-group" id="pgbBr1">
+                    <i class="iso-a"></i><i class="brg-b" id="br1B"></i><i class="drv-a" id="br1C"></i>
+                </div>
+                <div class="pgb-group" id="pgbDrv">
+                    <i class="drv-a"></i><i class="drv-b" id="drvB"></i><i class="drv-c" id="drvC"></i><i class="drv-d" id="drvD"></i>
+                </div>
+                <div class="pgb-group" id="pgbBr2">
+                    <i class="brg-a"></i><i class="brg-b" id="br2B"></i><i class="d88-a" id="br2C"></i>
+                </div>
+                <div class="pgb-group" id="pgbD88">
+                    <i class="d88-a"></i>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 1 · 08.11 夜 — 火鍋 · 花火 · 撤退 ══════════ -->
+            <div class="chapter" id="chap-penghu-d1">
+                <div class="time-badge">Aug 11 · 馬公的第一個晚上</div>
+                <p class="story-text">
+                    落地的時候天已經半黑了。<br>
+                    我們在一間完全沒聽過的店吃了鍋，湯很燙，冷氣很強，<br>
+                    然後看了一下時間 —— 還來得及。
+                </p>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <!-- REPLACE: assets/penghu/d1-hotpot.jpg -->
+                        <div class="ph">08.11 · 火鍋 · 4:3</div>
+                    </div>
+                    <p class="pg-cap">島上的第一餐</p>
+                </div>
+            </div>
+
+            <div class="pg-stage fw-stage" id="fwStage">
+                <div class="pg-sticky fw-sticky" id="fwSticky">
+                    <div class="fw-sky-group">
+                        <canvas class="fw-canvas" id="fwCanvas"></canvas>
+                        <div class="fw-photo-wrap" id="fwPhotos">
+                            <div class="fw-photo" data-at="0.14" data-win="0.13">
+                                <!-- REPLACE: assets/penghu/d1-fw-01.jpg -->
+                                <div class="ph">08.11 · 花火 01 · 3:4</div>
+                                <div class="fw-photo-cap">說好要拍好看的</div>
+                            </div>
+                            <div class="fw-photo" data-at="0.40" data-win="0.13">
+                                <!-- REPLACE: assets/penghu/d1-fw-02.jpg -->
+                                <div class="ph">08.11 · 花火 02 · 3:4</div>
+                                <div class="fw-photo-cap">結果沒有一張是正常的</div>
+                            </div>
+                            <div class="fw-photo" data-at="0.66" data-win="0.13">
+                                <!-- REPLACE: assets/penghu/d1-fw-03.jpg -->
+                                <div class="ph">08.11 · 花火 03 · 3:4</div>
+                                <div class="fw-photo-cap">你笑到眼睛都不見了</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fw-timer" id="fwTimer">觀音亭 · 21:00 — 剩 10:00</div>
+                    <div class="fw-escape" id="fwEscape">現 在 走</div>
+
+                    <div class="fw-after">
+                        <div class="pg-frame">
+                            <!-- REPLACE: assets/penghu/d1-escape.jpg -->
+                            <div class="ph">08.11 · 撤退 · 4:3</div>
+                        </div>
+                        <p>
+                            我們算好了，在最後一分鐘離開。<br>
+                            煙火還在放，我們已經在路上了。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 2 · 08.12 — 天亮之前 · 跳島 ══════════ -->
+            <div class="pg-stage dawn-stage" id="dawnStage">
+                <div class="pg-sticky dawn-sticky" id="dawnSticky">
+                    <div class="dawn-sun" id="dawnSun"></div>
+                    <div class="dawn-sea"></div>
+                    <div class="pg-day-tag" id="dawnTag" style="color: rgba(255,255,255,0.75);">08.12</div>
+                    <p class="pg-line" id="dawnLine" style="top: 62%; color: rgba(255,255,255,0.92); text-shadow: 0 2px 12px rgba(0,0,0,0.6);">
+                        四點半的鬧鐘。<br>天還是黑的，我們就已經在往碼頭的路上了。
+                    </p>
+                </div>
+            </div>
+
+            <div class="pg-stage iso-stage" id="isoStage">
+                <div class="pg-sticky iso-sticky" id="isoSticky">
+                    <div class="iso-horizon"></div>
+
+                    <div class="iso-sway" id="isoSway">
+                        <!-- 七美 cluster — brisk, that's the "hectic" part -->
+                        <div class="iso-item" data-at="0.08" data-win="0.085">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-qimei-01.jpg --><div class="ph">08.12 · 七美 01 · 3:2</div></div>
+                            <div class="iso-time">07:40 · 七美</div>
+                        </div>
+                        <div class="iso-item" data-at="0.24" data-win="0.085">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-qimei-02.jpg --><div class="ph">08.12 · 七美 02 · 3:2</div></div>
+                            <div class="iso-time">08:15 · 七美</div>
+                        </div>
+
+                        <!-- 雙心石滬 — the one still moment, ~1.6× the dwell -->
+                        <div class="iso-item iso-still" data-at="0.48" data-win="0.13">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-twinheart.jpg --><div class="ph">08.12 · 雙心石滬 · 3:2</div></div>
+                            <div class="iso-time">08:40 · 雙心石滬 — 退潮</div>
+                        </div>
+
+                        <!-- 東吉嶼 cluster -->
+                        <div class="iso-item" data-at="0.72" data-win="0.085">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-dongji-01.jpg --><div class="ph">08.12 · 東吉嶼 01 · 3:2</div></div>
+                            <div class="iso-time">10:20 · 東吉嶼</div>
+                        </div>
+                        <div class="iso-item" data-at="0.85" data-win="0.075">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-dongji-02.jpg --><div class="ph">08.12 · 東吉嶼 02 · 3:2</div></div>
+                            <div class="iso-time">11:02 · 東吉嶼</div>
+                        </div>
+                    </div>
+
+                    <div class="pg-day-tag" id="isoTag" style="color: rgba(255,255,255,0.8);">08.12 · 跳島</div>
+                    <p class="pg-line iso-closing" id="isoClosing">
+                        島跟島看起來是分開的，<br>可是海面下，它們本來就連在一起。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08.12 → 08.13: the night between them, and the palette reset -->
+            <div class="pg-stage pg-bridge" id="br1Stage">
+                <div class="pg-sticky" id="br1Sticky">
+                    <div class="brg-date" id="br1Date">08.13</div>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 3 · 08.13 — 環島 · 追著太陽往西開 ══════════ -->
+            <div class="pg-stage drv-stage" id="drvStage">
+                <div class="pg-sticky drv-sticky" id="drvSticky">
+                    <div class="drv-glow" id="drvGlow"></div>
+                    <div class="drv-sun" id="drvSun"></div>
+                    <div class="drv-ground"></div>
+                    <div class="drv-sea" id="drvSea"></div>
+                    <div class="drv-pillar" id="drvPillar"></div>
+                    <div class="drv-glitter" id="drvGlitter"></div>
+                    <div class="drv-haze" id="drvHaze"></div>
+
+                    <div class="drv-frame" id="drvFrame">
+                        <!-- landscape + short dwell = still driving, never a snap point -->
+                        <div class="drv-item drv-pass" data-at="0.05" data-win="0.05">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-01.jpg --><div class="ph">08.13 · 掠過 01 · 3:2</div></div>
+                        </div>
+                        <!-- portrait + long dwell = we actually parked; these are the snap points -->
+                        <div class="drv-item drv-stop" data-at="0.17" data-win="0.075" data-label="跨海大橋 · 11km">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-01.jpg --><div class="ph">08.13 · 停 01 · 3:4</div></div>
+                        </div>
+                        <div class="drv-item drv-pass" data-at="0.29" data-win="0.05">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-02.jpg --><div class="ph">08.13 · 掠過 02 · 3:2</div></div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.41" data-win="0.075" data-label="大菓葉玄武岩 · 19km">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-02.jpg --><div class="ph">08.13 · 停 02 · 3:4</div></div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.55" data-win="0.075" data-label="二崁聚落 · 26km">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-03.jpg --><div class="ph">08.13 · 停 03 · 3:4</div></div>
+                        </div>
+                        <!-- past the turn west the stops end — we just drove -->
+                        <div class="drv-item drv-pass" data-at="0.72" data-win="0.06">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-03.jpg --><div class="ph">08.13 · 往西 · 3:2</div></div>
+                        </div>
+                    </div>
+
+                    <!-- the two of you, once the sun is down on the water -->
+                    <div class="drv-final" id="drvFinal">
+                        <div class="pg-frame">
+                            <!-- REPLACE: assets/penghu/d3-sunset-01.jpg -->
+                            <div class="ph">08.13 · 夕陽 01 · 3:4</div>
+                        </div>
+                        <div class="pg-frame drv-final-b">
+                            <!-- REPLACE: assets/penghu/d3-sunset-02.jpg -->
+                            <div class="ph">08.13 · 夕陽 02 · 3:4</div>
+                        </div>
+                        <div class="drv-final-cap">島的最西邊，只有我們兩個</div>
+                    </div>
+
+                    <div class="pg-day-tag" id="drvTag" style="color: rgba(255,255,255,0.8);">08.13 · 環島</div>
+                    <div class="drv-odo" id="drvOdo">0 km</div>
+
+                    <p class="pg-line drv-closing" id="drvClosing">
+                        最後在島的最西邊，<br>我們坐在車上，看它掉進海裡。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08.13 → 08.14: dusk out, morning in, so the light chapter below
+                 isn't a hard cut off the back of the sunset -->
+            <div class="pg-stage pg-bridge" id="br2Stage">
+                <div class="pg-sticky" id="br2Sticky">
+                    <div class="brg-date" id="br2Date">08.14</div>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 4 · 08.14 — 早餐 · 第 1188 天 ══════════ -->
+            <div class="chapter" id="chap-penghu-d4">
+                <div class="time-badge">Aug 14 · 最後一天</div>
+                <p class="story-text">
+                    最後一天其實沒有安排什麼。<br>
+                    我們下樓吃了飯店的早餐，兩杯咖啡，一人一盤，<br>
+                    然後回房間收行李。
+                </p>
+                <div class="bf-wrap">
+                    <div class="pg-frame">
+                        <!-- REPLACE: assets/penghu/d4-breakfast.jpg -->
+                        <div class="ph">08.14 · 飯店早餐 · 4:3</div>
+                    </div>
+                    <p class="pg-cap">最普通的一頓，也是最後一頓</p>
+                </div>
+            </div>
+
+            <div class="pg-stage d88-stage" id="d88Stage">
+                <div class="pg-sticky d88-sticky" id="d88Sticky">
+                    <div class="d88-date">2026.08.14 · 澎湖</div>
+                    <div class="d88-count" id="d88Count">0</div>
+                    <div class="d88-unit">三年三個月</div>
+                    <p class="d88-note" id="d88Note">
+                        我們沒有為那天特別安排什麼，<br>
+                        因為前面那三天，本來就是為了它。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08.14 · 回程 -->
+            <div class="chapter" id="chap-penghu-return">
+                <div class="time-badge">Aug 14, 2026 · 馬公</div>
+                <p class="story-text">
+                    三年三個月的那天早上，我們吃了飯店的早餐，收好行李，走到登機門。<br>
+                    這三年，機場一直是最難的那個地方。<br>
+                    那天早上，它只是一個要準時到的地方。
+                </p>
+
+                <div class="double-ticket-wrapper dp-wrap" id="penghuTicketBack" data-front="2" data-auto-reveal>
+                    <div class="flip-container dp-flip ticket-layer ticket-1" onclick="handleTicketStackClick(1, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">FRANK</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS814</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">14AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3A</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">02</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">11:30</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS814</span>
+                                    <span class="dp-stub-seat">3A</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <!-- REPLACE: assets/penghu/d4-mzg-frank.jpg -->
+                                <div class="ph">08.14 · 馬公 · FRANK</div>
+                                <div class="dp-back-cap">回家嘍</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-container dp-flip ticket-layer ticket-2" onclick="handleTicketStackClick(2, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">SYDNEY</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS814</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">14AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3B</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">02</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">11:30</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS814</span>
+                                    <span class="dp-stub-seat">3B</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <!-- REPLACE: assets/penghu/d4-mzg-sydney.jpg -->
+                                <div class="ph">08.14 · 馬公 · SYDNEY</div>
+                                <div class="dp-back-cap">三年三個月快樂 ♡</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">同一班機 · 同一天 · 同一個方向</span>
+            </div>
+
+            <!-- 馬公 → 松山：這三年來，第一次兩個人一起回家 -->
+            <div id="flight-mzg-tsa-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintMzgTsa">這三年裡，第一次，<br>我們一起回家。</div>
+            </div>
+
             <!-- Chapter 10 — Sliding Door Gallery -->
             <div class="chapter" id="chap9">
                 <div class="sd-stage" id="sdStage">
@@ -2526,50 +3296,50 @@
                         <!-- Year label: visible at p=0, fades as gallery begins -->
                         <div class="sd-year-label" id="sdYearLabel">
                             <div class="time-badge">2026 &amp; Beyond</div>
-                            <p class="sd-year-copy">現在，我們各自在自己的人生中努力著。<br>走過了 2025，來到了 2026。<br>時光在走，距離或許還在，但愛妳的心，從未變過。</p>
+                            <p class="sd-year-copy">現在，來到2026，<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
                         </div>
 
                         <!-- Horizontal reveal track -->
                         <div class="sd-track" id="sdTrack">
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_5324.jpeg" alt=""></div>
-                                <p class="sd-caption">Sydney，2022</p>
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_5324.jpeg" alt=""></div>
+                                <p class="sd-caption">今年的鬆餅約會</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-end">
-                                <div class="sd-mask" data-aspect="1.35"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6155.jpeg" alt=""></div>
-                                <p class="sd-caption">相遇的第一年</p>
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="assets/IMG_6155.jpeg" alt=""></div>
+                                <p class="sd-caption">我們的一千天</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6148.jpeg" alt=""></div>
-                                <p class="sd-caption">在一起的日子</p>
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_6148.jpeg" alt=""></div>
+                                <p class="sd-caption">一起出去玩</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="1.35"><video preload="none" class="sd-img" src="assets/video_600325566083629127-AQWShdvc.mov" loop muted playsinline></video></div>
-                                <p class="sd-caption">每一個瞬間</p>
+                                <div class="sd-mask" data-aspect="1.35"><video class="sd-img" src="assets/video_600325566083629127-AQWShdvc.mov" autoplay loop muted playsinline></video></div>
+                                <p class="sd-caption">一起可可愛愛</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-end">
-                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_2770.jpeg" style="width: auto; height: 30vh;" alt=""></div>
-                                <p class="sd-caption">跨越距離</p>
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_2770.jpeg" style="width: auto; height: 30vh;" alt=""></div>
+                                <p class="sd-caption">每個瞬間</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="1.35"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6668.jpeg" alt=""></div>
-                                <p class="sd-caption">回到起點</p>
+                                <div class="sd-mask" data-aspect="1.35"><img class="sd-img" src="assets/IMG_6668.jpeg" alt=""></div>
+                                <p class="sd-caption">都有你</p>
                             </div>
 
                             <div class="sd-item" style="align-self:flex-start">
-                                <div class="sd-mask" data-aspect="0.75"><img loading="lazy" decoding="async"class="sd-img" src="assets/IMG_6152.jpeg" alt=""></div>
-                                <p class="sd-caption">2024，在一起</p>
+                                <div class="sd-mask" data-aspect="0.75"><img class="sd-img" src="assets/IMG_6152.jpeg" alt=""></div>
+                                <p class="sd-caption">也有我</p>
                             </div>
 
                             <div class="sd-item" style="align-self:center">
-                                <div class="sd-mask" data-aspect="1.35" style="height:65vh; width: auto;"><video preload="none" class="sd-img" src="assets/dji_fly_20260205_124642_231_1770267189808_video 2.mp4" loop muted playsinline style="height:65vh; width: 100%;"></video></div>
-                                <p class="sd-caption">2026，繼續走下去</p>
+                                <div class="sd-mask" data-aspect="1.35" style="height:65vh; width: auto;"><video class="sd-img" src="assets/dji_fly_20260205_124642_231_1770267189808_video 2.mp4" autoplay loop muted playsinline style="height:65vh; width: 100%;"></video></div>
+                                <p class="sd-caption">今後，也一起繼續走下去吧</p>
                             </div>
 
                         </div>
@@ -2578,7 +3348,7 @@
                         <div class="sd-final-overlay" id="sdFinalOverlay">
                             <div class="sd-final-inner">
                                 <div class="time-badge">Happy 3rd Anniversary ♡</div>
-                                <p>時光在走，距離或許還在，<br>但愛妳的心，從未變過。</p>
+                                <p>三周年快樂，我的小寶<br>之後的日子，也多多指教喔</p>
                                 <div class="sd-final-sig">Love always, Frank</div>
                             </div>
                         </div>
@@ -2615,43 +3385,43 @@
             
             <div class="vm-track" id="vmTrack">
                 <div class="vm-slide is-active">
-                    <img loading="lazy" decoding="async"src="assets/E93E032E-314F-4910-B54F-124D106A2738.jpeg" alt="">
+                    <img src="assets/E93E032E-314F-4910-B54F-124D106A2738.jpeg" alt="">
                     <div class="vm-caption">大半夜的 只有我們走在USYD的校園裡</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5866.heic" alt="">
+                    <img src="assets/IMG_5866.heic" alt="">
                     <div class="vm-caption">路過了可愛的蘑菇一家人🍄‍🟫</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5858.heic" alt="">
+                    <img src="assets/IMG_5858.heic" alt="">
                     <div class="vm-caption">那天晚上有好多星星喔</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5385.heic" alt="">
+                    <img src="assets/IMG_5385.heic" alt="">
                     <div class="vm-caption">這是我們第一次見面坐的長椅喔</div>
                 </div>
                 <div class="vm-slide">
-                    <video preload="none" src="assets/IMG_5389 2.mp4" loop muted playsinline></video>
+                    <video src="assets/IMG_5389 2.mp4" autoplay loop muted playsinline></video>
                     <div class="vm-caption">還近距離抓到袋貂了！</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5886.heic" alt="">
+                    <img src="assets/IMG_5886.heic" alt="">
                     <div class="vm-caption">還有這朵牆角的玫瑰花，下次再回去的時候就不見了</div>
                 </div>
                 <div class="vm-slide">
-                    <video preload="none" src="assets/IMG_5474.mov" loop muted playsinline></video>
+                    <video src="assets/IMG_5474.mov" autoplay loop muted playsinline></video>
                     <div class="vm-caption">隔天跑去吃最後一次火鍋的我們</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5969.heic" alt="">
+                    <img src="assets/IMG_5969.heic" alt="">
                     <div class="vm-caption">拍了最後一組的拍貼機</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/IMG_5984.heic" alt="">
+                    <img src="assets/IMG_5984.heic" alt="">
                     <div class="vm-caption">到機場了…</div>
                 </div>
                 <div class="vm-slide">
-                    <img loading="lazy" decoding="async"src="assets/05A9D49B-8386-427D-857B-CDA979B8A33C.jpeg" alt="">
+                    <img src="assets/05A9D49B-8386-427D-857B-CDA979B8A33C.jpeg" alt="">
                     <div class="vm-caption">真的要起飛了…小寶你要照顧好自己喔🥹</div>
                 </div>
             </div>
@@ -2667,11 +3437,10 @@
             
             <!-- 隱藏的手寫信 -->
             <div class="final-letter" id="finalLetter">
-                <p>My Dearest Sydney,</p>
-                <p>If you're reading this, it means you've dug through all our memories...</p>
-                <p>We've come so far, from Sydney to Perth, to Taiwan, and back again.</p>
-                <p>Here's to making infinite more memories in 2026 and beyond. I can't wait to see where our journey takes us next.</p>
-                <div class="sig">I love you,<br>Frank</div>
+                <p>給我的小寶,</p>
+                <p>看到這裡，不知道這次這個特別的卡片有沒有出乎意料呢？ 我們在一起三年嘍，光是這一個卡片，根本不夠放我們之間所發生的點點滴滴。開頭的天數是跟著真的日期在跑的，所以希望以後每次想知道我們在一起的天數的時候，就可以進來再重新複習一下過去三年的我們🥰（會不會繼續更新呢 我就先不暴雷了～）</p>
+                <p> 總之，謝謝妳跟我一起走到了這裡，即使我有這麼多的不完美、不成熟、不夠讓你依靠。未來還有很長的路、還有很多的冒險等著我們，不論是開心的、是困難的，我相信我們都會一直在彼此身邊的對嗎？</p>
+                <div class="sig">永遠愛你,<br>Frank</div>
             </div>
             
             <!-- JS 動態生成的拖曳物件將放在這裡 -->
@@ -2796,7 +3565,9 @@
         const starCanvas = document.getElementById('starsCanvas');
         const starCtx = starCanvas.getContext('2d');
         let stars = [];
-        const NUM_STARS = 1200; // 高密度星星，模仿真實太空
+        // Dynamically reduce count for mobile, keep high for desktop
+        const NUM_STARS = window.innerWidth < 768 ? 300 : 1200; 
+        let isDigging = false; // Flag to pause stars during heavy DOM manipulation
 
         function resizeStars() {
             starCanvas.width = window.innerWidth;
@@ -2826,7 +3597,8 @@
 
         function animateCanvasStars() {
             requestAnimationFrame(animateCanvasStars);
-            if (parseFloat(starCanvas.style.opacity) <= 0) return;
+            // Skip drawing if invisible OR if the user is currently dragging an item
+            if (parseFloat(starCanvas.style.opacity) <= 0 || isDigging) return; 
 
             starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
             
@@ -2842,10 +3614,9 @@
                 if (star.y < 0) star.y = starCanvas.height;
                 if (star.y > starCanvas.height) star.y = 0;
 
-                starCtx.beginPath();
-                starCtx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                // Use fillRect instead of arc for a massive performance boost
                 starCtx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                starCtx.fill();
+                starCtx.fillRect(star.x, star.y, star.r * 2, star.r * 2);
             });
         }
         window.addEventListener('resize', resizeStars);
@@ -2855,16 +3626,16 @@
         // ==========================================
         const memoryItems = [
             { type: 'photo', src: 'assets/17796.jpeg' },
-            { type: 'note', text: 'Remember our first coffee date? ☕️' },
+            { type: 'note', text: 'Remember our first date? ☕️' },
             { type: 'photo', src: 'assets/IMG_1318.jpeg' },
             { type: 'note', text: 'So many laughs together... 😂' },
-            { type: 'photo', src: 'assets/IMG_5560.jpeg' },
-            { type: 'photo', src: 'assets/IMG_5974.jpeg' },
+            { type: 'photo', src: 'assets/IMG_7245.webp' },
+            { type: 'photo', src: 'assets/IMG_7246.webp' },
             { type: 'note', text: 'Through all the distance ❤️' },
-            { type: 'photo', src: 'assets/IMG_3499.jpeg' },
-            { type: 'photo', src: 'assets/IMG_2291.jpeg' },
-            { type: 'photo', src: 'assets/IMG_2961.jpeg' },
-            { type: 'photo', src: 'assets/IMG_5124.jpeg' }
+            { type: 'photo', src: 'assets/IMG_7247.webp' },
+            { type: 'photo', src: 'assets/IMG_7248.webp' },
+            { type: 'photo', src: 'assets/IMG_7249.webp' },
+            { type: 'photo', src: 'assets/IMG_7250.webp' }
         ];
 
         let isSandboxInitialized = false;
@@ -2882,7 +3653,7 @@
                 
                 if (item.type === 'photo') {
                     el.classList.add('sandbox-photo');
-                    el.innerHTML = `<img loading="lazy" decoding="async"src="${item.src}" alt="Memory">`;
+                    el.innerHTML = `<img src="${item.src}" alt="Memory">`;
                 } else {
                     el.classList.add('sandbox-note');
                     el.innerHTML = item.text;
@@ -2913,6 +3684,8 @@
         let initialItemX, initialItemY;
 
         function handleDragStart(e) {
+            isDigging = true; // PAUSE CANVAS ANIMATION
+            
             activeItem = e.currentTarget;
             activeItem.style.zIndex = dragZIndex++;
             activeItem.style.transition = 'none'; // 拖曳時取消動畫使跟隨滑鼠更順暢
@@ -2946,6 +3719,8 @@
         }
 
         function handleDragEnd() {
+            isDigging = false; // RESUME CANVAS ANIMATION
+            
             if (!activeItem) return;
             
             activeItem.style.transition = 'box-shadow 0.2s, transform 0.1s';
@@ -3003,7 +3778,16 @@
         let curveSydPer, curvePerSyd, curveTpeSyd, curveSydTpe;
         let lineSydPer, linePerSyd, lineTpeSyd, lineSydTpe;
         let planeSydPer, planePerSyd, planeTpeSyd, planeSydTpe;
-        
+
+        // 澎湖：松山 (TSA) ⇄ 馬公 (MZG) — the shortest arc on the page.
+        // Uses its own Taipei pin rather than the generic taiwanPin: at this
+        // zoom the ~1.5° between "centre of Taiwan" and Songshan is the same
+        // order of magnitude as the whole flight, so it would visibly distort it.
+        let tsaPin, tsaRing, mzgPin, mzgRing;
+        let curveTsaMzg, curveMzgTsa;
+        let lineTsaMzg, lineMzgTsa;
+        let planeTsaMzg, planeMzgTsa;
+
         const GLOBE_RADIUS = 25;
         
         const TAIWAN_LAT = 23.6978;
@@ -3017,7 +3801,33 @@
         let targetCameraPosFlight = new THREE.Vector3();
         let targetCameraPosFlightTpe = new THREE.Vector3();
 
-        function createAirplaneSprite(direction) {
+        let penghuMid = new THREE.Vector3();
+        let penghuCamDir = new THREE.Vector3();
+        let targetCameraPosPenghu = new THREE.Vector3();
+
+        // The whole flight is ~1 unit long on a radius-25 globe, so its framing
+        // is driven by viewport shape rather than a mobile/desktop breakpoint:
+        // pull back far enough that the arc keeps roughly the same share of the
+        // screen width everywhere, and scale the marker + plane to match, or a
+        // wide window ends up with a hairline arc under a giant aeroplane.
+        function penghuCamDist() {
+            const aspect = window.innerWidth / Math.max(window.innerHeight, 1);
+            return Math.max(2.2, Math.min(2.5 / Math.max(aspect, 0.35), 6.5));
+        }
+        let penghuPinScale = 0.13;
+        let penghuPlaneScale = 0.5;
+        function updatePenghuFraming() {
+            const d = penghuCamDist();
+            penghuPinScale = 0.026 * d;
+            penghuPlaneScale = 0.095 * d;
+            if (planeTsaMzg) planeTsaMzg.scale.set(penghuPlaneScale, penghuPlaneScale, 1);
+            if (planeMzgTsa) planeMzgTsa.scale.set(penghuPlaneScale, penghuPlaneScale, 1);
+            if (penghuCamDir.lengthSq() > 0) {
+                targetCameraPosPenghu.copy(penghuMid).addScaledVector(penghuCamDir, d);
+            }
+        }
+
+        function createAirplaneSprite(direction, scale) {
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const ctx = canvas.getContext('2d');
@@ -3039,8 +3849,24 @@
             const texture = new THREE.CanvasTexture(canvas);
             const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
             const sprite = new THREE.Sprite(spriteMat);
-            sprite.scale.set(4, 4, 1);
+            const s = scale || 4;
+            sprite.scale.set(s, s, 1);
             return sprite;
+        }
+
+        // The long-haul arcs bake the plane's heading into the sprite texture,
+        // which works because those arcs always cross the screen the same way.
+        // The Penghu hop is short and viewed from an angled camera, so its
+        // heading is derived from the projected tangent instead — the sprite is
+        // drawn pointing east and rotated in screen space each frame.
+        const _oA = new THREE.Vector3(), _oB = new THREE.Vector3();
+        function orientSpriteAlongCurve(sprite, curve, t) {
+            curve.getPoint(Math.max(0, t - 0.02), _oA).project(camera);
+            curve.getPoint(Math.min(1, t + 0.02), _oB).project(camera);
+            sprite.material.rotation = Math.atan2(
+                (_oB.y - _oA.y) * window.innerHeight,
+                (_oB.x - _oA.x) * window.innerWidth
+            );
         }
 
         function initGlobe() {
@@ -3124,6 +3950,32 @@
             taiwanRing.visible = false;
             globeGroup.add(taiwanRing);
 
+            // 松山 TSA
+            const tsaSph = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - 25.0694), THREE.MathUtils.degToRad(121.5519 + 90));
+            tsaPin = new THREE.Mesh(pinGeo, pinMat);
+            tsaPin.position.setFromSpherical(tsaSph);
+            tsaPin.visible = false;
+            globeGroup.add(tsaPin);
+
+            tsaRing = new THREE.Mesh(ringGeo, ringMat);
+            tsaRing.position.copy(tsaPin.position);
+            tsaRing.lookAt(tsaPin.position.clone().multiplyScalar(2));
+            tsaRing.visible = false;
+            globeGroup.add(tsaRing);
+
+            // 馬公 MZG
+            const mzgSph = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - 23.5655), THREE.MathUtils.degToRad(119.5630 + 90));
+            mzgPin = new THREE.Mesh(pinGeo, pinMat);
+            mzgPin.position.setFromSpherical(mzgSph);
+            mzgPin.visible = false;
+            globeGroup.add(mzgPin);
+
+            mzgRing = new THREE.Mesh(ringGeo, ringMat);
+            mzgRing.position.copy(mzgPin.position);
+            mzgRing.lookAt(mzgPin.position.clone().multiplyScalar(2));
+            mzgRing.visible = false;
+            globeGroup.add(mzgRing);
+
             // 航線曲線
             const vSyd = sydneyPin.position.clone();
             const vPerth = perthPin.position.clone();
@@ -3136,6 +3988,13 @@
             curvePerSyd = new THREE.QuadraticBezierCurve3(vPerth, vMidSydPer, vSyd);
             curveTpeSyd = new THREE.QuadraticBezierCurve3(vTpe, vMidTpeSyd, vSyd);
             curveSydTpe = new THREE.QuadraticBezierCurve3(vSyd, vMidTpeSyd, vTpe);
+
+            // 澎湖：整段弦長只有約 1 個單位，控制點抬得比例上高一些才看得出弧形
+            const vTsa = tsaPin.position.clone();
+            const vMzg = mzgPin.position.clone();
+            const vMidPenghu = vTsa.clone().add(vMzg).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 0.8);
+            curveTsaMzg = new THREE.QuadraticBezierCurve3(vTsa, vMidPenghu, vMzg);
+            curveMzgTsa = new THREE.QuadraticBezierCurve3(vMzg, vMidPenghu, vTsa);
 
             const lineMatDashed = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.6, gapSize: 0.4 });
             
@@ -3151,19 +4010,42 @@
             lineSydTpe = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveSydTpe.getPoints(100)), lineMatDashed);
             lineSydTpe.computeLineDistances(); lineSydTpe.geometry.setDrawRange(0, 0); globeGroup.add(lineSydTpe);
 
+            // 澎湖航線用更細的虛線：0.6 的 dash 放在 1 單位長的弧線上只會畫出一段實線
+            const lineMatDashedFine = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.055, gapSize: 0.04 });
+
+            lineTsaMzg = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveTsaMzg.getPoints(100)), lineMatDashedFine);
+            lineTsaMzg.computeLineDistances(); lineTsaMzg.geometry.setDrawRange(0, 0); globeGroup.add(lineTsaMzg);
+
+            lineMzgTsa = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveMzgTsa.getPoints(100)), lineMatDashedFine);
+            lineMzgTsa.computeLineDistances(); lineMzgTsa.geometry.setDrawRange(0, 0); globeGroup.add(lineMzgTsa);
+
             // 飛機
             planeSydPer = createAirplaneSprite('west'); planeSydPer.visible = false; globeGroup.add(planeSydPer);
             planePerSyd = createAirplaneSprite('east'); planePerSyd.visible = false; globeGroup.add(planePerSyd);
             planeTpeSyd = createAirplaneSprite('southeast'); planeTpeSyd.visible = false; globeGroup.add(planeTpeSyd);
             planeSydTpe = createAirplaneSprite('northwest'); planeSydTpe.visible = false; globeGroup.add(planeSydTpe);
 
+            // 澎湖的兩架都畫成朝右，角度改由 orientSpriteAlongCurve 每幀計算
+            planeTsaMzg = createAirplaneSprite('east', 0.5); planeTsaMzg.visible = false; globeGroup.add(planeTsaMzg);
+            planeMzgTsa = createAirplaneSprite('east', 0.5); planeMzgTsa.visible = false; globeGroup.add(planeMzgTsa);
+
             globeGroup.rotation.set(0, 0, 0); 
             globeGroup.updateMatrixWorld();
 
-            targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33); 
-            let distFlight = window.innerWidth < 768 ? 58 : 45; 
-            targetCameraPosFlight = vMidSydPer.clone().normalize().multiplyScalar(distFlight); 
-            targetCameraPosFlightTpe = vMidTpeSyd.clone().normalize().multiplyScalar(distFlight + 5); 
+            targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33);
+            let distFlight = window.innerWidth < 768 ? 58 : 45;
+            targetCameraPosFlight = vMidSydPer.clone().normalize().multiplyScalar(distFlight);
+            targetCameraPosFlightTpe = vMidTpeSyd.clone().normalize().multiplyScalar(distFlight + 5);
+
+            // 澎湖：從航線平面的側上方取景。若像其他段一樣從正上方俯視，
+            // 這段弧線的高度會正對鏡頭而被壓成一條直線，完全看不出是在飛。
+            // 距離是相對「弧線中點」而非地心 — 其他段的鏡頭都在數十單位外，
+            // 這段必須貼到幾單位內才看得見。
+            penghuMid.copy(curveTsaMzg.getPoint(0.5));
+            const penghuNormal = new THREE.Vector3().crossVectors(vTsa, vMzg).normalize();
+            penghuCamDir.copy(vMidPenghu).normalize().multiplyScalar(0.82)
+                .addScaledVector(penghuNormal, 0.57).normalize();
+            updatePenghuFraming();
 
             window.addEventListener('resize', onWindowResize, false);
             animateGlobe();
@@ -3174,9 +4056,10 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            let distFlight = window.innerWidth < 768 ? 58 : 45; 
+            let distFlight = window.innerWidth < 768 ? 58 : 45;
             targetCameraPosFlight.normalize().multiplyScalar(distFlight);
             targetCameraPosFlightTpe.normalize().multiplyScalar(distFlight + 5);
+            updatePenghuFraming();
         }
 
         function animateGlobe() {
@@ -3192,6 +4075,8 @@
             const p6Area      = document.getElementById('flight-syd-tpe-area');
             const militaryArea = document.getElementById('flight-syd-tpe-military');
             const reunionArea  = document.getElementById('flight-syd-tpe-reunion');
+            const penghuOutArea  = document.getElementById('flight-tsa-mzg-area');
+            const penghuBackArea = document.getElementById('flight-mzg-tsa-area');
             const yearSection = document.getElementById('year2022');
             const voidOverlay = document.getElementById('black-void-overlay');
 
@@ -3207,11 +4092,18 @@
             let p6Rect       = p6Area.getBoundingClientRect();
             let militaryRect = militaryArea ? militaryArea.getBoundingClientRect() : null;
             let reunionRect  = reunionArea  ? reunionArea.getBoundingClientRect()  : null;
+            let penghuOutRect  = penghuOutArea  ? penghuOutArea.getBoundingClientRect()  : null;
+            let penghuBackRect = penghuBackArea ? penghuBackArea.getBoundingClientRect() : null;
 
             planeSydPer.visible = false; planePerSyd.visible = false; planeTpeSyd.visible = false; planeSydTpe.visible = false;
             lineSydPer.geometry.setDrawRange(0, 0); linePerSyd.geometry.setDrawRange(0, 0); lineTpeSyd.geometry.setDrawRange(0, 0); lineSydTpe.geometry.setDrawRange(0, 0);
             if(perthPin) perthPin.visible = false; if(perthRing) perthRing.visible = false;
             if(taiwanPin) taiwanPin.visible = false; if(taiwanRing) taiwanRing.visible = false;
+            if(planeTsaMzg) planeTsaMzg.visible = false; if(planeMzgTsa) planeMzgTsa.visible = false;
+            if(lineTsaMzg) lineTsaMzg.geometry.setDrawRange(0, 0);
+            if(lineMzgTsa) lineMzgTsa.geometry.setDrawRange(0, 0);
+            if(tsaPin) { tsaPin.visible = false; tsaRing.visible = false; }
+            if(mzgPin) { mzgPin.visible = false; mzgRing.visible = false; }
 
             let isExpandingVoid = false;
 
@@ -3316,6 +4208,56 @@
                 planeSydTpe.position.copy(curveSydTpe.getPoint(flightProg));
 
                 const hint = document.getElementById('flightHintSydTpe');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (penghuOutRect && penghuOutRect.top < window.innerHeight && penghuOutRect.bottom > 0) {
+                // 松山 → 馬公
+                let prog = (window.innerHeight - penghuOutRect.top) / (window.innerHeight + penghuOutRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosPenghu, 0.12);
+                camera.lookAt(penghuMid);
+
+                tsaPin.visible = true; tsaRing.visible = true;
+                mzgPin.visible = true; mzgRing.visible = true;
+                tsaPin.scale.setScalar(penghuPinScale);  tsaRing.scale.setScalar(penghuPinScale);
+                mzgPin.scale.setScalar(penghuPinScale);  mzgRing.scale.setScalar(penghuPinScale);
+
+                planeTsaMzg.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineTsaMzg.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeTsaMzg.position.copy(curveTsaMzg.getPoint(flightProg));
+                orientSpriteAlongCurve(planeTsaMzg, curveTsaMzg, flightProg);
+
+                const hint = document.getElementById('flightHintTsaMzg');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (penghuBackRect && penghuBackRect.top < window.innerHeight && penghuBackRect.bottom > 0) {
+                // 馬公 → 松山
+                let prog = (window.innerHeight - penghuBackRect.top) / (window.innerHeight + penghuBackRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosPenghu, 0.12);
+                camera.lookAt(penghuMid);
+
+                tsaPin.visible = true; tsaRing.visible = true;
+                mzgPin.visible = true; mzgRing.visible = true;
+                tsaPin.scale.setScalar(penghuPinScale);  tsaRing.scale.setScalar(penghuPinScale);
+                mzgPin.scale.setScalar(penghuPinScale);  mzgRing.scale.setScalar(penghuPinScale);
+
+                planeMzgTsa.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineMzgTsa.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeMzgTsa.position.copy(curveMzgTsa.getPoint(flightProg));
+                orientSpriteAlongCurve(planeMzgTsa, curveMzgTsa, flightProg);
+
+                const hint = document.getElementById('flightHintMzgTsa');
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             }
             else if (p4Rect.top < window.innerHeight && p4Rect.bottom > 0) {
@@ -3552,6 +4494,11 @@
                             const dt = document.getElementById('doubleTicketReturn');
                             if(dt) dt.classList.add('revealed');
                         }, 1000);
+                    }
+                    // generic: any stack marked data-auto-reveal fans out on entry
+                    const autoStack = entry.target.querySelector('.double-ticket-wrapper[data-auto-reveal]');
+                    if (autoStack) {
+                        setTimeout(() => autoStack.classList.add('revealed'), 1000);
                     }
                     obs.unobserve(entry.target); 
                 }
@@ -3864,6 +4811,19 @@
             applyStack();
         }
 
+        // Same behaviour as handleDoubleTicketClick, but finds its own wrapper
+        // instead of hard-coding an id — so any .double-ticket-wrapper works.
+        function handleTicketStackClick(ticketNum, element) {
+            const wrapper = element.closest('.double-ticket-wrapper');
+            if (!wrapper || !wrapper.classList.contains('revealed')) return;
+            if (wrapper.getAttribute('data-front') !== String(ticketNum)) {
+                wrapper.setAttribute('data-front', String(ticketNum));
+            } else {
+                element.classList.toggle('flipped');
+            }
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
         function handleDoubleTicketClick(ticketNum, element) {
             const wrapper = document.getElementById('doubleTicket');
             if (!wrapper.classList.contains('revealed')) return;
@@ -3988,17 +4948,17 @@
         // 6. Disposable Camera Roll
         // ==========================================
         const DISP_SHOTS = [
-            { type: 'photo', src: 'assets/5EDB0083-ABDF-4E7F-94DB-8EB6B46B729D.jpeg', note: '這片海浪聲，還記得我們嗎？', rot: -4 },
-            { type: 'photo', src: 'assets/fxn 2024-10-12 122022.864.jpeg', note: '走過了萬里，才知道這裡才是起點。', rot: 3 },
-            { type: 'photo', src: 'assets/35E4742A-2F7F-4876-9891-5826A8ACD01E.jpeg', note: '故事始於此，又一起回來了。', rot: -2 },
-            { type: 'photo', src: 'assets/IMG_5784.heic', note: '每一個轉角，都有你的影子。', rot: 2 },
-            { type: 'video', src: 'assets/IMG_8952.mov', note: '那一刻，時間好像靜止了。', rot: -3 },
-            { type: 'photo', src: 'assets/IMG_8962.heic', note: '每一幀，都是我想永遠記住的你。', rot: 4 },
-            { type: 'photo', src: 'assets/1A8CB526-AE50-4A5D-9285-E726EB2D1E6D.jpeg', note: '我們在最熟悉的地方，重新相遇。', rot: -2 },
-            { type: 'photo', src: 'assets/IMG_6334.jpeg', note: '落日把整個港口都染成金色。', rot: 5 },
-            { type: 'photo', src: 'assets/IMG_1198.jpeg', note: '每一個清晨，都有你的咖啡香。', rot: -3 },
-            { type: 'photo', src: 'assets/IMG_0051.heic', note: '這些記憶，會跟著我一輩子。', rot: 3 },
-            { type: 'photo', src: 'assets/Grad_us.jpeg', note: '每一張照片，都是我想留住的你。♡', rot: 0, isFullWidth: true },
+            { type: 'photo', src: 'assets/5EDB0083-ABDF-4E7F-94DB-8EB6B46B729D.jpeg', note: '飛機落地，準備出發喽!', rot: -4 },
+            { type: 'photo', src: 'assets/fxn 2024-10-12 122022.864.jpeg', note: '走走拍拍，今天要去哪裡呢?', rot: 3 },
+            { type: 'photo', src: 'assets/35E4742A-2F7F-4876-9891-5826A8ACD01E.jpeg', note: '原來是來吃(我)朝思暮想的Sandoichi', rot: -2 },
+            { type: 'photo', src: 'assets/IMG_5784.heic', note: '在街邊拍了好多照，今年也很多紫色花花喔', rot: 2 },
+            { type: 'video', src: 'assets/IMG_8952.mov', note: '是誰吃到Peri Peri了那麼開心哈哈', rot: -3 },
+            { type: 'photo', src: 'assets/IMG_8962.heic', note: '當然還要喝Boost才行!', rot: 4 },
+            { type: 'photo', src: 'assets/1A8CB526-AE50-4A5D-9285-E726EB2D1E6D.jpeg', note: '看看後面這是誰家呀', rot: -2 },
+            { type: 'photo', src: 'assets/IMG_6334.jpeg', note: '只有我們兩個的海邊，天空美美的', rot: 5 },
+            { type: 'photo', src: 'assets/IMG_1198.jpeg', note: '是驚喜畢業花花!', rot: -3 },
+            { type: 'photo', src: 'assets/IMG_0051.heic', note: '換好衣服，該收拾行李了...', rot: 3 },
+            { type: 'photo', src: 'assets/Grad_us.jpeg', note: '小寶謝謝你，有你，這趟旅程才完整。♡', rot: 0, isFullWidth: true },
         ];
         let _dispIdx = 0;
 
@@ -4043,14 +5003,14 @@
             frame.className = 'disp-polaroid';
 
             if (shot.type === 'photo') {
-                frame.innerHTML = '<img loading="lazy" decoding="async"class="disp-polaroid-img" src="' + shot.src + '" alt="">' + grain + datEl + ovEl;
+                frame.innerHTML = '<img class="disp-polaroid-img" src="' + shot.src + '" alt="">' + grain + datEl + ovEl;
                 const cap = document.createElement('div');
                 cap.className = 'disp-polaroid-caption';
                 cap.textContent = shot.note;
                 print.appendChild(frame);
                 print.appendChild(cap);
             } else if (shot.type === 'video') {
-                frame.innerHTML = '<video preload="none" class="disp-polaroid-img" src="' + shot.src + '" loop muted playsinline></video>' + grain + datEl + ovEl;
+                frame.innerHTML = '<video class="disp-polaroid-img" src="' + shot.src + '" autoplay loop muted playsinline></video>' + grain + datEl + ovEl;
                 const cap = document.createElement('div');
                 cap.className = 'disp-polaroid-caption';
                 cap.textContent = shot.note;
@@ -4221,6 +5181,423 @@
             });
         });
 
+        // ==========================================
+        // 8. 澎湖 Acts 1–4
+        //    One rAF-throttled listener drives all four stages. Every
+        //    scroll-driven write is transform/opacity — the skies are
+        //    stacked fixed gradients that cross-fade, never re-serialised.
+        // ==========================================
+        const clamp01 = v => v < 0 ? 0 : (v > 1 ? 1 : v);
+        // remap v from [a,b] onto [0,1]
+        const rmap = (v, a, b) => clamp01((v - a) / (b - a));
+
+        // A moment's life across its window, where local runs -1 (arriving) →
+        // 0 (at rest) → +1 (leaving). EDGE is the share of each half-window
+        // spent moving, so the middle (1 - EDGE) is a dead-still plateau.
+        // That hold is what makes a moment feel landed instead of swept past,
+        // and it's what the snap targets land on.
+        const EDGE = 0.42;
+        function dwell(local) {
+            const a = Math.abs(local);
+            if (a <= 1 - EDGE) return 1;
+            if (a >= 1) return 0;
+            return 1 - (a - (1 - EDGE)) / EDGE;
+        }
+        // -1 = entry position, 0 = at rest and flat through the plateau, +1 = exit
+        function travel(local) {
+            if (local < -1 + EDGE) return (local + 1) / EDGE - 1;
+            if (local >  1 - EDGE) return (local - (1 - EDGE)) / EDGE;
+            return 0;
+        }
+
+        // All five stages go through one registry so the frame can do every
+        // layout read first and every write second. Reading a rect after a
+        // style write forces a synchronous layout; interleaving five stages
+        // would cost five of them per frame.
+        //
+        // The pin itself is JS-driven because CSS position:sticky is dead while
+        // html/body carry overflow-x:hidden — but unlike the older stages here,
+        // cssText is only written when the pin state actually changes.
+        const _pgStages = [];
+        function registerStage(stage, sticky, fn, snapAts, backdrop) {
+            if (stage && sticky) _pgStages.push({
+                stage: stage, sticky: sticky, fn: fn, snapAts: snapAts || null,
+                backdrop: backdrop || null,
+                mode: null, h: 0, p: null, q: 0, next: null, bo: -1, so: -1
+            });
+        }
+
+        // How far a stage's tone bleeds past its own block, as a share of the
+        // stage's scroll length. Neighbours overlap by 2×BLEED, which is what
+        // turns every seam into a cross-fade instead of a cut.
+        const BLEED = 0.16;
+        const bleedFade = q => rmap(q, -BLEED, BLEED * 0.35) * (1 - rmap(q, 1 - BLEED * 0.35, 1 + BLEED));
+
+        function updatePenghuActs() {
+            const vh = window.innerHeight;
+            // ---- read pass: no style writes in this loop ----
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (!s.h) s.h = s.stage.offsetHeight - vh;   // constant until resize
+                if (s.h <= 0) { s.p = null; s.next = null; continue; }
+                const top = s.stage.getBoundingClientRect().top;
+                s.next = top >= 0 ? 'before' : (-top >= s.h ? 'after' : 'pinned');
+                const scrolled = -top;
+                s.q = scrolled / s.h;                                  // unclamped, bleeds past both ends
+                s.p = (scrolled < -vh || scrolled > s.h + vh) ? null : clamp01(s.q);
+            }
+            // ---- write pass ----
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (s.next && s.next !== s.mode) {
+                    s.mode = s.next;
+                    // cssText replaces every inline style, so the fade below has
+                    // to be re-applied after it — same frame, so no flash.
+                    s.sticky.style.cssText = s.mode === 'pinned'
+                        ? 'position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;'
+                        : 'position:absolute;top:' + (s.mode === 'after' ? s.h : 0) + 'px;left:0;width:100%;height:100vh;overflow:hidden;';
+                    s.so = -1;
+                }
+                if (s.p === null) {
+                    if (s.bo !== 0 && s.backdrop) { s.backdrop.style.opacity = 0; s.bo = 0; }
+                    continue;
+                }
+                const fade = bleedFade(s.q);
+                if (s.backdrop && fade !== s.bo) { s.backdrop.style.opacity = fade; s.bo = fade; }
+                if (fade !== s.so) { s.sticky.style.opacity = fade; s.so = fade; }
+                s.fn(s.p);
+            }
+        }
+
+        // ---------- Act 1: 花火 ----------
+        const fwStage   = document.getElementById('fwStage');
+        const fwSticky  = document.getElementById('fwSticky');
+        const fwCanvas  = document.getElementById('fwCanvas');
+        const fwTimerEl = document.getElementById('fwTimer');
+        const fwEscape  = document.getElementById('fwEscape');
+        const fwPhotos  = fwStage ? Array.from(fwStage.querySelectorAll('.fw-photo')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: -1
+        })) : [];
+        let fwCtx = null, fwParts = [], fwVisible = false, fwRunning = false;
+        let _fwLastShot = -1, _fwEscaped = false;
+        const FW_SHOW_SECONDS = 600; // a 10-minute show
+
+        function fwResize() {
+            if (!fwCanvas) return;
+            fwCanvas.width  = fwCanvas.clientWidth;
+            fwCanvas.height = fwCanvas.clientHeight;
+        }
+
+        function fwBurst(x, y) {
+            const hue = 25 + Math.random() * 45;          // warm gold/orange
+            const n = window.innerWidth < 768 ? 54 : 78;
+            for (let i = 0; i < n; i++) {
+                const a = (i / n) * Math.PI * 2 + Math.random() * 0.2;
+                const sp = 1.1 + Math.random() * 3.1;
+                fwParts.push({
+                    x: x, y: y,
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    life: 1, decay: 0.011 + Math.random() * 0.012, hue: hue
+                });
+            }
+            if (!fwRunning) { fwRunning = true; requestAnimationFrame(fwLoop); }
+        }
+
+        function fwLoop() {
+            if (!fwCtx || !fwVisible) { fwRunning = false; return; }
+            // trails rather than a hard clear
+            fwCtx.globalCompositeOperation = 'destination-out';
+            fwCtx.fillStyle = 'rgba(0,0,0,0.22)';
+            fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
+            fwCtx.globalCompositeOperation = 'lighter';
+
+            for (let i = fwParts.length - 1; i >= 0; i--) {
+                const p = fwParts[i];
+                p.x += p.vx; p.y += p.vy;
+                p.vy += 0.032;            // gravity
+                p.vx *= 0.987; p.vy *= 0.987;
+                p.life -= p.decay;
+                if (p.life <= 0) { fwParts.splice(i, 1); continue; }
+                fwCtx.fillStyle = 'hsla(' + p.hue + ',100%,' + (58 + p.life * 22) + '%,' + p.life + ')';
+                fwCtx.fillRect(p.x, p.y, 2, 2);
+            }
+            if (fwParts.length) { requestAnimationFrame(fwLoop); }
+            else { fwRunning = false; fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height); }
+        }
+
+        function updateAct1(p) {
+            // dusk hasn't finished falling when the stage opens — hold the light
+            // sky briefly so arriving from the hotpot chapter isn't a hard cut
+            document.getElementById('fwNight').style.opacity = rmap(p, 0.02, 0.16);
+
+            // the show runs 0 → 0.86; the last minute is the window to leave
+            const showProg = clamp01(p / 0.86);
+            const left = Math.max(0, Math.round(FW_SHOW_SECONDS * (1 - showProg)));
+            const mm = String(Math.floor(left / 60)).padStart(2, '0');
+            const ss = String(left % 60).padStart(2, '0');
+            fwTimerEl.textContent = '觀音亭 · 21:00 — 剩 ' + mm + ':' + ss;
+            fwTimerEl.classList.toggle('urgent', left <= 60);
+
+            // each photo holds through its plateau, then cross-fades to the next
+            let dominant = -1, bestO = 0.5;
+            for (let i = 0; i < fwPhotos.length; i++) {
+                const it = fwPhotos[i];
+                const local = (p - it.at) / it.win;
+                const o = (local <= -1 || local >= 1) ? 0 : dwell(local);
+                if (o !== it.o) {
+                    it.o = o;
+                    it.el.style.opacity = o;
+                    it.el.style.transform = 'scale(' + (0.94 + o * 0.06).toFixed(3) + ')';
+                }
+                if (o > bestO) { bestO = o; dominant = i; }
+            }
+            if (dominant !== _fwLastShot) {
+                if (fwVisible && dominant > _fwLastShot && dominant >= 0) {
+                    fwBurst(fwCanvas.width * (0.3 + Math.random() * 0.4),
+                            fwCanvas.height * (0.18 + Math.random() * 0.22));
+                    if (navigator.vibrate) navigator.vibrate(18);
+                }
+                _fwLastShot = dominant;
+            }
+
+            // T-01:00 — the prompt
+            fwEscape.classList.toggle('show', left <= 60 && !_fwEscaped);
+        }
+
+        function fwDoEscape() {
+            if (_fwEscaped) return;
+            _fwEscaped = true;
+            fwSticky.classList.add('escaped');
+            fwEscape.classList.remove('show');
+            if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+        }
+        if (fwEscape) fwEscape.addEventListener('click', fwDoEscape);
+
+        if (fwCanvas) {
+            fwCtx = fwCanvas.getContext('2d');
+            new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    fwVisible = e.isIntersecting;
+                    if (fwVisible) {
+                        fwResize();
+                        if (fwParts.length && !fwRunning) { fwRunning = true; requestAnimationFrame(fwLoop); }
+                    } else {
+                        fwParts.length = 0;   // nothing left running offscreen
+                    }
+                });
+            }, { threshold: 0.05 }).observe(fwStage);
+        }
+
+        // ---------- Act 2a: 天亮之前 ----------
+        const dawnStage = document.getElementById('dawnStage');
+        const dawnSticky = document.getElementById('dawnSticky');
+        function updateAct2Dawn(p) {
+            // cold, short, rising — the mirror of 08.13's long warm fall
+            document.getElementById('dawnB').style.opacity = rmap(p, 0.15, 0.55);
+            document.getElementById('dawnC').style.opacity = rmap(p, 0.50, 0.92);
+            const sun = document.getElementById('dawnSun');
+            const rise = rmap(p, 0.55, 1);
+            sun.style.opacity = rise;
+            sun.style.transform = 'translateY(' + (40 - rise * 52) + 'px)';
+            document.getElementById('dawnTag').style.opacity = rmap(p, 0.02, 0.12);
+            document.getElementById('dawnLine').classList.toggle('is-vis', p > 0.18 && p < 0.88);
+        }
+
+        // ---------- Act 2b: 跳島 ----------
+        const isoStage = document.getElementById('isoStage');
+        const isoSticky = document.getElementById('isoSticky');
+        const isoSway = document.getElementById('isoSway');
+        const isoItems = isoStage ? Array.from(isoStage.querySelectorAll('.iso-item')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: 0
+        })) : [];
+        function updateAct2Iso(p) {
+            // the boat's roll — bound to scroll, so it stops when you stop
+            const sway = Math.sin(p * 11) * 1.5;
+            const heave = Math.sin(p * 7.3 + 1.1) * 8;
+            isoSway.style.transform = 'translateY(' + heave.toFixed(2) + 'px) rotate(' + sway.toFixed(2) + 'deg)';
+
+            for (let i = 0; i < isoItems.length; i++) {
+                const it = isoItems[i];
+                const local = (p - it.at) / it.win;
+                if (local <= -1 || local >= 1) {
+                    if (it.o !== 0) { it.el.style.opacity = 0; it.o = 0; }
+                    continue;
+                }
+                // crest up out of the horizon, hold dead still, sink back under
+                const away = Math.abs(travel(local));
+                const rise  = -32 + away * 78;
+                const scale = 1 - away * 0.28;
+                const op = dwell(local);
+                it.o = op;
+                it.el.style.opacity = op;
+                it.el.style.transform = 'translate(-50%, ' + rise.toFixed(1) + '%) scale(' + scale.toFixed(3) + ')';
+            }
+
+            document.getElementById('isoTag').style.opacity = rmap(p, 0.01, 0.08) * (1 - rmap(p, 0.88, 0.96));
+            document.getElementById('isoClosing').classList.toggle('is-vis', p > 0.93);
+        }
+
+        // ---------- bridges: the night between two days ----------
+        function makeBridge(bId, cId, dateId) {
+            const bEl = document.getElementById(bId);
+            const cEl = document.getElementById(cId);
+            const dEl = document.getElementById(dateId);
+            return function (p) {
+                bEl.style.opacity = rmap(p, 0.05, 0.38);            // into the dark
+                cEl.style.opacity = rmap(p, 0.60, 0.95);            // out into morning
+                // the date only exists in the fully dark middle
+                dEl.style.opacity = rmap(p, 0.28, 0.42) * (1 - rmap(p, 0.56, 0.70));
+            };
+        }
+
+        // ---------- Act 3: 追著太陽往西開 ----------
+        const drvStage = document.getElementById('drvStage');
+        const drvSticky = document.getElementById('drvSticky');
+        const drvItems = drvStage ? Array.from(drvStage.querySelectorAll('.drv-item')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win),
+            stop: el.classList.contains('drv-stop'), o: 0
+        })) : [];
+        const DRV_TOTAL_KM = 58;
+        function updateAct3(p) {
+            // flat noon light until we turn west at p≈0.56, then the long fall
+            document.getElementById('drvB').style.opacity = rmap(p, 0.56, 0.68);
+            document.getElementById('drvC').style.opacity = rmap(p, 0.67, 0.80);
+            document.getElementById('drvD').style.opacity = rmap(p, 0.79, 0.94);
+
+            // reaching the west coast: the land band becomes water
+            document.getElementById('drvSea').style.opacity = rmap(p, 0.50, 0.66);
+
+            // fall = 0 at 20% height, 1 when the sun is half-swallowed by the sea
+            // (sea starts at 76%, so 62vh of travel puts its centre just under)
+            const fall = rmap(p, 0.56, 0.92);
+            const sun = document.getElementById('drvSun');
+            sun.style.opacity = rmap(p, 0.50, 0.60);
+            sun.style.transform = 'translateY(' + (fall * 62).toFixed(1) + 'vh) scale(' + (1 + fall * 0.5).toFixed(3) + ')';
+
+            // the bloom rides down with the sun, flattening and spreading wide
+            // across the water the closer it gets — that lateral spread is most
+            // of what sells a sunset over sea rather than a disc on a gradient
+            const glow = document.getElementById('drvGlow');
+            glow.style.opacity = rmap(p, 0.54, 0.70) * (1 - rmap(p, 0.94, 1.0) * 0.35);
+            glow.style.transform = 'translateY(' + (fall * 62).toFixed(1) + 'vh) scale('
+                + (0.34 + fall * 0.72).toFixed(3) + ',' + (0.30 + fall * 0.34).toFixed(3) + ')';
+
+            // reflection column: grows down the water as the sun settles onto it
+            const pillar = document.getElementById('drvPillar');
+            const glitter = document.getElementById('drvGlitter');
+            const refl = rmap(p, 0.68, 0.93);
+            pillar.style.opacity = refl * 0.95;
+            pillar.style.transform = 'scale(' + (0.55 + refl * 0.75).toFixed(3) + ',' + (0.22 + refl * 0.78).toFixed(3) + ')';
+            glitter.style.opacity = refl * 0.7;
+            glitter.style.transform = 'scale(' + (0.5 + refl * 0.6).toFixed(3) + ',' + (0.3 + refl * 0.7).toFixed(3) + ')';
+            document.getElementById('drvHaze').style.opacity = rmap(p, 0.62, 0.78);
+
+            // the line first, then the photos of exactly that — they cross-fade
+            // rather than sharing the frame
+            const fin = document.getElementById('drvFinal');
+            const finP = rmap(p, 0.89, 0.97);
+            fin.style.opacity = finP;
+            fin.style.transform = 'translateY(' + ((1 - finP) * 16).toFixed(1) + 'px)';
+
+            for (let i = 0; i < drvItems.length; i++) {
+                const it = drvItems[i];
+                const local = (p - it.at) / it.win;
+                if (local <= -1 || local >= 1) {
+                    if (it.o !== 0) { it.el.style.opacity = 0; it.o = 0; }
+                    continue;
+                }
+                // enters right, exits left. A stop holds dead centre through its
+                // plateau; a pass has a much shorter window so it just streaks by.
+                const x = -travel(local) * (it.stop ? 108 : 124);
+                const op = dwell(local);
+                it.o = op;
+                it.el.style.opacity = op;
+                it.el.style.transform = 'translate(' + x.toFixed(1) + 'vw, -50%)';
+            }
+
+            // a road trip is measured in distance, not time
+            const km = Math.round(clamp01(p / 0.92) * DRV_TOTAL_KM);
+            const active = drvItems.find(it => it.stop && it.o > 0.85);
+            document.getElementById('drvOdo').textContent =
+                active ? active.el.dataset.label : km + ' km';
+
+            document.getElementById('drvTag').style.opacity = rmap(p, 0.01, 0.08) * (1 - rmap(p, 0.55, 0.66));
+            document.getElementById('drvClosing').classList.toggle('is-vis', p > 0.82 && p < 0.93);
+        }
+
+        // ---------- Act 4: 第 1188 天 ----------
+        const d88Stage = document.getElementById('d88Stage');
+        const d88Sticky = document.getElementById('d88Sticky');
+        const d88Count = document.getElementById('d88Count');
+        // derived from the same start date as the counter at the top of the page
+        const PENGHU_DAY = Math.floor(
+            (new Date(2026, 7, 14) - new Date(2023, 4, 14)) / 86400000
+        );
+        let _d88Last = -1;
+        function updateAct4(p) {
+            const eased = 1 - Math.pow(1 - rmap(p, 0.08, 0.62), 3);
+            const n = Math.floor(eased * PENGHU_DAY);
+            if (n !== _d88Last) { d88Count.textContent = n; _d88Last = n; }
+            document.getElementById('d88Note').classList.toggle('is-vis', p > 0.66);
+        }
+
+        // ---------- gentle position snap ----------
+        // Only in the two photo galleries, and in 08.13 only on the stops — you
+        // settle where the car actually parked, never mid-drive. Fires on scroll
+        // idle, so it never fights an in-progress gesture or momentum.
+        const _reduceMotion = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let _snapTimer = null, _snapLock = false;
+
+        function trySnap() {
+            if (_snapLock || _reduceMotion) return;
+            const y = window.scrollY, vh = window.innerHeight;
+            let best = null, bestD = Infinity;
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (!s.snapAts || s.p === null || s.mode !== 'pinned') continue;
+                const stageTop = s.stage.getBoundingClientRect().top + y;
+                for (let j = 0; j < s.snapAts.length; j++) {
+                    const target = stageTop + s.snapAts[j] * s.h;
+                    const d = Math.abs(target - y);
+                    if (d < bestD) { bestD = d; best = target; }
+                }
+            }
+            // already settled, or too far away to be what the reader meant
+            if (best === null || bestD < 6 || bestD > vh * 0.5) return;
+            _snapLock = true;
+            window.scrollTo({ top: Math.round(best), behavior: 'smooth' });
+            setTimeout(() => { _snapLock = false; }, 750);
+        }
+
+        // ---------- one listener for all five ----------
+        const $ = id => document.getElementById(id);
+        registerStage(fwStage,   fwSticky,   updateAct1,     null, $('pgbFw'));
+        registerStage(dawnStage, dawnSticky, updateAct2Dawn, null, $('pgbDawn'));
+        registerStage(isoStage,  isoSticky,  updateAct2Iso,
+                      isoItems.map(it => it.at), $('pgbIso'));
+        registerStage($('br1Stage'), $('br1Sticky'), makeBridge('br1B', 'br1C', 'br1Date'), null, $('pgbBr1'));
+        registerStage(drvStage,  drvSticky,  updateAct3,
+                      drvItems.filter(it => it.stop).map(it => it.at), $('pgbDrv'));
+        registerStage($('br2Stage'), $('br2Sticky'), makeBridge('br2B', 'br2C', 'br2Date'), null, $('pgbBr2'));
+        registerStage(d88Stage,  d88Sticky,  updateAct4,     null, $('pgbD88'));
+
+        let _pgTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!_pgTicking) {
+                _pgTicking = true;
+                requestAnimationFrame(() => { updatePenghuActs(); _pgTicking = false; });
+            }
+            clearTimeout(_snapTimer);
+            _snapTimer = setTimeout(trySnap, 170);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            fwResize();
+            // heights are vh-based, so both the cache and the pin state are stale
+            for (let i = 0; i < _pgStages.length; i++) { _pgStages[i].h = 0; _pgStages[i].mode = null; }
+            updatePenghuActs();
+        });
+
         // ── Captcha + 2025 Story ──
         (function() {
             const grid         = document.getElementById('captchaGrid');
@@ -4235,19 +5612,6 @@
             const chapCaptcha  = document.getElementById('chap-captcha');
             const chapStory    = document.getElementById('chap-2025-story');
             if (!grid) return;
-
-            // 2025 phase images — replace with real asset paths when ready
-            const PHASE2_IMAGES = [
-                'assets/2025_01.jpeg',
-                'assets/2025_02.jpeg',
-                'assets/2025_03.jpeg',
-                'assets/2025_04.jpeg',
-                'assets/2025_05.jpeg',
-                'assets/2025_06.jpeg',
-                'assets/2025_07.jpeg',
-                'assets/2025_08.jpeg',
-                'assets/2025_09.jpeg'
-            ];
 
             const allCells = Array.from(grid.querySelectorAll('.captcha-cell'));
             let phase = 1;
@@ -4312,11 +5676,35 @@
                 explanations.classList.remove('is-visible');
                 setTimeout(() => { explanations.style.display = 'none'; }, 600);
 
-                allCells.forEach((c, i) => {
+                // 2025 Dataset: 9 new memories for the Phase 2 Captcha
+                const images2025 = [
+                    'assets/IMG_7262.jpeg',
+                    'assets/IMG_7260.jpeg',
+                    'assets/IMG_7263.jpeg',
+                    'assets/IMG_7269.jpeg',
+                    'assets/IMG_7255.jpeg',
+                    'assets/IMG_7253.jpeg',
+                    'assets/IMG_3511.jpeg',
+                    'assets/IMG_7264.jpeg',
+                    'assets/IMG_7259.jpeg'
+                ];
+
+                allCells.forEach((c, index) => {
                     c.classList.remove('is-correct', 'is-wrong', 'is-selected');
-                    const img = c.querySelector('img');
-                    if (img && PHASE2_IMAGES[i]) img.src = PHASE2_IMAGES[i];
+                    
+                    // Swap the image source to the 2025 dataset
+                    const imgEl = c.querySelector('img');
+                    if (imgEl && images2025[index]) {
+                        // Optional: Add a quick fade effect for a smooth transition
+                        imgEl.style.opacity = 0;
+                        setTimeout(() => {
+                            imgEl.src = images2025[index];
+                            imgEl.style.opacity = 1;
+                            imgEl.style.transition = 'opacity 0.3s ease';
+                        }, 300);
+                    }
                 });
+
                 updateStatus();
                 prompt.style.color = '';
                 prompt.innerHTML = '最終驗證：請選取所有<strong>發生在 2025 年</strong>的美好回憶。';
@@ -4380,12 +5768,25 @@
 
             // ── Story init (called after reveal) ──
             function initStory2025() {
-                const SLIDES = 4;
+                const SLIDES = 17;
                 const DESCRIPTIONS = [
-                    '終於在Sydney見到你了 💛',
-                    '一起去了好多地方，好多第一次',
-                    '你離開的那天，我捨不得',
-                    '2025 還沒結束，我們還在繼續'
+                    '今年的第一站就來找小狐蒙玩🐾',
+                    '你都比我受歡迎…',
+                    '來吃鐵木的蛋糕嘍，超好吃～🍰',
+                    '今年最累但也最印象深刻的一次約會',
+                    '我們第一次一起做蛋糕❤️🎂',
+                    '被我們逛到爛的通化街夜市',
+                    '看看誰生日啦🙋‍♂️',
+                    '今天是桃園一日遊喔～',
+                    '看看又換誰生日啦',
+                    '今天是我們的25個月喔！',
+                    '我們開始養成了鯛魚燒報備的習慣🐟',
+                    '小寶鯛魚燒 好開心🥰',
+                    '淡水一日遊 好漂亮🌅',
+                    '今天跟某人來吃Foldie哈哈哈',
+                    '我們的獨旅 第一次開車載寶貝🚗',
+                    '台中好好玩～',
+                    '我們一起去吃了這個很有澳洲感的漢堡店🍔'
                 ];
                 const fills       = Array.from({length: SLIDES}, (_, i) => document.getElementById('sProg' + i));
                 const slides      = Array.from({length: SLIDES}, (_, i) => document.getElementById('sSlide' + i));
@@ -4411,7 +5812,22 @@
                     if (idx < 0) idx = SLIDES - 1;
                     current = idx;
 
-                    slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+                    slides.forEach((s, i) => {
+                        const isActive = i === idx;
+                        s.classList.toggle('is-active', isActive);
+                        
+                        // Performance: Stop background videos, play only active video
+                        const vid = s.querySelector('video');
+                        if (vid) {
+                            if (isActive) {
+                                vid.currentTime = 0; // Restart video like a real IG story
+                                vid.play().catch(e => console.log("Story video playback prevented", e));
+                            } else {
+                                vid.pause();
+                            }
+                        }
+                    });
+                    
                     setCommentText(DESCRIPTIONS[idx]);
 
                     fills.forEach((f, i) => {
@@ -4424,7 +5840,7 @@
                         } else {
                             f.style.transition = 'none';
                             f.style.width = '0%';
-                            void f.offsetWidth;
+                            void f.offsetWidth; // Force layout reflow
                             f.style.transition = `width ${SLIDE_DURATION}ms linear`;
                             f.style.width = '100%';
                         }
@@ -4442,37 +5858,18 @@
                             goTo(0);
                         } else {
                             clearTimeout(storyTimer);
+                            // Safety pause if user scrolls away from the story
+                            const activeSlide = slides[current];
+                            if(activeSlide) {
+                                const vid = activeSlide.querySelector('video');
+                                if (vid) vid.pause();
+                            }
                         }
                     });
                 }, { threshold: 0.3 });
 
                 observer.observe(document.getElementById('chap-2025-story'));
-                goTo(0);
             }
-        })();
-
-        // ── Video autoplay via IntersectionObserver ──
-        (function() {
-            const vObs = new IntersectionObserver(function(entries) {
-                entries.forEach(function(e) {
-                    if (e.isIntersecting) e.target.play().catch(function(){});
-                    else                  e.target.pause();
-                });
-            }, { threshold: 0.1 });
-
-            function watchVideo(v) { v.muted = true; vObs.observe(v); }
-
-            document.querySelectorAll('video').forEach(watchVideo);
-
-            // Also observe videos injected dynamically (e.g. disposable camera)
-            new MutationObserver(function(muts) {
-                muts.forEach(function(m) {
-                    m.addedNodes.forEach(function(n) {
-                        if (n.nodeName === 'VIDEO') watchVideo(n);
-                        else if (n.querySelectorAll) n.querySelectorAll('video').forEach(watchVideo);
-                    });
-                });
-            }).observe(document.body, { childList: true, subtree: true });
         })();
 
     </script>
