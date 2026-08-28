@@ -1519,8 +1519,8 @@
         .pgb-group > i { position: absolute; inset: 0; display: block; opacity: 0; }
         .pgb-group > i:first-child { opacity: 1; }
 
-        /* short night between days — the boundary is a beat, not a cut */
-        .pg-bridge  { height: 150vh; }
+        /* the night between days — a held beat, long enough to read the date */
+        .pg-bridge  { height: 260vh; }
         .brg-a { background: linear-gradient(180deg, #2b2b45 0%, #7b4a63 46%, #d4694a 78%, #f0925a 100%); }
         .brg-b { background: linear-gradient(180deg, #05070e 0%, #080b16 60%, #0b0f1c 100%); }
         .brg-date {
@@ -1607,7 +1607,7 @@
         .iso-sway { position: absolute; inset: 0; z-index: 5; will-change: transform; }
         /* centring lives in the JS transform (translateX(-50%)) so it can't
            fight the scroll-driven translateY/scale */
-        .iso-item { position: absolute; left: 50%; top: 55%; width: min(268px, 72vw);
+        .iso-item { position: absolute; left: 50%; top: 33%; width: min(268px, 72vw);
             opacity: 0; will-change: transform, opacity; }
         .iso-item .pg-frame { width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
         .iso-time { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.85);
@@ -1723,9 +1723,9 @@
            by the vehicle rAF ticker, whose speed eases to ~0 whenever a
            still / parked photo is at rest. */
         .iso-boat {
-            position: absolute; left: 45%; top: 41%; width: min(256px, 54vw);
+            position: absolute; left: 40%; bottom: 21%; width: min(288px, 62vw);
             z-index: 3; opacity: 0.34; pointer-events: none; will-change: transform;
-            transform: translateX(-50%); transform-origin: 46% 82%;
+            transform: translateX(-50%); transform-origin: 50% 74%;
             filter: drop-shadow(0 6px 10px rgba(18,42,58,0.18));
             animation: isoBob 4.8s ease-in-out infinite;
         }
@@ -3308,31 +3308,31 @@
                     <div class="drv-lighthouse" id="drvLighthouse">
                         <svg viewBox="0 0 108 284" aria-hidden="true">
                             <!-- rock base -->
-                            <path d="M6,278 C10,250 22,238 40,236 L70,236 C88,238 100,252 104,278 Z" fill="#3b3630"/>
+                            <path d="M6,278 C10,250 22,238 40,236 L70,236 C88,238 100,252 104,278 Z" fill="#3a3a3a"/>
                             <!-- tapered tower -->
                             <path d="M38,232 L30,96 C30,90 36,86 54,86 C72,86 78,90 78,96 L70,232
-                                     C70,236 64,238 54,238 C44,238 38,236 38,232 Z" fill="#efe9df"/>
-                            <!-- colour bands -->
-                            <path d="M33,150 L75,150 L74,178 L34,178 Z" fill="#c9514a"/>
-                            <path d="M31,206 L77,206 L76,230 L32,230 Z" fill="#c9514a"/>
+                                     C70,236 64,238 54,238 C44,238 38,236 38,232 Z" fill="#efefec"/>
+                            <!-- black bands -->
+                            <path d="M33,150 L75,150 L74,178 L34,178 Z" fill="#262626"/>
+                            <path d="M31,206 L77,206 L76,230 L32,230 Z" fill="#262626"/>
                             <!-- gallery deck -->
-                            <rect x="24" y="78" width="60" height="10" rx="3" fill="#6d6a64"/>
-                            <g stroke="#6d6a64" stroke-width="2.4" stroke-linecap="round">
+                            <rect x="24" y="78" width="60" height="10" rx="3" fill="#555"/>
+                            <g stroke="#555" stroke-width="2.4" stroke-linecap="round">
                                 <line x1="30" y1="78" x2="30" y2="66"/><line x1="42" y1="78" x2="42" y2="66"/>
                                 <line x1="54" y1="78" x2="54" y2="66"/><line x1="66" y1="78" x2="66" y2="66"/>
                                 <line x1="78" y1="78" x2="78" y2="66"/>
                                 <line x1="28" y1="66" x2="80" y2="66"/>
                             </g>
                             <!-- lantern room -->
-                            <path d="M38,66 L38,44 C38,36 45,30 54,30 C63,30 70,36 70,44 L70,66 Z" fill="#42484f"/>
+                            <path d="M38,66 L38,44 C38,36 45,30 54,30 C63,30 70,36 70,44 L70,66 Z" fill="#333"/>
                             <!-- the light -->
-                            <circle class="drv-lh-glow" cx="54" cy="48" r="18" fill="rgba(255,224,150,0.85)"/>
-                            <circle cx="54" cy="48" r="7" fill="#fff6dd"/>
+                            <circle class="drv-lh-glow" cx="54" cy="48" r="18" fill="rgba(248,248,245,0.9)"/>
+                            <circle cx="54" cy="48" r="7" fill="#ffffff"/>
                             <!-- roof + finial -->
-                            <path d="M34,30 L54,10 L74,30 Z" fill="#3b4149"/>
-                            <circle cx="54" cy="8" r="3.4" fill="#3b4149"/>
+                            <path d="M34,30 L54,10 L74,30 Z" fill="#2e2e2e"/>
+                            <circle cx="54" cy="8" r="3.4" fill="#2e2e2e"/>
                             <!-- door -->
-                            <path d="M48,238 L48,218 C48,214 60,214 60,218 L60,238 Z" fill="#5b544b"/>
+                            <path d="M48,238 L48,218 C48,214 60,214 60,218 L60,238 Z" fill="#444"/>
                         </svg>
                     </div>
 
@@ -5633,9 +5633,10 @@
         const _isoStill = isoItems.find(it => it.el.classList.contains('iso-still'))
             || { at: 0.48, win: 0.13 };
         function updateAct2Iso(p) {
-            // the boat's roll — bound to scroll, so it stops when you stop
-            const sway = Math.sin(p * 11) * 1.5;
-            const heave = Math.sin(p * 7.3 + 1.1) * 8;
+            // a whisper of roll on the photo group — the real motion is on the
+            // boat down below (its own CSS bob); the photos ride high and calm
+            const sway = Math.sin(p * 11) * 0.55;
+            const heave = Math.sin(p * 7.3 + 1.1) * 3;
             isoSway.style.transform = 'translateY(' + heave.toFixed(2) + 'px) rotate(' + sway.toFixed(2) + 'deg)';
 
             // the boat's own bob/rock is CSS — here we only tell the ticker how
@@ -5650,9 +5651,9 @@
                     if (it.o !== 0) { it.el.style.opacity = 0; it.o = 0; }
                     continue;
                 }
-                // crest up out of the horizon, hold dead still, sink back under
+                // rise into the top of the frame, hold dead still, drift back down
                 const away = Math.abs(travel(local));
-                const rise  = -32 + away * 78;
+                const rise  = -24 + away * 62;
                 const scale = 1 - away * 0.28;
                 const op = dwell(local);
                 it.o = op;
@@ -5670,10 +5671,10 @@
             const cEl = document.getElementById(cId);
             const dEl = document.getElementById(dateId);
             return function (p) {
-                bEl.style.opacity = rmap(p, 0.05, 0.38);            // into the dark
-                cEl.style.opacity = rmap(p, 0.60, 0.95);            // out into morning
-                // the date only exists in the fully dark middle
-                dEl.style.opacity = rmap(p, 0.28, 0.42) * (1 - rmap(p, 0.56, 0.70));
+                bEl.style.opacity = rmap(p, 0.04, 0.26);            // into the dark
+                cEl.style.opacity = rmap(p, 0.74, 0.97);            // out into morning
+                // the date holds through the long dark middle
+                dEl.style.opacity = rmap(p, 0.13, 0.29) * (1 - rmap(p, 0.70, 0.86));
             };
         }
 
@@ -5760,19 +5761,24 @@
             }
 
             // ── the car: drives (wheels/lane-lines via the rAF ticker), brakes
-            //    at the cliff, then slowly pushes off to the left and is gone ──
+            //    at the cliff, then eases left and parks — its front tip stays
+            //    poking in at the left edge, so you can see we left it there ──
             if (drvCarTrack) {
                 let stopHold = 0;
                 for (let i = 0; i < drvItems.length; i++) {
                     if (drvItems[i].stop && drvItems[i].o > stopHold) stopHold = drvItems[i].o;
                 }
                 const brake = rmap(p, DRV_BRAKE, DRV_SLIDE_A);     // 0→1 decel at the cliff
-                const slide = rmap(p, DRV_SLIDE_A, DRV_SLIDE_B);   // 0→1 exit to the left
+                const slide = rmap(p, DRV_SLIDE_A, DRV_SLIDE_B);   // 0→1 ease to its parked spot
                 let sp = (1 - stopHold * 0.95) * (1 - brake);      // ease to a halt
-                if (slide > 0 && slide < 1) sp = Math.max(sp, 0.28); // a slow roll while leaving
+                if (slide > 0 && slide < 1) sp = Math.max(sp, 0.24); // a slow roll while repositioning
                 _vTgtDrv = _reduceMotion ? 0 : sp;
-                const ex = (slide >= 1 ? 1 : 1 - Math.pow(1 - slide, 2)) * -86;  // ease-out, then hold off-screen
-                drvCarTrack.style.transform = 'translateX(-50%) translateX(' + ex.toFixed(1) + 'vw)';
+                // park just off-screen left, nose (right edge of the car) ≈ 7vw in
+                const halfVw = Math.min(108, window.innerWidth * 0.24) / window.innerWidth * 100;
+                const parkedEx = 7 - 40 - halfVw;
+                const ease = slide >= 1 ? 1 : 1 - Math.pow(1 - slide, 2);
+                drvCarTrack.style.transform =
+                    'translateX(-50%) translateX(' + (ease * parkedEx).toFixed(1) + 'vw)';
                 if (drvRoadLines) {
                     const ro = +(rmap(p, 0.02, 0.08) * (1 - rmap(p, 0.50, 0.68)) * 0.5).toFixed(3);
                     if (ro !== _drvRo) { drvRoadLines.style.opacity = ro; _drvRo = ro; }
