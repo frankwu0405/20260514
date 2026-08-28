@@ -1479,6 +1479,17 @@
             text-shadow: 0 1px 4px rgba(0,0,0,0.7);
         }
 
+        /* real photos dropped into any Penghu frame — cover-fill the fixed aspect box */
+        .pg-frame img, .fw-after .pg-frame img, .drv-final .pg-frame img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .fw-photo > img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .dp-back > img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
         /* ── generic placeholder block: swap for a real <img> later ── */
         .ph {
             display: flex; align-items: center; justify-content: center; text-align: center;
@@ -1672,10 +1683,12 @@
         .drv-final {
             position: absolute; left: 0; top: 27%; width: 100%; z-index: 7;
             display: flex; justify-content: center; align-items: flex-start; gap: 12px;
-            padding: 0 22px; opacity: 0; pointer-events: none; will-change: transform, opacity;
+            /* biased left so the pair sits in front of / beside the lighthouse */
+            padding: 0 clamp(84px, 24vw, 200px) 0 clamp(14px, 4vw, 40px);
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
         }
         .drv-final .pg-frame {
-            width: min(148px, 37vw); aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px;
+            width: min(140px, 34vw); aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px;
             box-shadow: 0 16px 40px rgba(60,20,10,0.5);
         }
         .drv-final .drv-final-b { margin-top: 26px; }
@@ -1702,6 +1715,69 @@
             font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.82);
             text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
         .drv-closing { position: absolute; left: 0; top: 62%; width: 100%; z-index: 22; color: #fff3e4; text-shadow: 0 2px 12px rgba(80,30,10,0.7); }
+
+        /* ── the two vehicles the days were spent on ──────────────────────
+           Both sit BEHIND the photo layer (boat z3 < iso-sway z5, car
+           z5 < drv-frame z6). Body bob/rock is a CSS keyframe loop on its
+           own wall-clock; the wheels, lane markings and wake are advanced
+           by the vehicle rAF ticker, whose speed eases to ~0 whenever a
+           still / parked photo is at rest. */
+        .iso-boat {
+            position: absolute; left: 45%; top: 41%; width: min(256px, 54vw);
+            z-index: 3; opacity: 0.34; pointer-events: none; will-change: transform;
+            transform: translateX(-50%); transform-origin: 46% 82%;
+            filter: drop-shadow(0 6px 10px rgba(18,42,58,0.18));
+            animation: isoBob 4.8s ease-in-out infinite;
+        }
+        /* the car rides in a track: the track carries the scroll-driven exit
+           slide, the inner .drv-car keeps its own wall-clock bob */
+        .drv-car-track {
+            position: absolute; left: 40%; bottom: 15.5%; width: min(216px, 48vw);
+            z-index: 5; opacity: 0.4; pointer-events: none; will-change: transform;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2));
+        }
+        .drv-car { display: block; transform-origin: 50% 88%;
+            animation: drvBob 1.9s ease-in-out infinite; }
+        .iso-boat svg, .drv-car svg { width: 100%; height: auto; display: block; overflow: visible; }
+        .drv-wheel { transform-box: fill-box; transform-origin: center; will-change: transform; }
+        .drv-road-lines {
+            position: absolute; left: -12%; right: -12%; bottom: 15%; height: 3px;
+            z-index: 5; opacity: 0; pointer-events: none;
+            background-image: repeating-linear-gradient(90deg,
+                rgba(255,255,255,0.5) 0 20px, rgba(255,255,255,0) 20px 90px);
+        }
+        /* the lighthouse at the westernmost point — slides in from the right,
+           parks there, and the two sunset photos land in front of it */
+        .drv-lighthouse {
+            position: absolute; right: 3%; bottom: 15%; width: min(104px, 25vw);
+            z-index: 5; opacity: 0; pointer-events: none; will-change: transform, opacity;
+            transform: translateX(48vw);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.26));
+        }
+        .drv-lighthouse svg { width: 100%; height: auto; display: block; overflow: visible; }
+        .drv-lh-glow { animation: lhGlow 3.4s ease-in-out infinite; transform-origin: center; }
+        @keyframes isoBob {
+            0%   { transform: translateX(-50%) translateY(0px)  rotate(-1.6deg); }
+            28%  { transform: translateX(-50%) translateY(-3px) rotate(1.1deg); }
+            54%  { transform: translateX(-50%) translateY(0px)  rotate(1.8deg); }
+            78%  { transform: translateX(-50%) translateY(-2px) rotate(-0.4deg); }
+            100% { transform: translateX(-50%) translateY(0px)  rotate(-1.6deg); }
+        }
+        @keyframes drvBob {
+            0%,100% { transform: translateY(0px)    rotate(0deg); }
+            25%     { transform: translateY(-1.4px) rotate(0.4deg); }
+            55%     { transform: translateY(0.7px)  rotate(-0.25deg); }
+            80%     { transform: translateY(-0.6px) rotate(0.15deg); }
+        }
+        @keyframes lhGlow {
+            0%,100% { opacity: 0.35; transform: scale(0.9); }
+            50%     { opacity: 0.95; transform: scale(1.12); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .iso-boat { animation: none; transform: translateX(-50%); }
+            .drv-car, .drv-lh-glow { animation: none; }
+        }
 
         /* ── 08.14 · 早餐 + 第 1188 天 ── */
         .bf-wrap { max-width: 340px; margin: 0 auto; }
@@ -2913,8 +2989,7 @@
                                 </div>
                             </div>
                             <div class="flip-back dp-back">
-                                <!-- REPLACE: assets/penghu/d1-tsa-frank.jpg -->
-                                <div class="ph">08.11 · 松山 · FRANK</div>
+                                <img src="assets/pochacco_airport.jpg" alt="松山機場 · 舉著波奇狗看飛機">
                                 <div class="dp-back-cap">第一次飛國內線</div>
                             </div>
                         </div>
@@ -2949,8 +3024,7 @@
                                 </div>
                             </div>
                             <div class="flip-back dp-back">
-                                <!-- REPLACE: assets/penghu/d1-tsa-sydney.jpg -->
-                                <div class="ph">08.11 · 松山 · SYDNEY</div>
+                                <img src="assets/bb_airport.jpg" alt="松山機場 · 落地窗前看停機坪">
                                 <div class="dp-back-cap">出發嘍！</div>
                             </div>
                         </div>
@@ -3000,10 +3074,9 @@
                 </p>
                 <div class="pg-hotpot">
                     <div class="pg-frame">
-                        <!-- REPLACE: assets/penghu/d1-hotpot.jpg -->
-                        <div class="ph">08.11 · 火鍋 · 4:3</div>
+                        <img src="assets/landed.jpg" alt="落地那晚 · 往市區的路上，天已經半黑">
                     </div>
-                    <p class="pg-cap">島上的第一餐</p>
+                    <p class="pg-cap">落地那晚，往市區的路上</p>
                 </div>
             </div>
 
@@ -3013,8 +3086,7 @@
                         <canvas class="fw-canvas" id="fwCanvas"></canvas>
                         <div class="fw-photo-wrap" id="fwPhotos">
                             <div class="fw-photo" data-at="0.14" data-win="0.13">
-                                <!-- REPLACE: assets/penghu/d1-fw-01.jpg -->
-                                <div class="ph">08.11 · 花火 01 · 3:4</div>
+                                <img src="assets/firework.jpg" alt="觀音亭 · 花火節">
                                 <div class="fw-photo-cap">說好要拍好看的</div>
                             </div>
                             <div class="fw-photo" data-at="0.40" data-win="0.13">
@@ -3062,10 +3134,62 @@
                 <div class="pg-sticky iso-sticky" id="isoSticky">
                     <div class="iso-horizon"></div>
 
+                    <!-- the island-hopping boat — sits on the horizon, behind the photos.
+                         Rock/bob is CSS (@keyframes isoBob); the wake fades with speed. -->
+                    <div class="iso-boat" id="isoBoat">
+                        <svg viewBox="0 0 260 128" aria-hidden="true">
+                            <!-- trailing wake + bow splash -->
+                            <g id="isoWake" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round">
+                                <path d="M30,104 C20,104 13,100 9,93"/>
+                                <path d="M42,111 C26,112 13,111 4,106"/>
+                                <path d="M72,114 C55,116 37,115 25,111"/>
+                                <path d="M247,86 C253,82 256,75 256,69"/>
+                            </g>
+                            <!-- flag / mast at the bow (points the way we're going) -->
+                            <path d="M212,64 L212,38" stroke="#20242b" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M212,40 C222,42 229,46 233,51 C227,54 219,55 212,55 Z" fill="#e8a86f"/>
+                            <!-- hull -->
+                            <path d="M30,70 C24,70 22,76 25,84 C33,104 46,110 64,110 L198,110
+                                     C222,110 238,100 248,78 C250,71 246,66 238,67 L64,64
+                                     C46,63 36,65 30,70 Z" fill="#333b44"/>
+                            <!-- waterline band -->
+                            <path d="M26,86 C33,104 46,110 64,110 L198,110 C222,110 238,100 247,80
+                                     C210,96 150,100 110,99 C74,98 44,93 26,86 Z" fill="#232a32"/>
+                            <!-- bow fender -->
+                            <path d="M236,66 C246,66 250,72 249,80 C246,86 238,86 235,82 Z" fill="#20242b"/>
+                            <!-- deck rail -->
+                            <path d="M60,58 C88,53 116,54 134,58" stroke="#20242b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <!-- wheelhouse + roof cap -->
+                            <path d="M112,64 C112,44 118,36 132,36 L176,36 C190,36 196,44 196,64 Z" fill="#3c444e"/>
+                            <path d="M107,40 C107,35 111,32 117,32 L191,32 C197,32 201,35 201,40
+                                     C201,43 197,44 191,44 L117,44 C111,44 107,43 107,40 Z" fill="#333b44"/>
+                            <!-- funnel -->
+                            <rect x="150" y="14" width="16" height="22" rx="6" fill="#4a525b"/>
+                            <rect x="150" y="19" width="16" height="4.5" fill="#2e343c"/>
+                            <!-- cabin windows -->
+                            <g fill="rgba(210,227,236,0.62)">
+                                <rect x="120" y="46" width="17" height="13" rx="4"/>
+                                <rect x="143" y="46" width="19" height="13" rx="4"/>
+                                <rect x="170" y="46" width="14" height="13" rx="4"/>
+                            </g>
+                            <!-- portholes -->
+                            <g>
+                                <circle cx="58" cy="82" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="80" cy="82" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="102" cy="81" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="124" cy="81" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <g fill="none" stroke="#20242b" stroke-width="2">
+                                    <circle cx="58" cy="82" r="5"/><circle cx="80" cy="82" r="5"/>
+                                    <circle cx="102" cy="81" r="5"/><circle cx="124" cy="81" r="5"/>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
                     <div class="iso-sway" id="isoSway">
                         <!-- 七美 cluster — brisk, that's the "hectic" part -->
                         <div class="iso-item" data-at="0.08" data-win="0.085">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-qimei-01.jpg --><div class="ph">08.12 · 七美 01 · 3:2</div></div>
+                            <div class="pg-frame"><img src="assets/boat1.jpg" alt="08.12 · 跳島的船上"></div>
                             <div class="iso-time">07:40 · 七美</div>
                         </div>
                         <div class="iso-item" data-at="0.24" data-win="0.085">
@@ -3081,7 +3205,7 @@
 
                         <!-- 東吉嶼 cluster -->
                         <div class="iso-item" data-at="0.72" data-win="0.085">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-dongji-01.jpg --><div class="ph">08.12 · 東吉嶼 01 · 3:2</div></div>
+                            <div class="pg-frame"><img src="assets/boat2.jpg" alt="08.12 · 跳島的船上 · 比 YA"></div>
                             <div class="iso-time">10:20 · 東吉嶼</div>
                         </div>
                         <div class="iso-item" data-at="0.85" data-win="0.075">
@@ -3115,6 +3239,103 @@
                     <div class="drv-glitter" id="drvGlitter"></div>
                     <div class="drv-haze" id="drvHaze"></div>
 
+                    <!-- streaking lane markings — frozen when the car is parked -->
+                    <div class="drv-road-lines" id="drvRoadLines"></div>
+
+                    <!-- the grey car (Toyota Vios-ish) — rides the road band, behind the
+                         frame photos. The track carries the scroll-driven exit slide;
+                         .drv-car keeps its wall-clock bob; wheels + lane markings are
+                         spun by the vehicle rAF ticker. -->
+                    <div class="drv-car-track" id="drvCarTrack">
+                    <div class="drv-car" id="drvCar">
+                        <svg viewBox="0 0 244 112" aria-hidden="true">
+                            <ellipse cx="122" cy="99" rx="104" ry="6" fill="rgba(0,0,0,0.16)"/>
+                            <!-- body: short rounded 3-box sedan, nose to the right -->
+                            <path d="M22,90 C13,90 9,82 11,73 C12,66 16,62 24,61 L44,59
+                                     C50,40 64,31 84,30 L146,30 C168,31 182,40 190,52 L210,57
+                                     C226,60 234,66 235,76 C236,85 231,90 222,90 Z" fill="#868d95"/>
+                            <!-- upper-body shade -->
+                            <path d="M84,30 L146,30 C160,31 170,36 176,42 L82,42 C80,35 82,31 84,30 Z" fill="#767d86"/>
+                            <!-- glasshouse -->
+                            <path d="M50,57 C55,42 68,34 86,33 L144,33 C162,34 174,42 182,53 L176,57 Z" fill="#3f4750"/>
+                            <path d="M106,34 L106,57" stroke="#868d95" stroke-width="4"/>
+                            <path d="M58,52 C62,42 72,37 84,36 L100,36 L86,52 Z" fill="rgba(255,255,255,0.16)"/>
+                            <!-- rounded wheel-arch eyebrows -->
+                            <path d="M40,88 C40,74 52,64 66,64 C80,64 92,74 92,88 L84,88
+                                     C84,78 76,71 66,71 C56,71 48,78 48,88 Z" fill="#5c636c"/>
+                            <path d="M158,88 C158,74 170,64 184,64 C198,64 210,74 210,88 L202,88
+                                     C202,78 194,71 184,71 C174,71 166,78 166,88 Z" fill="#5c636c"/>
+                            <!-- rounded bumpers -->
+                            <path d="M11,74 C9,80 10,86 14,89 L24,89 C20,84 20,78 22,73 Z" fill="#5c636c"/>
+                            <path d="M226,66 C233,69 236,74 236,80 C236,85 233,88 228,88 L224,88
+                                     C226,80 224,72 220,67 Z" fill="#5c636c"/>
+                            <!-- lights, handle, mirror, character line -->
+                            <path d="M214,66 C224,65 231,68 233,74 C231,78 224,79 216,77 C212,73 211,69 214,66 Z"
+                                  fill="rgba(255,242,208,0.8)"/>
+                            <path d="M14,64 C19,63 24,64 26,67 L26,74 C22,76 17,75 14,73 Z" fill="rgba(255,90,72,0.65)"/>
+                            <rect x="72" y="50" width="12" height="3.4" rx="1.7" fill="#4b5159"/>
+                            <path d="M182,44 C176,42 172,43 171,47 C175,49 180,49 184,47 Z" fill="#6c7079"/>
+                            <path d="M26,64 C90,60 160,60 220,66" stroke="#7d838b" stroke-width="1.5" fill="none"/>
+                            <!-- wheels: outer <g> positions, inner .drv-wheel spins about its centre -->
+                            <g transform="translate(64,84)"><g class="drv-wheel">
+                                <circle r="18" fill="#26292f"/>
+                                <circle r="17" fill="none" stroke="#15171b" stroke-width="1.4"/>
+                                <circle r="8" fill="#c2c7cd"/>
+                                <g stroke="#7f858d" stroke-width="2.4" stroke-linecap="round">
+                                    <line x1="0" y1="0" x2="0" y2="-7"/><line x1="0" y1="0" x2="6.7" y2="2.2"/>
+                                    <line x1="0" y1="0" x2="4.1" y2="5.7"/><line x1="0" y1="0" x2="-4.1" y2="5.7"/>
+                                    <line x1="0" y1="0" x2="-6.7" y2="2.2"/>
+                                </g>
+                                <circle r="2.4" fill="#565b64"/>
+                            </g></g>
+                            <g transform="translate(182,84)"><g class="drv-wheel">
+                                <circle r="18" fill="#26292f"/>
+                                <circle r="17" fill="none" stroke="#15171b" stroke-width="1.4"/>
+                                <circle r="8" fill="#c2c7cd"/>
+                                <g stroke="#7f858d" stroke-width="2.4" stroke-linecap="round">
+                                    <line x1="0" y1="0" x2="0" y2="-7"/><line x1="0" y1="0" x2="6.7" y2="2.2"/>
+                                    <line x1="0" y1="0" x2="4.1" y2="5.7"/><line x1="0" y1="0" x2="-4.1" y2="5.7"/>
+                                    <line x1="0" y1="0" x2="-6.7" y2="2.2"/>
+                                </g>
+                                <circle r="2.4" fill="#565b64"/>
+                            </g></g>
+                        </svg>
+                    </div>
+                    </div>
+
+                    <!-- the westernmost-point lighthouse — slides in from the right at
+                         the end of the drive and parks there behind the sunset photos -->
+                    <div class="drv-lighthouse" id="drvLighthouse">
+                        <svg viewBox="0 0 108 284" aria-hidden="true">
+                            <!-- rock base -->
+                            <path d="M6,278 C10,250 22,238 40,236 L70,236 C88,238 100,252 104,278 Z" fill="#3b3630"/>
+                            <!-- tapered tower -->
+                            <path d="M38,232 L30,96 C30,90 36,86 54,86 C72,86 78,90 78,96 L70,232
+                                     C70,236 64,238 54,238 C44,238 38,236 38,232 Z" fill="#efe9df"/>
+                            <!-- colour bands -->
+                            <path d="M33,150 L75,150 L74,178 L34,178 Z" fill="#c9514a"/>
+                            <path d="M31,206 L77,206 L76,230 L32,230 Z" fill="#c9514a"/>
+                            <!-- gallery deck -->
+                            <rect x="24" y="78" width="60" height="10" rx="3" fill="#6d6a64"/>
+                            <g stroke="#6d6a64" stroke-width="2.4" stroke-linecap="round">
+                                <line x1="30" y1="78" x2="30" y2="66"/><line x1="42" y1="78" x2="42" y2="66"/>
+                                <line x1="54" y1="78" x2="54" y2="66"/><line x1="66" y1="78" x2="66" y2="66"/>
+                                <line x1="78" y1="78" x2="78" y2="66"/>
+                                <line x1="28" y1="66" x2="80" y2="66"/>
+                            </g>
+                            <!-- lantern room -->
+                            <path d="M38,66 L38,44 C38,36 45,30 54,30 C63,30 70,36 70,44 L70,66 Z" fill="#42484f"/>
+                            <!-- the light -->
+                            <circle class="drv-lh-glow" cx="54" cy="48" r="18" fill="rgba(255,224,150,0.85)"/>
+                            <circle cx="54" cy="48" r="7" fill="#fff6dd"/>
+                            <!-- roof + finial -->
+                            <path d="M34,30 L54,10 L74,30 Z" fill="#3b4149"/>
+                            <circle cx="54" cy="8" r="3.4" fill="#3b4149"/>
+                            <!-- door -->
+                            <path d="M48,238 L48,218 C48,214 60,214 60,218 L60,238 Z" fill="#5b544b"/>
+                        </svg>
+                    </div>
+
                     <div class="drv-frame" id="drvFrame">
                         <!-- landscape + short dwell = still driving, never a snap point -->
                         <div class="drv-item drv-pass" data-at="0.05" data-win="0.05">
@@ -3122,7 +3343,7 @@
                         </div>
                         <!-- portrait + long dwell = we actually parked; these are the snap points -->
                         <div class="drv-item drv-stop" data-at="0.17" data-win="0.075" data-label="跨海大橋 · 11km">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-01.jpg --><div class="ph">08.13 · 停 01 · 3:4</div></div>
+                            <div class="pg-frame"><img src="assets/bridge1.jpg" alt="08.13 · 跨海大橋 · 兩個人的影子"></div>
                         </div>
                         <div class="drv-item drv-pass" data-at="0.29" data-win="0.05">
                             <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-02.jpg --><div class="ph">08.13 · 掠過 02 · 3:2</div></div>
@@ -3142,12 +3363,10 @@
                     <!-- the two of you, once the sun is down on the water -->
                     <div class="drv-final" id="drvFinal">
                         <div class="pg-frame">
-                            <!-- REPLACE: assets/penghu/d3-sunset-01.jpg -->
-                            <div class="ph">08.13 · 夕陽 01 · 3:4</div>
+                            <img src="assets/sunset1.jpg" alt="08.13 · 島的最西邊 · 太陽掉進海裡">
                         </div>
                         <div class="pg-frame drv-final-b">
-                            <!-- REPLACE: assets/penghu/d3-sunset-02.jpg -->
-                            <div class="ph">08.13 · 夕陽 02 · 3:4</div>
+                            <img src="assets/sunset%202.jpg" alt="08.13 · 島的最西邊 · 只有我們兩個">
                         </div>
                         <div class="drv-final-cap">島的最西邊，只有我們兩個</div>
                     </div>
@@ -3156,7 +3375,7 @@
                     <div class="drv-odo" id="drvOdo">0 km</div>
 
                     <p class="pg-line drv-closing" id="drvClosing">
-                        最後在島的最西邊，<br>我們坐在車上，看它掉進海裡。
+                        最後我們把車停在島的最西邊，<br>走到燈塔下，看它掉進海裡。
                     </p>
                 </div>
             </div>
@@ -3237,8 +3456,7 @@
                                 </div>
                             </div>
                             <div class="flip-back dp-back">
-                                <!-- REPLACE: assets/penghu/d4-mzg-frank.jpg -->
-                                <div class="ph">08.14 · 馬公 · FRANK</div>
+                                <img src="assets/plane_sky_view.jpg" alt="回程航班 · 窗外的機翼與雲">
                                 <div class="dp-back-cap">回家嘍</div>
                             </div>
                         </div>
@@ -3273,8 +3491,7 @@
                                 </div>
                             </div>
                             <div class="flip-back dp-back">
-                                <!-- REPLACE: assets/penghu/d4-mzg-sydney.jpg -->
-                                <div class="ph">08.14 · 馬公 · SYDNEY</div>
+                                <img src="assets/us_airport.jpg" alt="回程航班 · 機艙裡的自拍">
                                 <div class="dp-back-cap">三年三個月快樂 ♡</div>
                             </div>
                         </div>
@@ -5407,14 +5624,24 @@
         const isoStage = document.getElementById('isoStage');
         const isoSticky = document.getElementById('isoSticky');
         const isoSway = document.getElementById('isoSway');
+        const isoBoat = document.getElementById('isoBoat');
+        const isoWake = document.getElementById('isoWake');
         const isoItems = isoStage ? Array.from(isoStage.querySelectorAll('.iso-item')).map(el => ({
             el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: 0
         })) : [];
+        // the one still moment (雙心石滬) the boat idles through
+        const _isoStill = isoItems.find(it => it.el.classList.contains('iso-still'))
+            || { at: 0.48, win: 0.13 };
         function updateAct2Iso(p) {
             // the boat's roll — bound to scroll, so it stops when you stop
             const sway = Math.sin(p * 11) * 1.5;
             const heave = Math.sin(p * 7.3 + 1.1) * 8;
             isoSway.style.transform = 'translateY(' + heave.toFixed(2) + 'px) rotate(' + sway.toFixed(2) + 'deg)';
+
+            // the boat's own bob/rock is CSS — here we only tell the ticker how
+            // fast it's making way: full speed, easing to ~0 through 雙心石滬
+            const still = dwell((p - _isoStill.at) / _isoStill.win);
+            _vTgtIso = _reduceMotion ? 0 : (1 - still * 0.9);
 
             for (let i = 0; i < isoItems.length; i++) {
                 const it = isoItems[i];
@@ -5457,7 +5684,25 @@
             el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win),
             stop: el.classList.contains('drv-stop'), o: 0
         })) : [];
+        const drvCar = document.getElementById('drvCar');
+        const drvCarTrack = document.getElementById('drvCarTrack');
+        const drvLighthouse = document.getElementById('drvLighthouse');
+        const drvWheels = drvCar ? Array.from(drvCar.querySelectorAll('.drv-wheel')) : [];
+        const drvRoadLines = document.getElementById('drvRoadLines');
+        let _drvRo = -1;
         const DRV_TOTAL_KM = 58;
+        // ── end-of-drive choreography ─────────────────────────────────────
+        // Flexible: every .drv-item photo beat just has to resolve before
+        // DRV_BRAKE. How many photos/passes/stops there are upstream doesn't
+        // matter — the car-brake → car-exit → lighthouse-in → sunset-photos
+        // sequence below is anchored only to these breakpoints.
+        const DRV_BRAKE   = 0.80;   // wheels ease to a stop at the cliff
+        const DRV_SLIDE_A = 0.835;  // the parked car starts pushing off to the left
+        const DRV_SLIDE_B = 0.915;  // …and is fully gone
+        const DRV_LH_A    = 0.86;   // the lighthouse slides in from the right
+        const DRV_LH_B    = 0.945;  // …and is parked on the right
+        const DRV_FINAL_A = 0.925;  // the two sunset photos fade up in front of it
+        const DRV_FINAL_B = 0.99;
         function updateAct3(p) {
             // flat noon light until we turn west at p≈0.56, then the long fall
             document.getElementById('drvB').style.opacity = rmap(p, 0.56, 0.68);
@@ -5492,10 +5737,9 @@
             glitter.style.transform = 'scale(' + (0.5 + refl * 0.6).toFixed(3) + ',' + (0.3 + refl * 0.7).toFixed(3) + ')';
             document.getElementById('drvHaze').style.opacity = rmap(p, 0.62, 0.78);
 
-            // the line first, then the photos of exactly that — they cross-fade
-            // rather than sharing the frame
+            // the two photos land last, in front of the lighthouse
             const fin = document.getElementById('drvFinal');
-            const finP = rmap(p, 0.89, 0.97);
+            const finP = rmap(p, DRV_FINAL_A, DRV_FINAL_B);
             fin.style.opacity = finP;
             fin.style.transform = 'translateY(' + ((1 - finP) * 16).toFixed(1) + 'px)';
 
@@ -5515,6 +5759,33 @@
                 it.el.style.transform = 'translate(' + x.toFixed(1) + 'vw, -50%)';
             }
 
+            // ── the car: drives (wheels/lane-lines via the rAF ticker), brakes
+            //    at the cliff, then slowly pushes off to the left and is gone ──
+            if (drvCarTrack) {
+                let stopHold = 0;
+                for (let i = 0; i < drvItems.length; i++) {
+                    if (drvItems[i].stop && drvItems[i].o > stopHold) stopHold = drvItems[i].o;
+                }
+                const brake = rmap(p, DRV_BRAKE, DRV_SLIDE_A);     // 0→1 decel at the cliff
+                const slide = rmap(p, DRV_SLIDE_A, DRV_SLIDE_B);   // 0→1 exit to the left
+                let sp = (1 - stopHold * 0.95) * (1 - brake);      // ease to a halt
+                if (slide > 0 && slide < 1) sp = Math.max(sp, 0.28); // a slow roll while leaving
+                _vTgtDrv = _reduceMotion ? 0 : sp;
+                const ex = (slide >= 1 ? 1 : 1 - Math.pow(1 - slide, 2)) * -86;  // ease-out, then hold off-screen
+                drvCarTrack.style.transform = 'translateX(-50%) translateX(' + ex.toFixed(1) + 'vw)';
+                if (drvRoadLines) {
+                    const ro = +(rmap(p, 0.02, 0.08) * (1 - rmap(p, 0.50, 0.68)) * 0.5).toFixed(3);
+                    if (ro !== _drvRo) { drvRoadLines.style.opacity = ro; _drvRo = ro; }
+                }
+            }
+
+            // ── the lighthouse: slides in from the right, then stays put ──
+            if (drvLighthouse) {
+                const lh = 1 - Math.pow(1 - rmap(p, DRV_LH_A, DRV_LH_B), 3);   // ease-out
+                drvLighthouse.style.transform = 'translateX(' + ((1 - lh) * 48).toFixed(1) + 'vw)';
+                drvLighthouse.style.opacity = (rmap(p, DRV_LH_A, DRV_LH_A + 0.025) * (1 - finP * 0.2)).toFixed(3);
+            }
+
             // a road trip is measured in distance, not time
             const km = Math.round(clamp01(p / 0.92) * DRV_TOTAL_KM);
             const active = drvItems.find(it => it.stop && it.o > 0.85);
@@ -5522,7 +5793,7 @@
                 active ? active.el.dataset.label : km + ' km';
 
             document.getElementById('drvTag').style.opacity = rmap(p, 0.01, 0.08) * (1 - rmap(p, 0.55, 0.66));
-            document.getElementById('drvClosing').classList.toggle('is-vis', p > 0.82 && p < 0.93);
+            document.getElementById('drvClosing').classList.toggle('is-vis', p > 0.80 && p < 0.99);
         }
 
         // ---------- Act 4: 第 1188 天 ----------
@@ -5540,6 +5811,47 @@
             if (n !== _d88Last) { d88Count.textContent = n; _d88Last = n; }
             document.getElementById('d88Note').classList.toggle('is-vis', p > 0.66);
         }
+
+        // ---------- vehicles: their own wall-clock motion ----------
+        // The body bob/rock is a CSS keyframe loop. This ticker only advances
+        // the wheels, the lane markings and the wake — on real time, not scroll
+        // — easing their speed toward the target the scroll updates set
+        // (~1 making way, ~0 parked). It runs only while a stage is on screen.
+        let _vTgtIso = 1, _vSpdIso = 1, _vTgtDrv = 1, _vSpdDrv = 1;
+        let _vWheel = 0, _vRoad = 0, _vTs = 0, _vRAF = 0, _vIsoOn = false, _vDrvOn = false;
+        function vehicleTick(ts) {
+            const dt = _vTs ? Math.min(50, ts - _vTs) : 16;
+            _vTs = ts;
+            _vSpdIso += (_vTgtIso - _vSpdIso) * 0.05;
+            _vSpdDrv += (_vTgtDrv - _vSpdDrv) * 0.05;
+
+            if (_vDrvOn && drvCar) {
+                _vWheel = (_vWheel + dt * 0.5 * _vSpdDrv) % 360;
+                const t = 'rotate(' + _vWheel.toFixed(1) + 'deg)';
+                for (let i = 0; i < drvWheels.length; i++) drvWheels[i].style.transform = t;
+                if (drvRoadLines) {
+                    _vRoad = (_vRoad + dt * 0.22 * _vSpdDrv) % 90;
+                    drvRoadLines.style.backgroundPositionX = (-_vRoad).toFixed(1) + 'px';
+                }
+            }
+            if (_vIsoOn && isoWake) {
+                isoWake.style.opacity = (0.16 + _vSpdIso * 0.5).toFixed(3);
+            }
+
+            if (_vIsoOn || _vDrvOn) { _vRAF = requestAnimationFrame(vehicleTick); }
+            else { _vRAF = 0; _vTs = 0; }
+        }
+        function vehicleWake() {
+            if (!_vRAF && (_vIsoOn || _vDrvOn)) _vRAF = requestAnimationFrame(vehicleTick);
+        }
+        if (isoStage) new IntersectionObserver(es => {
+            for (const e of es) _vIsoOn = e.isIntersecting;
+            vehicleWake();
+        }, { threshold: 0 }).observe(isoStage);
+        if (drvStage) new IntersectionObserver(es => {
+            for (const e of es) _vDrvOn = e.isIntersecting;
+            vehicleWake();
+        }, { threshold: 0 }).observe(drvStage);
 
         // ---------- gentle position snap ----------
         // Only in the two photo galleries, and in 08.13 only on the stops — you
