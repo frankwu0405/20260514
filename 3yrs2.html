@@ -1850,11 +1850,103 @@
         @media (prefers-reduced-motion: reduce) {
             .iso-boat { animation: none; transform: translateX(-50%); }
             .drv-car, .drv-lh-glow { animation: none; }
+            .dream-cloud, .dream-star { animation: none; }
+            .lp-body, .lp-buzz { animation: none; }
         }
 
-        /* ── 08.14 · 早餐 + 第 1188 天 ── */
-        .bf-wrap { max-width: 340px; margin: 0 auto; }
-        .bf-wrap .pg-frame { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.10); }
+        /* ── 08.13 夜 · 最後一個晚上 ──
+           A soft interlude between the sunset and the last morning: a night
+           panel with drifting cloud blooms and a few slow stars, the photo
+           feathered into it rather than cut out of it. */
+        /* The drive's sky keeps bleeding for BLEED (0.16) of its scroll length
+           past the block — ~115vh at that stage's height. Clear it before this
+           panel enters, or it opens over a half-faded sunset. */
+        .dream-interlude {
+            position: relative; max-width: 360px; margin: 125vh auto 150px;
+            padding: 34px 24px 30px; border-radius: 22px; overflow: hidden;
+            background: linear-gradient(168deg, #262541 0%, #3d3659 42%, #6a5473 76%, #94707a 100%);
+            box-shadow: 0 22px 52px rgba(46,38,66,0.30);
+            text-align: center;
+        }
+        .dream-sky { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+        .dream-cloud {
+            position: absolute; display: block; border-radius: 50%; filter: blur(7px);
+            background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.09) 55%, transparent 72%);
+            animation: dreamDrift 30s ease-in-out infinite;
+        }
+        .dc-1 { width: 200px; height: 100px; top: 4%;   left: -20%; }
+        .dc-2 { width: 156px; height: 78px;  top: 44%;  left: 60%;  animation-duration: 38s; animation-delay: -9s; }
+        .dc-3 { width: 230px; height: 112px; bottom: 2%; left: -10%; animation-duration: 34s; animation-delay: -17s; opacity: 0.72; }
+        .dream-star {
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: rgba(255,255,255,0.92); box-shadow: 0 0 7px rgba(255,255,255,0.75);
+            animation: dreamTwinkle 3.6s ease-in-out infinite;
+        }
+        .ds-1 { top: 14%; left: 18%; }
+        .ds-2 { top: 9%;  left: 74%; animation-delay: -1.2s; }
+        .ds-3 { top: 30%; left: 88%; animation-delay: -2.4s; }
+        .ds-4 { top: 24%; left: 46%; animation-delay: -0.6s; width: 2px; height: 2px; }
+        @keyframes dreamDrift {
+            0%, 100% { transform: translate(0, 0); }
+            50%      { transform: translate(28px, -9px); }
+        }
+        @keyframes dreamTwinkle {
+            0%, 100% { opacity: 0.25; transform: scale(0.8); }
+            50%      { opacity: 1;    transform: scale(1); }
+        }
+        .dream-inner { position: relative; z-index: 2; }
+        .dream-label {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.6);
+        }
+        .dream-text {
+            font-family: 'Noto Serif TC', serif; font-size: 15px; line-height: 2.05;
+            letter-spacing: 1.5px; color: rgba(255,255,255,0.94); margin-top: 16px;
+            text-shadow: 0 2px 12px rgba(18,14,30,0.55);
+        }
+        .dream-photo {
+            position: relative; width: min(210px, 62%); margin: 22px auto 0;
+            aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden;
+            transform: rotate(-2.5deg);
+            box-shadow: 0 18px 38px rgba(20,14,32,0.45);
+        }
+        .dream-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* feathers the photo edges back into the night instead of a hard cut */
+        .dream-photo::after {
+            content: ''; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
+            box-shadow: inset 0 0 30px 12px rgba(48,40,70,0.55);
+        }
+        .dream-note {
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px;
+            color: rgba(255,255,255,0.85); margin-top: 14px; letter-spacing: 1px; line-height: 1.4;
+        }
+
+        /* ── 08.14 · 最後一天 ── */
+        .lastday-aside { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #a89b8c;
+            text-align: center; margin: -14px 0 0; letter-spacing: 1px; }
+        /* the one beat with no photo to carry it, so the drawing does the work */
+        .lost-phone { max-width: 320px; margin: 34px auto 0; padding: 28px 22px 24px; text-align: center;
+            background: #fffdf9; border: 1px solid #efe6d8; border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(120,100,80,0.10); }
+        .lp-phone { width: 92px; height: auto; display: block; margin: 0 auto 18px; }
+        .lp-body { transform-box: fill-box; transform-origin: center; animation: lpBuzz 1.9s ease-in-out infinite; }
+        .lp-buzz { animation: lpWave 1.9s ease-in-out infinite; }
+        @keyframes lpBuzz {
+            0%, 62%, 100% { transform: rotate(0deg); }
+            70%  { transform: rotate(-3deg); }
+            78%  { transform: rotate(3deg); }
+            86%  { transform: rotate(-2deg); }
+            94%  { transform: rotate(1.5deg); }
+        }
+        @keyframes lpWave { 0%, 100% { opacity: 0.28; } 50% { opacity: 0.95; } }
+        .lp-line { font-family: 'Noto Serif TC', serif; font-size: 15px; color: #5c5348;
+            line-height: 1.95; letter-spacing: 1.2px; }
+        .lp-line b { display: inline-block; margin-top: 2px; font-weight: 500; font-size: 21px;
+            color: #b5644f; letter-spacing: 3px; }
+        .lp-resolve { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #8b8474;
+            margin-top: 14px; line-height: 1.5; }
+
+        /* ── 第 1188 天 ── */
         .d88-stage  { height: 240vh; }
         .d88-a { background: linear-gradient(180deg, #fdfbf8 0%, #fbf8f4 55%, #f7f2ec 100%); }
         .d88-sticky { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 30px; }
@@ -3564,6 +3656,31 @@
                 </div>
             </div>
 
+            <!-- ══════════ 08.13 夜 · 最後一個晚上 ══════════ -->
+            <div class="chapter dream-interlude" id="chap-penghu-lastnight">
+                <div class="dream-sky" aria-hidden="true">
+                    <i class="dream-cloud dc-1"></i>
+                    <i class="dream-cloud dc-2"></i>
+                    <i class="dream-cloud dc-3"></i>
+                    <i class="dream-star ds-1"></i>
+                    <i class="dream-star ds-2"></i>
+                    <i class="dream-star ds-3"></i>
+                    <i class="dream-star ds-4"></i>
+                </div>
+                <div class="dream-inner">
+                    <div class="dream-label">最後一個晚上</div>
+                    <p class="dream-text">
+                        本來說好要一起玩化妝、弄頭髮的，<br>
+                        結果我又睡著了...<br>
+                        對不起鼻😔
+                    </p>
+                    <div class="dream-photo">
+                        <img src="assets/sleeping.heic" alt="最後一晚 · 就這樣睡著了">
+                    </div>
+                    <p class="dream-note">（然後我就這樣漂漂亮亮的睡著了）</p>
+                </div>
+            </div>
+
             <!-- 08.13 → 08.14: dusk out, morning in, so the light chapter below
                  isn't a hard cut off the back of the sunset -->
             <div class="pg-stage pg-bridge" id="br2Stage">
@@ -3572,20 +3689,37 @@
                 </div>
             </div>
 
-            <!-- ══════════ ACT 4 · 08.14 — 早餐 · 第 1188 天 ══════════ -->
+            <!-- ══════════ ACT 4 · 08.14 — 回程 · 第 1188 天 ══════════ -->
             <div class="chapter" id="chap-penghu-d4">
                 <div class="time-badge">Aug 14 · 最後一天</div>
                 <p class="story-text">
-                    最後一天其實沒有安排什麼。<br>
-                    我們下樓吃了飯店的早餐，兩杯咖啡，一人一盤，<br>
-                    然後回房間收行李。
+                    最後一天起床就差不多要弄弄回去了，<br>
+                    我們吃了早餐、還了車，<br>
+                    就準備拎著行李往機場去了。
                 </p>
-                <div class="bf-wrap">
-                    <div class="pg-frame">
-                        <!-- REPLACE: assets/penghu/d4-breakfast.jpg -->
-                        <div class="ph">08.14 · 飯店早餐 · 4:3</div>
-                    </div>
-                    <p class="pg-cap">最普通的一頓，也是最後一頓</p>
+                <p class="lastday-aside">（結果飯店設施都沒玩到 QQ）</p>
+
+                <!-- no photos for this one — the phone that nearly stayed in 澎湖 -->
+                <div class="lost-phone">
+                    <svg class="lp-phone" viewBox="0 0 160 200" aria-hidden="true" focusable="false">
+                        <!-- ringing away, somewhere back at the hotel -->
+                        <g class="lp-buzz" fill="none" stroke="#c9b8a6" stroke-width="3" stroke-linecap="round">
+                            <path d="M30,76 C22,83 22,97 30,104"/>
+                            <path d="M16,66 C4,77 4,103 16,114"/>
+                            <path d="M130,76 C138,83 138,97 130,104"/>
+                            <path d="M144,66 C156,77 156,103 144,114"/>
+                        </g>
+                        <g class="lp-body">
+                            <rect x="44" y="30" width="72" height="142" rx="13" fill="#5c5348"/>
+                            <rect x="50" y="41" width="60" height="120" rx="6" fill="#f7f2e8"/>
+                            <rect x="69" y="35" width="22" height="3.4" rx="1.7" fill="#3f382f"/>
+                            <rect x="69" y="164" width="22" height="3" rx="1.5" fill="#3f382f"/>
+                            <text x="80" y="122" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif"
+                                  font-size="58" fill="#c9b096">?</text>
+                        </g>
+                    </svg>
+                    <p class="lp-line">結果到了機場才發現…<br><b>手機呢？</b></p>
+                    <p class="lp-resolve">又叫了一台計程車，<br>在最後關頭把手機救回來了 哈哈</p>
                 </div>
             </div>
 
@@ -3593,10 +3727,10 @@
                 <div class="pg-sticky d88-sticky" id="d88Sticky">
                     <div class="d88-date">2026.08.14 · 澎湖</div>
                     <div class="d88-count" id="d88Count">0</div>
-                    <div class="d88-unit">三年三個月</div>
+                    <div class="d88-unit">三年三個月快樂</div>
                     <p class="d88-note" id="d88Note">
-                        我們沒有為那天特別安排什麼，<br>
-                        因為前面那三天，本來就是為了它。
+                        對不起鼻，這趟旅程被我排的不完美<br>
+                        但我很開心喔，因為又跟你留下了一輩子不會忘的回憶!
                     </p>
                 </div>
             </div>
@@ -3605,9 +3739,9 @@
             <div class="chapter" id="chap-penghu-return">
                 <div class="time-badge">Aug 14, 2026 · 馬公</div>
                 <p class="story-text">
-                    三年三個月的那天早上，我們吃了飯店的早餐，收好行李，走到登機門。<br>
-                    這三年，機場一直是最難的那個地方。<br>
-                    那天早上，它只是一個要準時到的地方。
+                    又要準備登機了喔，<br>
+                    也算是平平安安的回家了。<br>
+                    希望吳雷霆下次還能有跟妳一起出來玩的機會👀
                 </p>
 
                 <div class="double-ticket-wrapper dp-wrap" id="penghuTicketBack" data-front="2" data-auto-reveal>
@@ -3697,7 +3831,7 @@
                         <!-- Year label: visible at p=0, fades as gallery begins -->
                         <div class="sd-year-label" id="sdYearLabel">
                             <div class="time-badge">2026 &amp; Beyond</div>
-                            <p class="sd-year-copy">今年突然就，<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
+                            <p class="sd-year-copy">今年突然就過得很快，一下就又要過去了。<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
                         </div>
 
                         <!-- Horizontal reveal track -->
