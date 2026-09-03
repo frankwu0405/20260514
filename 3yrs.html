@@ -1401,6 +1401,564 @@
                 filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.15));
         }
 
+        /* ============================================================
+           特別篇章 · 澎湖 — the divider that opens the trip.
+           The archipelago sits behind the type as a watermark; it is a
+           stylised silhouette for tone, not a survey-accurate map.
+           ============================================================ */
+        .special-intro { position: relative; padding: 30px 0 20px; text-align: center; }
+        .si-inner { position: relative; z-index: 2; }
+        .si-label {
+            font-family: 'Noto Serif TC', serif; font-size: 13px;
+            letter-spacing: 10px; text-indent: 10px; color: #a89b8c;
+        }
+        /* thin rule with a tilted plane sitting in the gap */
+        .si-rule { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 18px 0 16px; }
+        .si-rule span { display: block; width: 52px; height: 1px; background: linear-gradient(90deg, transparent, #d9cec0); }
+        .si-rule span:last-child { background: linear-gradient(90deg, #d9cec0, transparent); }
+        .si-rule i { font-style: normal; font-size: 13px; color: #c4b4a4; transform: rotate(45deg); }
+        .si-name {
+            font-family: 'Noto Serif TC', serif; font-weight: 400;
+            font-size: 36px; letter-spacing: 8px; text-indent: 8px;
+            color: #5c5348; line-height: 1.35;
+            text-shadow: 0 0 30px rgba(255,255,255,0.95);
+        }
+        .si-latin {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 14px; letter-spacing: 3px; color: #a89b8c; margin-top: 14px;
+        }
+        .si-islands {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -44%);
+            width: min(300px, 80%); height: auto;
+            z-index: 1; pointer-events: none;
+            fill: #cbb9a8; opacity: 0.18;
+        }
+
+        /* ============================================================
+           澎湖 · 國內線登機證
+           Deliberately unlike the international F&S passes: thermal
+           paper instead of gloss, monospace ink instead of bold sans,
+           bilingual labels, and the two stubs sit SIDE BY SIDE rather
+           than stacked — same flight, nobody in front.
+           ============================================================ */
+        /* Same stack machinery as the international pairs — .double-ticket-wrapper,
+           .ticket-layer, .flip-container, .flip-inner all reused unchanged.
+           Only the face styling below differs. */
+        .double-ticket-wrapper.dp-wrap { height: 270px; }
+        .dp-flip { height: 190px; }
+
+        /* --- front: thermal-printed pass, torn vertically at the stub --- */
+        .flip-front.dp-front {
+            background: #f7f4ed;
+            /* faint thermal-paper banding */
+            background-image: repeating-linear-gradient(0deg, rgba(90,80,60,0.022) 0 1px, transparent 1px 3px);
+            border-left: none;
+            border: 1px solid #d9d3c4;
+            border-radius: 2px;
+            display: flex; flex-direction: row;
+            font-family: 'Courier New', Courier, monospace;
+            color: #4d4840;
+        }
+        /* type scale is tuned to fill .dp-flip's height — if that height changes,
+           these step with it, otherwise the pass reads as a half-empty card */
+        .dp-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; padding: 12px 14px; }
+        .dp-band {
+            display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
+            border-bottom: 1px solid #cfc7b5; padding-bottom: 7px;
+        }
+        .dp-carrier { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; color: #6d6656; white-space: nowrap; }
+        .dp-sector  { font-size: 8px; letter-spacing: 1.2px; color: #9a9382; white-space: nowrap; }
+
+        .dp-route { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0 9px; }
+        .dp-code  { font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; color: #3d3931; }
+        .dp-city  { font-size: 8.5px; letter-spacing: 1px; color: #8b8474; margin-top: 4px; white-space: nowrap; }
+        .dp-arrow { font-size: 13px; color: #b6ac97; transform: rotate(45deg); margin-top: 9px; }
+
+        .dp-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px 10px;
+            border-top: 1px solid #e3ddcf; padding-top: 9px; margin-top: auto;
+        }
+        .dp-cell { display: flex; flex-direction: column; min-width: 0; }
+        .dp-lab  { font-size: 7px; letter-spacing: 0.5px; color: #a49c8a; line-height: 1.3; white-space: nowrap; }
+        .dp-val  { font-size: 12.5px; font-weight: 700; color: #3d3931; line-height: 1.3; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* vertical perforation + tear-off stub */
+        .dp-stub {
+            flex: 0 0 74px; border-left: 1px dashed #c3bbaa;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 3px; padding: 11px 7px; background: rgba(90,80,60,0.015);
+        }
+        .dp-stub-flight { font-size: 9.5px; letter-spacing: 0.5px; color: #8b8474; }
+        .dp-stub-seat   { font-size: 25px; font-weight: 700; color: #3d3931; line-height: 1; }
+        .dp-barcode {
+            width: 100%; height: 46px; margin-top: 6px; opacity: 0.5;
+            background-image: repeating-linear-gradient(0deg,
+                #3d3931 0 1px, transparent 1px 3px,
+                #3d3931 3px 4px, transparent 4px 7px,
+                #3d3931 7px 9px, transparent 9px 11px);
+        }
+
+        /* --- back: the moment, revealed on tap --- */
+        .flip-back.dp-back {
+            background: #2a2724;
+            border-right: none;
+            border-radius: 2px;
+            display: block;
+        }
+        .dp-back-cap {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 26px 12px 8px;
+            background: linear-gradient(to top, rgba(0,0,0,0.78), transparent);
+            font-family: 'ChenYuluoyan', 'Caveat', cursive;
+            font-size: 19px; color: #fff; text-align: center; line-height: 1.2;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+        }
+
+        /* real photos dropped into any Penghu frame — cover-fill the fixed aspect box */
+        .pg-frame img, .drv-final .pg-frame img,
+        .pg-frame video, .drv-final .pg-frame video {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .fw-photo > img, .fw-photo > video {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .dp-back > img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        /* ── generic placeholder block: swap for a real <img> later ── */
+        .ph {
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            width: 100%; height: 100%; padding: 10px;
+            background-color: #c6bdae;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0 6px, transparent 6px 12px);
+            color: rgba(255,255,255,0.92);
+            font-family: -apple-system, sans-serif;
+            font-size: 8.5px; letter-spacing: 0.5px; line-height: 1.6; word-break: break-all;
+        }
+
+        /* ============================================================
+           澎湖 Acts 1–4.  Every scroll-driven property here is transform
+           or opacity only — the day/night skies are stacked fixed
+           gradients cross-fading, never a re-serialised gradient string.
+           ============================================================ */
+        .pg-stage    { position: relative; z-index: 2; width: 100vw; left: 50%; margin-left: -50vw; }
+        .pg-sticky   { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
+
+        /* One fixed backdrop carries every Penghu sky. Because it lives outside
+           the stages, no two opaque panels ever butt against each other — each
+           day's sky is driven by that stage's UNCLAMPED progress, so a stage's
+           tone starts rising before its block arrives and lingers after it
+           leaves, and adjacent days overlap and blend through the seam. */
+        #pgBackdrop    { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        .pgb-group     { position: absolute; inset: 0; opacity: 0; }
+        .pgb-group > i { position: absolute; inset: 0; display: block; opacity: 0; }
+        .pgb-group > i:first-child { opacity: 1; }
+
+        /* the night between days — a held beat, long enough to read the date */
+        .pg-bridge  { height: 260vh; }
+        .brg-a { background: linear-gradient(180deg, #2b2b45 0%, #7b4a63 46%, #d4694a 78%, #f0925a 100%); }
+        .brg-b { background: linear-gradient(180deg, #05070e 0%, #080b16 60%, #0b0f1c 100%); }
+        .brg-date {
+            position: absolute; top: 50%; left: 0; width: 100%; text-align: center; z-index: 25;
+            transform: translateY(-50%); pointer-events: none;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 34px; letter-spacing: 8px; color: rgba(255,255,255,0.82);
+            opacity: 0; text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+        }
+        .pg-day-tag  { position: absolute; top: 22px; left: 0; width: 100%; text-align: center; z-index: 30; pointer-events: none;
+                       font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; letter-spacing: 3px; }
+        .pg-line     { position: absolute; left: 0; width: 100%; text-align: center; padding: 0 30px; z-index: 25; pointer-events: none;
+                       font-family: 'Noto Serif TC', serif; font-size: 15px; letter-spacing: 1.5px; line-height: 2.1;
+                       opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .pg-line.is-vis { opacity: 1; transform: translateY(0); }
+
+        /* ── 松山 → 馬公 · 貼上去的窗 ──
+           The clip sits in the flow directly under the hint, and the pair sticks
+           together through the leg. The hint's own sticky is dropped here — the
+           stack does that job now, otherwise the two fight each other.
+           Opacity is driven from the same scroll handler as .flight-hint. */
+        .tsa-mzg-stack {
+            position: sticky; top: 30vh;
+            display: flex; flex-direction: column; align-items: center; gap: 22px;
+        }
+        .tsa-mzg-stack .flight-hint { position: static; }
+        .plane-window {
+            width: min(200px, 54vw); aspect-ratio: 4 / 5;
+            border-radius: 42% / 32%;
+            overflow: hidden; background: #0d1218;
+            border: 7px solid #fdfbf6;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.26);
+            transform: rotate(-5deg);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        .plane-window video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── 08.11 夜 · 火鍋 ── */
+        .pg-hotpot { max-width: 340px; margin: 30px auto 0; }
+        .pg-hotpot .pg-frame { width: 100%; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.16); }
+        .pg-hotpot .pg-frame img { width: 100%; height: auto; object-fit: unset; display: block; }
+        .pg-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 19px; color: #8d8375; text-align: center; margin-top: 10px; line-height: 1.3; }
+
+        /* ── 08.11 夜 · 花火 ── */
+        /* Stage heights are the pacing. Usable scroll is (height - 100vh), so
+           anything at or under 100vh has no scroll range at all and is skipped. */
+        .fw-stage  { height: 320vh; }
+        /* sky lives in #pgBackdrop now — stickies carry content only */
+        .fw-dusk   { background: linear-gradient(180deg, #1e2338 0%, #131725 55%, #0a0d16 100%); }
+        .fw-night  { background: linear-gradient(180deg, #080b14 0%, #05070e 60%, #04060c 100%); }
+        .fw-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+        /* children are all absolute, so the wrapper needs its own height or the
+           -50% centring resolves against zero */
+        .fw-photo-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(300px, 78vw); aspect-ratio: 3 / 4; z-index: 6; }
+        /* opacity/transform are written every frame from scroll, so no CSS
+           transition here — it would fight the scroll position */
+        .fw-photo {
+            position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 3 / 4;
+            overflow: hidden; border-radius: 3px; opacity: 0;
+            will-change: transform, opacity;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+        }
+        .fw-photo-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 12px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #fff; text-align: center; line-height: 1.25; }
+        .fw-timer {
+            position: absolute; top: 24px; left: 0; width: 100%; text-align: center; z-index: 20;
+            font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px;
+            color: rgba(255,255,255,0.5); transition: color 0.4s ease;
+        }
+        .fw-timer.urgent { color: #ffb347; }
+        .fw-escape {
+            position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%) translateY(10px);
+            z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 14px;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fw-escape.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; animation: breathe 2s infinite; }
+        .fw-escape-vid { width: min(300px, 78vw); aspect-ratio: 3 / 4; border-radius: 3px; overflow: hidden; box-shadow: 0 18px 45px rgba(0,0,0,0.6); }
+        .fw-escape-vid video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fw-escape-text {
+            padding: 10px 22px; border: 1px solid rgba(255,255,255,0.5); border-radius: 22px;
+            background: rgba(0,0,0,0.45); max-width: 260px;
+            font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 2px; line-height: 1.6;
+            color: #fff; text-align: center;
+        }
+        /* the escape itself: sky slides away, the two of you are already moving */
+        .fw-sky-group { position: absolute; inset: 0; z-index: 5; transition: transform 1.1s cubic-bezier(0.4,0,0.2,1), opacity 1.1s ease, filter 1.1s ease; }
+        .fw-sticky.escaped .fw-sky-group { transform: translateX(-22%) scale(1.08); opacity: 0.35; filter: blur(6px); }
+
+        /* ── 08.12 · 天亮之前 ── */
+        .dawn-stage { height: 200vh; }
+        .dawn-a { background: linear-gradient(180deg, #05070e 0%, #0a1020 60%, #101a2e 100%); }
+        .dawn-b { background: linear-gradient(180deg, #142138 0%, #2b3f5e 55%, #4a5f7d 100%); }
+        .dawn-c { background: linear-gradient(180deg, #43597c 0%, #9d8397 45%, #e0a878 78%, #f2c48c 100%); }
+        .dawn-sun { position: absolute; left: 50%; bottom: 26%; width: 74px; height: 74px; margin-left: -37px; border-radius: 50%; z-index: 3;
+            background: radial-gradient(circle, #fff3d0 0%, #ffcf87 45%, rgba(255,190,110,0) 72%); opacity: 0; transform: translateY(40px); }
+        .dawn-sea { position: absolute; left: 0; bottom: 0; width: 100%; height: 26%; z-index: 4;
+            background: linear-gradient(180deg, rgba(10,18,32,0.55) 0%, #060a12 100%); }
+
+        /* ── 08.12 · 跳島 ── */
+        .iso-stage  { height: 520vh; }
+        .iso-a { background: linear-gradient(180deg, #bcd6e6 0%, #dcebf2 52%, #eaf3f6 100%); }
+        .iso-horizon { position: absolute; left: 0; top: 55%; width: 100%; height: 45%; z-index: 2;
+            background: linear-gradient(180deg, #7fa8bd 0%, #4d7d99 45%, #305d77 100%); }
+        .iso-horizon::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.5); }
+        .iso-sway { position: absolute; inset: 0; z-index: 5; will-change: transform; }
+        /* centring lives in the JS transform (translateX(-50%)) so it can't
+           fight the scroll-driven translateY/scale */
+        .iso-item { position: absolute; left: 50%; top: 33%; width: min(268px, 72vw);
+            opacity: 0; will-change: transform, opacity; }
+        .iso-item .pg-frame { width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
+        .iso-time { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.85);
+            text-align: center; margin-top: 7px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .iso-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 17px; color: #fff;
+            text-align: center; margin-top: 5px; line-height: 1.45; padding: 0 4px;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.75); }
+        /* portrait sources would lose their subject in the 3:2 frame — give them
+           a taller box, narrowed so the item keeps the same footprint */
+        .iso-portrait .pg-frame { aspect-ratio: 3 / 4; width: 70%; margin: 0 auto; }
+        .iso-still { z-index: 8; }
+        .iso-closing { position: absolute; left: 0; bottom: 12%; width: 100%; z-index: 20; color: #eaf3f6; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+
+        /* ── 08.13 · 追著太陽往西開 ── */
+        .drv-stage  { height: 820vh; }
+        .drv-a { background: linear-gradient(180deg, #9dc6dd 0%, #cfe3ea 58%, #e6eff0 100%); }
+        .drv-b { background: linear-gradient(180deg, #a7bcd0 0%, #e6cfa8 55%, #f6dfae 100%); }
+        .drv-c { background: linear-gradient(180deg, #8f7f9c 0%, #e08c5a 52%, #f7b26a 100%); }
+        .drv-d { background: linear-gradient(180deg, #2b2b45 0%, #7b4a63 46%, #d4694a 78%, #f0925a 100%); }
+
+        /* ── sunset on water ──────────────────────────────────────────────
+           Layer order below the photo frame (z 6):
+             2 glow spread · 3 sun · 4 land→sea · 5 reflection, glitter, haze
+           Every blur here is a STATIC value so each layer rasterises once and
+           is then only transformed and faded — no per-frame filter recompute. */
+        .drv-sun {
+            position: absolute; left: 50%; top: 20%; width: 92px; height: 92px; margin-left: -46px;
+            border-radius: 50%; z-index: 3; opacity: 0; will-change: transform;
+            background: radial-gradient(circle, #fffdf4 0%, #fff2c8 38%, #ffcf85 62%, rgba(255,180,110,0) 76%);
+        }
+        /* wide low bloom that flattens and spreads as the sun nears the water */
+        .drv-glow {
+            position: absolute; left: 50%; top: 20%; width: 150vw; height: 54vh;
+            margin-left: -75vw; margin-top: -27vh; z-index: 2;
+            transform-origin: 50% 50%; opacity: 0; pointer-events: none;
+            will-change: transform, opacity;
+            background: radial-gradient(ellipse at 50% 50%,
+                rgba(255,240,200,0.92) 0%,
+                rgba(255,206,130,0.52) 20%,
+                rgba(255,158,84,0.26) 42%,
+                rgba(255,120,64,0.10) 62%,
+                rgba(255,110,60,0) 80%);
+        }
+        .drv-ground { position: absolute; left: 0; bottom: 0; width: 100%; height: 24%; z-index: 4;
+            background: linear-gradient(180deg, rgba(40,34,30,0.5) 0%, #23201d 100%); }
+        /* the land becomes the sea as we reach the west coast */
+        .drv-sea { position: absolute; left: 0; bottom: 0; width: 100%; height: 24%; z-index: 4; opacity: 0;
+            background: linear-gradient(180deg, #7a5f66 0%, #4a3c56 38%, #2a2438 72%, #1b1828 100%); }
+        /* the glitter path: a blurred column of light on the water under the sun */
+        .drv-pillar {
+            position: absolute; left: 50%; bottom: 0; width: 30vw; height: 24%;
+            margin-left: -15vw; z-index: 5; transform-origin: 50% 0%;
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
+            filter: blur(10px);
+            background: linear-gradient(180deg,
+                rgba(255,236,180,0.9) 0%,
+                rgba(255,196,116,0.5) 30%,
+                rgba(255,160,86,0.22) 62%,
+                rgba(255,140,70,0) 100%);
+        }
+        /* broken horizontal streaks so the column reads as water, not a beam */
+        .drv-glitter {
+            position: absolute; left: 50%; bottom: 0; width: 44vw; height: 24%;
+            margin-left: -22vw; z-index: 5; transform-origin: 50% 0%;
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
+            filter: blur(2.5px);
+            background-image: repeating-linear-gradient(0deg,
+                rgba(255,230,175,0.6) 0 1px, rgba(255,230,175,0) 1px 6px);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0,0,0,0.6) 42%, transparent 78%);
+                    mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, rgba(0,0,0,0.6) 42%, transparent 78%);
+        }
+        /* the bright seam where sky meets water */
+        .drv-haze {
+            position: absolute; left: 0; bottom: 24%; width: 100%; height: 4px; margin-bottom: -2px;
+            z-index: 5; opacity: 0; pointer-events: none; filter: blur(3px);
+            background: linear-gradient(90deg, transparent 6%, rgba(255,224,168,0.85) 50%, transparent 94%);
+        }
+        /* the photos the two of you took, once the sun is down on the water */
+        .drv-final {
+            position: absolute; left: 0; top: 27%; width: 100%; z-index: 7;
+            display: flex; justify-content: center; align-items: flex-start; gap: 12px;
+            /* biased left so the pair sits in front of / beside the lighthouse */
+            padding: 0 clamp(84px, 24vw, 200px) 0 clamp(14px, 4vw, 40px);
+            opacity: 0; pointer-events: none; will-change: transform, opacity;
+        }
+        .drv-final .pg-frame {
+            width: min(140px, 34vw); aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px;
+            box-shadow: 0 16px 40px rgba(60,20,10,0.5);
+        }
+        .drv-final .drv-final-b { margin-top: 26px; }
+        .drv-final-cap {
+            position: absolute; left: 0; top: calc(100% + 14px); width: 100%; text-align: center;
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 19px; color: #ffeede;
+            text-shadow: 0 2px 12px rgba(80,30,10,0.85);
+        }
+        /* the window: a fixed letterbox that content passes through */
+        .drv-frame { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100%; height: 58vh; z-index: 6; overflow: hidden; }
+        .drv-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 9;
+            box-shadow: inset 0 0 60px 24px rgba(20,16,14,0.32); }
+        /* full-width row with the frame centred inside, so translateX(0) really
+           is centre regardless of the frame's max-width cap */
+        .drv-item { position: absolute; top: 50%; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; will-change: transform, opacity; }
+        .drv-item .pg-frame { overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.3); }
+        /* passing scenery: landscape, clipped by the frame edge */
+        .drv-pass .pg-frame { width: 62vw; max-width: 300px; aspect-ratio: 3 / 2; }
+        /* a real stop: portrait, centred, still */
+        .drv-stop .pg-frame { width: 46vw; max-width: 210px; aspect-ratio: 3 / 4; }
+        /* a stop whose photo happens to be landscape — keeps the long dwell,
+           takes the wider frame so it isn't cropped to a letterbox */
+        .drv-stop.drv-wide .pg-frame { width: 62vw; max-width: 300px; aspect-ratio: 3 / 2; }
+        .drv-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 17px; color: #fff;
+            text-align: center; margin-top: 8px; line-height: 1.45; padding: 0 18px; max-width: 330px;
+            text-shadow: 0 1px 7px rgba(0,0,0,0.8); }
+        .drv-odo { position: absolute; bottom: 8%; left: 0; width: 100%; text-align: center; z-index: 20;
+            font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.82);
+            text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
+        .drv-closing { position: absolute; left: 0; top: 62%; width: 100%; z-index: 22; color: #fff3e4; text-shadow: 0 2px 12px rgba(80,30,10,0.7); }
+
+        /* ── the two vehicles the days were spent on ──────────────────────
+           Both sit BEHIND the photo layer (boat z3 < iso-sway z5, car
+           z5 < drv-frame z6). Body bob/rock is a CSS keyframe loop on its
+           own wall-clock; the wheels, lane markings and wake are advanced
+           by the vehicle rAF ticker, whose speed eases to ~0 whenever a
+           still / parked photo is at rest. */
+        .iso-boat {
+            position: absolute; left: 40%; bottom: 21%; width: min(288px, 62vw);
+            z-index: 3; opacity: 0.34; pointer-events: none; will-change: transform;
+            transform: translateX(-50%); transform-origin: 50% 74%;
+            filter: drop-shadow(0 6px 10px rgba(18,42,58,0.18));
+            animation: isoBob 4.8s ease-in-out infinite;
+        }
+        /* the car rides in a track: the track carries the scroll-driven exit
+           slide, the inner .drv-car keeps its own wall-clock bob */
+        .drv-car-track {
+            position: absolute; left: 40%; bottom: 15.5%; width: min(216px, 48vw);
+            z-index: 5; opacity: 0.4; pointer-events: none; will-change: transform;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2));
+        }
+        .drv-car { display: block; transform-origin: 50% 88%;
+            animation: drvBob 1.9s ease-in-out infinite; }
+        .iso-boat svg, .drv-car svg { width: 100%; height: auto; display: block; overflow: visible; }
+        .drv-wheel { transform-box: fill-box; transform-origin: center; will-change: transform; }
+        .drv-road-lines {
+            position: absolute; left: -12%; right: -12%; bottom: 15%; height: 3px;
+            z-index: 5; opacity: 0; pointer-events: none;
+            background-image: repeating-linear-gradient(90deg,
+                rgba(255,255,255,0.5) 0 20px, rgba(255,255,255,0) 20px 90px);
+        }
+        /* the lighthouse at the westernmost point — slides in from the right,
+           parks there, and the two sunset photos land in front of it */
+        .drv-lighthouse {
+            position: absolute; right: 3%; bottom: 15%; width: min(104px, 25vw);
+            z-index: 5; opacity: 0; pointer-events: none; will-change: transform, opacity;
+            transform: translateX(48vw);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.26));
+        }
+        .drv-lighthouse svg { width: 100%; height: auto; display: block; overflow: visible; }
+        .drv-lh-glow { animation: lhGlow 3.4s ease-in-out infinite; transform-origin: center; }
+        @keyframes isoBob {
+            0%   { transform: translateX(-50%) translateY(0px)  rotate(-1.6deg); }
+            28%  { transform: translateX(-50%) translateY(-3px) rotate(1.1deg); }
+            54%  { transform: translateX(-50%) translateY(0px)  rotate(1.8deg); }
+            78%  { transform: translateX(-50%) translateY(-2px) rotate(-0.4deg); }
+            100% { transform: translateX(-50%) translateY(0px)  rotate(-1.6deg); }
+        }
+        @keyframes drvBob {
+            0%,100% { transform: translateY(0px)    rotate(0deg); }
+            25%     { transform: translateY(-1.4px) rotate(0.4deg); }
+            55%     { transform: translateY(0.7px)  rotate(-0.25deg); }
+            80%     { transform: translateY(-0.6px) rotate(0.15deg); }
+        }
+        @keyframes lhGlow {
+            0%,100% { opacity: 0.35; transform: scale(0.9); }
+            50%     { opacity: 0.95; transform: scale(1.12); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .iso-boat { animation: none; transform: translateX(-50%); }
+            .drv-car, .drv-lh-glow { animation: none; }
+            .dream-cloud, .dream-star { animation: none; }
+            .lp-body, .lp-buzz { animation: none; }
+        }
+
+        /* ── 08.13 夜 · 最後一個晚上 ──
+           A soft interlude between the sunset and the last morning: a night
+           panel with drifting cloud blooms and a few slow stars, the photo
+           feathered into it rather than cut out of it. */
+        /* The drive's sky keeps bleeding for BLEED (0.16) of its scroll length
+           past the block — ~115vh at that stage's height. Clear it before this
+           panel enters, or it opens over a half-faded sunset. */
+        .dream-interlude {
+            position: relative; max-width: 360px; margin: 125vh auto 150px;
+            padding: 34px 24px 30px; border-radius: 22px; overflow: hidden;
+            background: linear-gradient(168deg, #262541 0%, #3d3659 42%, #6a5473 76%, #94707a 100%);
+            box-shadow: 0 22px 52px rgba(46,38,66,0.30);
+            text-align: center;
+        }
+        .dream-sky { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+        .dream-cloud {
+            position: absolute; display: block; border-radius: 50%; filter: blur(7px);
+            background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.09) 55%, transparent 72%);
+            animation: dreamDrift 30s ease-in-out infinite;
+        }
+        .dc-1 { width: 200px; height: 100px; top: 4%;   left: -20%; }
+        .dc-2 { width: 156px; height: 78px;  top: 44%;  left: 60%;  animation-duration: 38s; animation-delay: -9s; }
+        .dc-3 { width: 230px; height: 112px; bottom: 2%; left: -10%; animation-duration: 34s; animation-delay: -17s; opacity: 0.72; }
+        .dream-star {
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: rgba(255,255,255,0.92); box-shadow: 0 0 7px rgba(255,255,255,0.75);
+            animation: dreamTwinkle 3.6s ease-in-out infinite;
+        }
+        .ds-1 { top: 14%; left: 18%; }
+        .ds-2 { top: 9%;  left: 74%; animation-delay: -1.2s; }
+        .ds-3 { top: 30%; left: 88%; animation-delay: -2.4s; }
+        .ds-4 { top: 24%; left: 46%; animation-delay: -0.6s; width: 2px; height: 2px; }
+        @keyframes dreamDrift {
+            0%, 100% { transform: translate(0, 0); }
+            50%      { transform: translate(28px, -9px); }
+        }
+        @keyframes dreamTwinkle {
+            0%, 100% { opacity: 0.25; transform: scale(0.8); }
+            50%      { opacity: 1;    transform: scale(1); }
+        }
+        .dream-inner { position: relative; z-index: 2; }
+        .dream-label {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.6);
+        }
+        .dream-text {
+            font-family: 'Noto Serif TC', serif; font-size: 15px; line-height: 2.05;
+            letter-spacing: 1.5px; color: rgba(255,255,255,0.94); margin-top: 16px;
+            text-shadow: 0 2px 12px rgba(18,14,30,0.55);
+        }
+        .dream-photo {
+            position: relative; width: min(210px, 62%); margin: 22px auto 0;
+            aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden;
+            transform: rotate(-2.5deg);
+            box-shadow: 0 18px 38px rgba(20,14,32,0.45);
+        }
+        .dream-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* feathers the photo edges back into the night instead of a hard cut */
+        .dream-photo::after {
+            content: ''; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
+            box-shadow: inset 0 0 30px 12px rgba(48,40,70,0.55);
+        }
+        .dream-note {
+            font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px;
+            color: rgba(255,255,255,0.85); margin-top: 14px; letter-spacing: 1px; line-height: 1.4;
+        }
+
+        /* ── 08.14 · 最後一天 ── */
+        .lastday-aside { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #a89b8c;
+            text-align: center; margin: -14px 0 0; letter-spacing: 1px; }
+        /* the one beat with no photo to carry it, so the drawing does the work */
+        .lost-phone { max-width: 320px; margin: 34px auto 0; padding: 28px 22px 24px; text-align: center;
+            background: #fffdf9; border: 1px solid #efe6d8; border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(120,100,80,0.10); }
+        .lp-phone { width: 92px; height: auto; display: block; margin: 0 auto 18px; }
+        .lp-body { transform-box: fill-box; transform-origin: center; animation: lpBuzz 1.9s ease-in-out infinite; }
+        .lp-buzz { animation: lpWave 1.9s ease-in-out infinite; }
+        @keyframes lpBuzz {
+            0%, 62%, 100% { transform: rotate(0deg); }
+            70%  { transform: rotate(-3deg); }
+            78%  { transform: rotate(3deg); }
+            86%  { transform: rotate(-2deg); }
+            94%  { transform: rotate(1.5deg); }
+        }
+        @keyframes lpWave { 0%, 100% { opacity: 0.28; } 50% { opacity: 0.95; } }
+        .lp-line { font-family: 'Noto Serif TC', serif; font-size: 15px; color: #5c5348;
+            line-height: 1.95; letter-spacing: 1.2px; }
+        .lp-line b { display: inline-block; margin-top: 2px; font-weight: 500; font-size: 21px;
+            color: #b5644f; letter-spacing: 3px; }
+        .lp-resolve { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #8b8474;
+            margin-top: 14px; line-height: 1.5; }
+
+        /* ── 第 1189 天 ── */
+        .d88-stage  { height: 240vh; }
+        .d88-a { background: linear-gradient(180deg, #fdfbf8 0%, #fbf8f4 55%, #f7f2ec 100%); }
+        .d88-sticky { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 30px; }
+        .d88-date   { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #a89c8c; letter-spacing: 3px; }
+        .d88-count  { font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: #333; line-height: 1;
+                      margin: 6px 0 2px; text-shadow: 0 5px 15px rgba(0,0,0,0.05); font-variant-numeric: tabular-nums; }
+        .d88-unit   { font-size: 15px; color: #7d7365; letter-spacing: 5px; font-family: -apple-system, sans-serif; }
+        .d88-note   { font-family: 'Noto Serif TC', serif; font-size: 14px; color: #6b6355; letter-spacing: 1.5px; line-height: 2.2;
+                      text-align: center; margin-top: 34px; opacity: 0; transform: translateY(12px);
+                      transition: opacity 0.8s ease, transform 0.8s ease; }
+        .d88-note.is-vis { opacity: 1; transform: translateY(0); }
+
     </style>
 </head>
 <body class="no-scroll">
@@ -1806,7 +2364,7 @@
                                 <p class="hn-pull-quote">「出門走走，總會看見只有我們才會發現的小事。」</p>
                             </div>
                         </div>
-                        <div class="hn-prose" style="margin-bottom:0;">這一天天氣很好，我們睡到很晚才出門，節國兩個人都還是好累好類哈哈。我們去看了當季的紫色花花。那時候你每次看到就會拍張照片、檢幾片花瓣留起來。我們遇見了一朵在我們頭頂像愛心的雲，也遇到了停在你手上的可愛小瓢蟲，真希望每天都是像這樣的愜意下午~</div>
+                        <div class="hn-prose" style="margin-bottom:0;">這一天天氣很好，我們睡到很晚才出門，解果兩個人都還是好累好累哈哈。我們去看了當季的紫色花花。那時候你每次看到就會拍張照片、撿幾片花瓣留起來。我們遇見了一朵在我們頭頂像愛心的雲，也遇到了停在你手上的可愛小瓢蟲，真希望每天都是像這樣的愜意下午~</div>
                         <div class="hn-footer">每一天，都是新聞 · Every ordinary day is a headline</div>
                     </div>
 
@@ -1855,13 +2413,13 @@
                         <div class="hn-columns" style="margin-top: 12px;">
                             <div class="hn-col">
                                 <div class="hn-col-head">找尋下一個避風港</div>
-                                <p class="hn-col-text">多虧了Ruan先生，我們在這個月便成了無家可歸的難民了... 到現在還是很生氣。我們輾轉住了小旅社、短租、還把東西寄放在Iris那裡，這個月的一切都好混亂。不過也是這樣我們才在看了一間又一間的房子之後，找到了我們接下來真正屬於我們自己的甜蜜的家💑</p>
+                                <p class="hn-col-text">多虧了Ruan先生，我們在這個月變成了無家可歸的難民了... 到現在還是很生氣。我們輾轉住了小旅社、短租、還把東西寄放在Iris那裡，這個月的一切都好混亂。不過也是這樣我們才在看了一間又一間的房子之後，找到了我們接下來真正屬於我們自己的甜蜜的家💑</p>
                                 <video src="assets/IMG_3539.mov" class="hn-col-photo" alt="看房" style="background:#bcccc4; margin-top: auto;" autoplay loop muted playsinline></video>
                             </div>
                             <div class="hn-col">
                                 <img src="assets/IMG_7236.jpeg" class="hn-col-photo" alt="苦中作樂" style="background:#c0d4c8;">
                                 <div class="hn-col-head" style="margin-top: 6px;">苦中作樂的日常</div>
-                                <p class="hn-col-text">即使生活一團亂，上班、拍片依然沒有停止，我們還是讓我們的每一天充滿著我們自己的小確信。記得這裡嗎?那個對我們很好的印度小哥不知道去哪了，每次的休息、每次的半夜覓食時間、我們都努力地把握住所剩不多的相處時間...</p>
+                                <p class="hn-col-text">即使生活一團亂，上班、拍片依然沒有停止，我們還是讓我們的每一天充滿著我們自己的小確幸。記得這裡嗎?那個對我們很好的印度小哥不知道去哪了，每次的休息、每次的半夜覓食時間、我們都努力地把握住所剩不多的相處時間...</p>
                             </div>
                         </div>
                         
@@ -1902,7 +2460,7 @@
                                 <div class="hn-tl-content">
                                     <div class="hn-tl-date-label">JAN MID</div>
                                     <div class="hn-tl-head">午夜拖車任務</div>
-                                    <p class="hn-tl-body">即使到了最後一個月，我們依然沒有閒下來。晚上多了喜歡的新活動，那就啦著我們的小拖車，來來回回的把東西搬入我們的新家。晚上的街道上，只有我們兩個小瘋子在累死累活，但還是嘻嘻哈哈，沿路還發現了蝙蝠!最後的這幾個晚上真的真的好難忘...</p>
+                                    <p class="hn-tl-body">即使到了最後一個月，我們依然沒有閒下來。晚上多了喜歡的新活動，那就是拉著我們的小拖車，來來回回的把東西搬入我們的新家。晚上的街道上，只有我們兩個小瘋子在累死累活，但還是嘻嘻哈哈，沿路還發現了蝙蝠!最後的這幾個晚上真的真的好難忘...</p>
                                     <video src="assets/IMG_4813.mp4" class="hn-tl-img" alt="Wagon moving" style="background:#c4c8d0; width:100%; height: auto;" autoplay loop muted playsinline></video>
                                 </div>
                             </div>
@@ -2443,7 +3001,7 @@
                     <div class="cex-row">
                         <div class="cex-text-wrap">
                             <div class="cex-date">2024 · December</div>
-                            <div class="cex-caption">這是聖誕節的時候我們憶起在信義走走，坐在階梯上兩個人努力底與寒風的樣子哈哈。(寶貝這天很漂亮呦~)</div>
+                            <div class="cex-caption">這是聖誕節的時候我們一起在信義走走，坐在階梯上兩個人努力抵禦寒風的樣子哈哈。(寶貝這天很漂亮呦~)</div>
                         </div>
                         <div class="cex-pic-wrap"><img src="assets/IMG_1137.jpeg" alt="記憶二"></div>
                     </div>
@@ -2550,6 +3108,721 @@
                 <div class="year-sub">Together & Beyond...</div>
             </div>
 
+            <!-- ══════════ 特別篇章 · 澎湖 ══════════ -->
+            <div class="chapter special-intro" id="chap-penghu-intro">
+                <svg class="si-islands" viewBox="0 0 300 290" aria-hidden="true" focusable="false">
+                    <g>
+                        <!-- 吉貝 -->
+                        <path d="M146,38 C154,33 165,35 168,41 C170,46 164,51 156,51 C148,51 142,44 146,38 Z"/>
+                        <!-- 白沙 -->
+                        <path d="M120,80 C129,70 144,66 156,70 C166,73 173,80 177,89 C180,96 176,103 169,101
+                                 C161,99 155,94 147,94 C138,94 129,101 122,97 C115,93 114,86 120,80 Z"/>
+                        <!-- 西嶼 -->
+                        <path d="M112,102 C107,111 105,124 104,136 C103,151 100,165 95,177 C91,187 84,194 77,195
+                                 C71,196 68,190 70,183 C74,170 79,159 84,146 C90,129 93,113 100,103
+                                 C104,97 110,96 112,102 Z"/>
+                        <!-- 澎湖本島 -->
+                        <path d="M160,112 C174,105 190,105 203,111 C216,117 227,127 233,139 C238,150 235,162 226,167
+                                 C217,172 206,169 197,173 C188,177 182,187 172,190 C161,193 150,187 147,177
+                                 C144,168 148,158 152,149 C156,140 153,130 153,122 C153,116 155,114 160,112 Z"/>
+                        <!-- 望安 -->
+                        <path d="M126,232 C135,226 147,229 150,236 C152,242 146,248 137,248 C128,248 121,238 126,232 Z"/>
+                        <!-- 七美 -->
+                        <path d="M158,264 C165,260 174,262 176,267 C178,272 172,277 165,276 C158,275 153,268 158,264 Z"/>
+                        <!-- 散落的小島 -->
+                        <circle cx="196" cy="93"  r="5"/>
+                        <circle cx="212" cy="99"  r="3.4"/>
+                        <circle cx="92"  cy="209" r="3.8"/>
+                        <circle cx="228" cy="190" r="4.2"/>
+                        <circle cx="108" cy="60"  r="3"/>
+                    </g>
+                </svg>
+                <div class="si-inner">
+                    <div class="si-label">特別篇章</div>
+                    <div class="si-rule"><span></span><i>✈</i><span></span></div>
+                    <h2 class="si-name">澎湖之旅</h2>
+                    <div class="si-latin">PENGHU · 2026.08.11 — 08.14</div>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 澎湖 · 2026.08.11 – 08.14
+                 Bookended by the domestic boarding passes and the two
+                 shortest globe arcs on the page. Acts 1–4 slot between
+                 the departure and the return.
+                 ============================================================ -->
+
+            <!-- 08.11 · 出發 -->
+            <div class="chapter" id="chap-penghu-depart">
+                <div class="time-badge">Aug 11, 2026 · 台北車站</div>
+                <p class="story-text">
+                    八月十一號，我下了班，我們養個拖著行李在台北車站碰了面<br>
+                    第一次進到松山機場，也是第一次一起搭國內線。<br>
+                    未知的離島之旅真令人期待~
+                </p>
+
+                <div class="double-ticket-wrapper dp-wrap" id="penghuTicketOut" data-front="2" data-auto-reveal>
+                    <div class="flip-container dp-flip ticket-layer ticket-1" onclick="handleTicketStackClick(1, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">FRANK</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS811</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">11AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3A</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">05</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">17:50</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS811</span>
+                                    <span class="dp-stub-seat">3A</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <img src="assets/pochacco_airport.jpg" alt="松山機場 · 舉著波奇狗看飛機" style="object-position: 50% 80%;">
+                                <div class="dp-back-cap">小狗也第一次飛國內線</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-container dp-flip ticket-layer ticket-2" onclick="handleTicketStackClick(2, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">SYDNEY</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS811</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">11AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3B</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">05</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">17:50</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS811</span>
+                                    <span class="dp-stub-seat">3B</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <img src="assets/bb_airport.jpg" alt="松山機場 · 落地窗前看停機坪">
+                                <div class="dp-back-cap">出發嘍！</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">點後面那張換到前面，點前面那張翻背面 👆</span>
+            </div>
+
+            <!-- 松山 → 馬公：本頁最短的一段航線 -->
+            <div id="flight-tsa-mzg-area" class="flight-scroll-area">
+                <!-- text + takeoff clip ride together through the leg -->
+                <div class="tsa-mzg-stack">
+                    <div class="flight-hint" id="flightHintTsaMzg">也算是第二次一起搭飛機了，<br>只不過這次是一起去我們都不熟悉的地方~</div>
+                    <div class="plane-window" id="planeWindow" aria-hidden="true">
+                        <video src="assets/plane-takeoff.mov" autoplay loop muted playsinline></video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Every Penghu sky lives here, outside the stages, so the days
+                 dissolve into each other instead of cutting. -->
+            <div id="pgBackdrop" aria-hidden="true">
+                <div class="pgb-group" id="pgbFw">
+                    <i class="fw-dusk"></i><i class="fw-night" id="fwNight"></i>
+                </div>
+                <div class="pgb-group" id="pgbDawn">
+                    <i class="dawn-a"></i><i class="dawn-b" id="dawnB"></i><i class="dawn-c" id="dawnC"></i>
+                </div>
+                <div class="pgb-group" id="pgbIso">
+                    <i class="iso-a"></i>
+                </div>
+                <div class="pgb-group" id="pgbBr1">
+                    <i class="iso-a"></i><i class="brg-b" id="br1B"></i><i class="drv-a" id="br1C"></i>
+                </div>
+                <div class="pgb-group" id="pgbDrv">
+                    <i class="drv-a"></i><i class="drv-b" id="drvB"></i><i class="drv-c" id="drvC"></i><i class="drv-d" id="drvD"></i>
+                </div>
+                <div class="pgb-group" id="pgbBr2">
+                    <i class="brg-a"></i><i class="brg-b" id="br2B"></i><i class="d88-a" id="br2C"></i>
+                </div>
+                <div class="pgb-group" id="pgbD88">
+                    <i class="d88-a"></i>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 1 · 08.11 夜 — 火鍋 · 花火 · 撤退 ══════════ -->
+            <div class="chapter" id="chap-penghu-d1">
+                <div class="time-badge">Aug 11 · 馬公的第一個晚上</div>
+                <p class="story-text">
+                    落地澎湖喽!<br>
+                    我們扛著行李，上了飆車大哥的計程車就直直前往飯店去了。<br>
+                    你看，是東京鐵塔ㄟ 哈哈哈~
+                </p>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <img src="assets/landed.jpg" alt="落地那晚 · 往市區的路上，天已經半黑">
+                    </div>
+                    <p class="pg-cap">落地那晚，往市區的路上</p>
+                </div>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <img src="assets/hotel1.jpg" alt="抵達飯店">
+                    </div>
+                    <p class="pg-cap">終於到了，先躺個30秒😴</p>
+                </div>
+                <p class="story-text">
+                    到了飯店了~<br>
+                    又餓又累的，等等要準備弄弄出門完成今天最大的任務了。
+                </p>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <img src="assets/hotel2.jpg" alt="整裝出門看花火">
+                    </div>
+                    <p class="pg-cap">休息完畢，出發看煙火喽！</p>
+                </div>
+            </div>
+
+            <div class="pg-stage fw-stage" id="fwStage">
+                <div class="pg-sticky fw-sticky" id="fwSticky">
+                    <div class="fw-sky-group">
+                        <canvas class="fw-canvas" id="fwCanvas"></canvas>
+                        <div class="fw-photo-wrap" id="fwPhotos">
+                            <div class="fw-photo" data-at="0.22" data-win="0.21">
+                                <video src="assets/fireworks-view.mov" autoplay loop muted playsinline></video>
+                                <div class="fw-photo-cap">開始了</div>
+                            </div>
+                            <div class="fw-photo" data-at="0.65" data-win="0.21">
+                                <img src="assets/firework.jpg" alt="觀音亭 · 花火節">
+                                <div class="fw-photo-cap">以為很好看，喜得一張長輩觀光照</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fw-timer" id="fwTimer">觀音亭 · 21:00 — 剩 10:00</div>
+
+                    <div class="fw-escape" id="fwEscape">
+                        <div class="fw-escape-vid">
+                            <video src="assets/firework-leave.mov" autoplay loop muted playsinline></video>
+                        </div>
+                        <div class="fw-escape-text">趁還有一分鐘，趕快落跑！</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 2 · 08.12 — 天亮之前 · 跳島 ══════════ -->
+            <div class="pg-stage dawn-stage" id="dawnStage">
+                <div class="pg-sticky dawn-sticky" id="dawnSticky">
+                    <div class="dawn-sun" id="dawnSun"></div>
+                    <div class="dawn-sea"></div>
+                    <div class="pg-day-tag" id="dawnTag" style="color: rgba(255,255,255,0.75);">08.12</div>
+                    <p class="pg-line" id="dawnLine" style="top: 62%; color: rgba(255,255,255,0.92); text-shadow: 0 2px 12px rgba(0,0,0,0.6);">
+                        五點半的鬧鐘。<br>扒了飯店早餐十分鐘，馬上就搭計程車去準備開始今天的冒險了!
+                    </p>
+                </div>
+            </div>
+
+            <div class="pg-stage iso-stage" id="isoStage">
+                <div class="pg-sticky iso-sticky" id="isoSticky">
+                    <div class="iso-horizon"></div>
+
+                    <!-- the island-hopping boat — sits on the horizon, behind the photos.
+                         Rock/bob is CSS (@keyframes isoBob); the wake fades with speed. -->
+                    <div class="iso-boat" id="isoBoat">
+                        <svg viewBox="0 0 260 128" aria-hidden="true">
+                            <!-- trailing wake + bow splash -->
+                            <g id="isoWake" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round">
+                                <path d="M30,104 C20,104 13,100 9,93"/>
+                                <path d="M42,111 C26,112 13,111 4,106"/>
+                                <path d="M72,114 C55,116 37,115 25,111"/>
+                                <path d="M247,86 C253,82 256,75 256,69"/>
+                            </g>
+                            <!-- flag / mast at the bow (points the way we're going) -->
+                            <path d="M212,64 L212,38" stroke="#20242b" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M212,40 C222,42 229,46 233,51 C227,54 219,55 212,55 Z" fill="#e8a86f"/>
+                            <!-- hull -->
+                            <path d="M30,70 C24,70 22,76 25,84 C33,104 46,110 64,110 L198,110
+                                     C222,110 238,100 248,78 C250,71 246,66 238,67 L64,64
+                                     C46,63 36,65 30,70 Z" fill="#333b44"/>
+                            <!-- waterline band -->
+                            <path d="M26,86 C33,104 46,110 64,110 L198,110 C222,110 238,100 247,80
+                                     C210,96 150,100 110,99 C74,98 44,93 26,86 Z" fill="#232a32"/>
+                            <!-- bow fender -->
+                            <path d="M236,66 C246,66 250,72 249,80 C246,86 238,86 235,82 Z" fill="#20242b"/>
+                            <!-- deck rail -->
+                            <path d="M60,58 C88,53 116,54 134,58" stroke="#20242b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <!-- wheelhouse + roof cap -->
+                            <path d="M112,64 C112,44 118,36 132,36 L176,36 C190,36 196,44 196,64 Z" fill="#3c444e"/>
+                            <path d="M107,40 C107,35 111,32 117,32 L191,32 C197,32 201,35 201,40
+                                     C201,43 197,44 191,44 L117,44 C111,44 107,43 107,40 Z" fill="#333b44"/>
+                            <!-- funnel -->
+                            <rect x="150" y="14" width="16" height="22" rx="6" fill="#4a525b"/>
+                            <rect x="150" y="19" width="16" height="4.5" fill="#2e343c"/>
+                            <!-- cabin windows -->
+                            <g fill="rgba(210,227,236,0.62)">
+                                <rect x="120" y="46" width="17" height="13" rx="4"/>
+                                <rect x="143" y="46" width="19" height="13" rx="4"/>
+                                <rect x="170" y="46" width="14" height="13" rx="4"/>
+                            </g>
+                            <!-- portholes -->
+                            <g>
+                                <circle cx="58" cy="82" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="80" cy="82" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="102" cy="81" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <circle cx="124" cy="81" r="5" fill="rgba(210,227,236,0.5)"/>
+                                <g fill="none" stroke="#20242b" stroke-width="2">
+                                    <circle cx="58" cy="82" r="5"/><circle cx="80" cy="82" r="5"/>
+                                    <circle cx="102" cy="81" r="5"/><circle cx="124" cy="81" r="5"/>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="iso-sway" id="isoSway">
+                        <!-- 上船 → 東吉嶼 → 再上船 → 七美 → 晚餐. Beats are evenly
+                             spaced 0.135 apart so the day reads at one pace. -->
+                        <div class="iso-item" data-at="0.075" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/boat1.jpg" alt="08.12 · 跳島的船上"></div>
+                            <div class="iso-time">登船</div>
+                            <div class="iso-cap">上船囉，今天要去跳島！</div>
+                        </div>
+
+                        <!-- 第一站 · 東吉嶼 -->
+                        <div class="iso-item" data-at="0.21" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/pier-bb.jpeg" alt="08.12 · 東吉嶼的碼頭"></div>
+                            <div class="iso-time">東吉嶼</div>
+                            <div class="iso-cap">第一站，東吉嶼</div>
+                        </div>
+
+                        <div class="iso-item" data-at="0.345" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/boat2.jpg" alt="08.12 · 再次上船 · 比 YA"></div>
+                            <div class="iso-time">再次登船</div>
+                            <div class="iso-cap">再上船，前往下一座島</div>
+                        </div>
+
+                        <!-- 七美 · 冰店的肥貓 -->
+                        <div class="iso-item iso-portrait" data-at="0.48" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/cat-pic.jpeg" alt="七美 · 冰店遇到的肥貓"></div>
+                            <div class="iso-time">七美 · 冰店</div>
+                            <div class="iso-cap">島上好熱，我們去吃冰<br>遇見了這隻肥貓貓</div>
+                        </div>
+
+                        <!-- 環島 — the one still moment, ~1.5× the dwell -->
+                        <div class="iso-item iso-still" data-at="0.615" data-win="0.11">
+                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-twinheart.jpg --><div class="ph">08.12 · 雙心石滬 · 3:2</div></div>
+                            <div class="iso-time">七美 · 環島</div>
+                            <div class="iso-cap">遊覽車載我們繞了島一圈，<br>看了望夫石、小台灣，<br>還有妳最想看的雙心石滬</div>
+                        </div>
+
+                        <div class="iso-item iso-portrait" data-at="0.75" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/small-taiwan.heic" alt="七美 · 小台灣"></div>
+                            <div class="iso-time">小台灣</div>
+                            <div class="iso-cap">看！我住這裡喔~</div>
+                        </div>
+
+                        <!-- 收尾 · 一天的最後 -->
+                        <div class="iso-item" data-at="0.855" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/takoyaki.jpeg" alt="08.12 · 宵夜 · 章魚燒"></div>
+                            <div class="iso-time">晚上 · 宵夜</div>
+                            <div class="iso-cap">雖然晚餐壽喜燒吃飽飽的，<br>還是點了好多垃圾食物，吃得好多呦~<br>（章魚燒好吃🙂‍↕️）</div>
+                        </div>
+                    </div>
+
+                    <div class="pg-day-tag" id="isoTag" style="color: rgba(255,255,255,0.8);">08.12 · 跳島</div>
+                    <p class="pg-line iso-closing" id="isoClosing">
+                        又熱又累的一天<br>但是很充實，阿鼻下次還想一起來跳島嗎哈哈?
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08.12 → 08.13: the night between them, and the palette reset.
+                 The date holds through the dark, then the day announces itself
+                 as the bridge comes up into morning. -->
+            <div class="pg-stage pg-bridge" id="br1Stage">
+                <div class="pg-sticky" id="br1Sticky">
+                    <div class="brg-date" id="br1Date">08.13</div>
+                    <p class="pg-line" id="br1Line" style="top: 62%; color: rgba(255,255,255,0.9); text-shadow: 0 2px 14px rgba(0,0,0,0.75);">
+                        今天是我們的公路環島之旅！<br>租了一台小車，沿著海岸線一路往西開。
+                    </p>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 3 · 08.13 — 環島 · 追著太陽往西開 ══════════ -->
+            <div class="pg-stage drv-stage" id="drvStage">
+                <div class="pg-sticky drv-sticky" id="drvSticky">
+                    <div class="drv-glow" id="drvGlow"></div>
+                    <div class="drv-sun" id="drvSun"></div>
+                    <div class="drv-ground"></div>
+                    <div class="drv-sea" id="drvSea"></div>
+                    <div class="drv-pillar" id="drvPillar"></div>
+                    <div class="drv-glitter" id="drvGlitter"></div>
+                    <div class="drv-haze" id="drvHaze"></div>
+
+                    <!-- streaking lane markings — frozen when the car is parked -->
+                    <div class="drv-road-lines" id="drvRoadLines"></div>
+
+                    <!-- the grey car (Toyota Vios-ish) — rides the road band, behind the
+                         frame photos. The track carries the scroll-driven exit slide;
+                         .drv-car keeps its wall-clock bob; wheels + lane markings are
+                         spun by the vehicle rAF ticker. -->
+                    <div class="drv-car-track" id="drvCarTrack">
+                    <div class="drv-car" id="drvCar">
+                        <svg viewBox="0 0 244 112" aria-hidden="true">
+                            <ellipse cx="122" cy="99" rx="104" ry="6" fill="rgba(0,0,0,0.16)"/>
+                            <!-- body: short rounded 3-box sedan, nose to the right -->
+                            <path d="M22,90 C13,90 9,82 11,73 C12,66 16,62 24,61 L44,59
+                                     C50,40 64,31 84,30 L146,30 C168,31 182,40 190,52 L210,57
+                                     C226,60 234,66 235,76 C236,85 231,90 222,90 Z" fill="#868d95"/>
+                            <!-- upper-body shade -->
+                            <path d="M84,30 L146,30 C160,31 170,36 176,42 L82,42 C80,35 82,31 84,30 Z" fill="#767d86"/>
+                            <!-- glasshouse -->
+                            <path d="M50,57 C55,42 68,34 86,33 L144,33 C162,34 174,42 182,53 L176,57 Z" fill="#3f4750"/>
+                            <path d="M106,34 L106,57" stroke="#868d95" stroke-width="4"/>
+                            <path d="M58,52 C62,42 72,37 84,36 L100,36 L86,52 Z" fill="rgba(255,255,255,0.16)"/>
+                            <!-- rounded wheel-arch eyebrows -->
+                            <path d="M40,88 C40,74 52,64 66,64 C80,64 92,74 92,88 L84,88
+                                     C84,78 76,71 66,71 C56,71 48,78 48,88 Z" fill="#5c636c"/>
+                            <path d="M158,88 C158,74 170,64 184,64 C198,64 210,74 210,88 L202,88
+                                     C202,78 194,71 184,71 C174,71 166,78 166,88 Z" fill="#5c636c"/>
+                            <!-- rounded bumpers -->
+                            <path d="M11,74 C9,80 10,86 14,89 L24,89 C20,84 20,78 22,73 Z" fill="#5c636c"/>
+                            <path d="M226,66 C233,69 236,74 236,80 C236,85 233,88 228,88 L224,88
+                                     C226,80 224,72 220,67 Z" fill="#5c636c"/>
+                            <!-- lights, handle, mirror, character line -->
+                            <path d="M214,66 C224,65 231,68 233,74 C231,78 224,79 216,77 C212,73 211,69 214,66 Z"
+                                  fill="rgba(255,242,208,0.8)"/>
+                            <path d="M14,64 C19,63 24,64 26,67 L26,74 C22,76 17,75 14,73 Z" fill="rgba(255,90,72,0.65)"/>
+                            <rect x="72" y="50" width="12" height="3.4" rx="1.7" fill="#4b5159"/>
+                            <path d="M182,44 C176,42 172,43 171,47 C175,49 180,49 184,47 Z" fill="#6c7079"/>
+                            <path d="M26,64 C90,60 160,60 220,66" stroke="#7d838b" stroke-width="1.5" fill="none"/>
+                            <!-- wheels: outer <g> positions, inner .drv-wheel spins about its centre -->
+                            <g transform="translate(64,84)"><g class="drv-wheel">
+                                <circle r="18" fill="#26292f"/>
+                                <circle r="17" fill="none" stroke="#15171b" stroke-width="1.4"/>
+                                <circle r="8" fill="#c2c7cd"/>
+                                <g stroke="#7f858d" stroke-width="2.4" stroke-linecap="round">
+                                    <line x1="0" y1="0" x2="0" y2="-7"/><line x1="0" y1="0" x2="6.7" y2="2.2"/>
+                                    <line x1="0" y1="0" x2="4.1" y2="5.7"/><line x1="0" y1="0" x2="-4.1" y2="5.7"/>
+                                    <line x1="0" y1="0" x2="-6.7" y2="2.2"/>
+                                </g>
+                                <circle r="2.4" fill="#565b64"/>
+                            </g></g>
+                            <g transform="translate(182,84)"><g class="drv-wheel">
+                                <circle r="18" fill="#26292f"/>
+                                <circle r="17" fill="none" stroke="#15171b" stroke-width="1.4"/>
+                                <circle r="8" fill="#c2c7cd"/>
+                                <g stroke="#7f858d" stroke-width="2.4" stroke-linecap="round">
+                                    <line x1="0" y1="0" x2="0" y2="-7"/><line x1="0" y1="0" x2="6.7" y2="2.2"/>
+                                    <line x1="0" y1="0" x2="4.1" y2="5.7"/><line x1="0" y1="0" x2="-4.1" y2="5.7"/>
+                                    <line x1="0" y1="0" x2="-6.7" y2="2.2"/>
+                                </g>
+                                <circle r="2.4" fill="#565b64"/>
+                            </g></g>
+                        </svg>
+                    </div>
+                    </div>
+
+                    <!-- the westernmost-point lighthouse — slides in from the right at
+                         the end of the drive and parks there behind the sunset photos -->
+                    <div class="drv-lighthouse" id="drvLighthouse">
+                        <svg viewBox="0 0 108 284" aria-hidden="true">
+                            <!-- rock base -->
+                            <path d="M6,278 C10,250 22,238 40,236 L70,236 C88,238 100,252 104,278 Z" fill="#3a3a3a"/>
+                            <!-- tapered tower -->
+                            <path d="M38,232 L30,96 C30,90 36,86 54,86 C72,86 78,90 78,96 L70,232
+                                     C70,236 64,238 54,238 C44,238 38,236 38,232 Z" fill="#efefec"/>
+                            <!-- black bands -->
+                            <path d="M33,150 L75,150 L74,178 L34,178 Z" fill="#262626"/>
+                            <path d="M31,206 L77,206 L76,230 L32,230 Z" fill="#262626"/>
+                            <!-- gallery deck -->
+                            <rect x="24" y="78" width="60" height="10" rx="3" fill="#555"/>
+                            <g stroke="#555" stroke-width="2.4" stroke-linecap="round">
+                                <line x1="30" y1="78" x2="30" y2="66"/><line x1="42" y1="78" x2="42" y2="66"/>
+                                <line x1="54" y1="78" x2="54" y2="66"/><line x1="66" y1="78" x2="66" y2="66"/>
+                                <line x1="78" y1="78" x2="78" y2="66"/>
+                                <line x1="28" y1="66" x2="80" y2="66"/>
+                            </g>
+                            <!-- lantern room -->
+                            <path d="M38,66 L38,44 C38,36 45,30 54,30 C63,30 70,36 70,44 L70,66 Z" fill="#333"/>
+                            <!-- the light -->
+                            <circle class="drv-lh-glow" cx="54" cy="48" r="18" fill="rgba(248,248,245,0.9)"/>
+                            <circle cx="54" cy="48" r="7" fill="#ffffff"/>
+                            <!-- roof + finial -->
+                            <path d="M34,30 L54,10 L74,30 Z" fill="#2e2e2e"/>
+                            <circle cx="54" cy="8" r="3.4" fill="#2e2e2e"/>
+                            <!-- door -->
+                            <path d="M48,238 L48,218 C48,214 60,214 60,218 L60,238 Z" fill="#444"/>
+                        </svg>
+                    </div>
+
+                    <div class="drv-frame" id="drvFrame">
+                        <!-- 風櫃洞 → 天堂路 → 跨海大橋 → 玄武岩 → 最西邊.
+                             Beats sit 0.071 apart and all resolve before
+                             DRV_BRAKE (0.80), so the ending choreography below
+                             is untouched. Frames are portrait unless the source
+                             photo is landscape (.drv-wide). -->
+                        <div class="drv-item drv-stop" data-at="0.04" data-win="0.045" data-label="風櫃洞">
+                            <div class="pg-frame"><!-- REPLACE: 風櫃洞 --><div class="ph">08.13 · 風櫃洞 · 3:4</div></div>
+                            <div class="drv-cap">第一站，風櫃洞</div>
+                        </div>
+
+                        <!-- 天堂路 -->
+                        <div class="drv-item drv-stop" data-at="0.111" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><video src="assets/beach-view.mov" autoplay loop muted playsinline></video></div>
+                            <div class="drv-cap">千辛萬苦走到天堂路，<br>然後就看到這片海</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.182" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/beach-me.heic" alt="天堂路 · 海邊"></div>
+                            <div class="drv-cap">美得有點不真實，<br>怎麼拍都好看</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.253" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><video src="assets/finding-crabs.mov" autoplay loop muted playsinline></video></div>
+                            <div class="drv-cap">咦? 鼻在沙子裡找到了甚麼?</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.324" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/crabs.jpeg" alt="天堂路 · 迷你寄居蟹"></div>
+                            <div class="drv-cap">哇!是迷你寄居蟹!</div>
+                        </div>
+                        <div class="drv-item drv-stop drv-wide" data-at="0.395" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/cart-us.heic" alt="天堂路 · 準備繼續上路"></div>
+                            <div class="drv-cap">太漂亮了，在這裡待了好久，<br>要準備繼續前進喽~</div>
+                        </div>
+
+                        <!-- 澎湖跨海大橋 -->
+                        <div class="drv-item drv-stop" data-at="0.466" data-win="0.045" data-label="跨海大橋">
+                            <div class="pg-frame"><img src="assets/bridge1.jpg" alt="08.13 · 跨海大橋"></div>
+                            <div class="drv-cap">是跨海大橋耶~阿那個是...</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.537" data-win="0.045" data-label="跨海大橋">
+                            <div class="pg-frame"><img src="assets/bridge-jump.heic" alt="跨海大橋 · 跳起來"></div>
+                            <div class="drv-cap">是哪來的觀光客怪人...</div>
+                        </div>
+
+                        <!-- 玄武岩 -->
+                        <div class="drv-item drv-stop" data-at="0.608" data-win="0.045" data-label="玄武岩">
+                            <div class="pg-frame"><img src="assets/rocks-jump.heic" alt="玄武岩 · 跳起來"></div>
+                            <div class="drv-cap">玄武岩</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.679" data-win="0.045" data-label="玄武岩">
+                            <div class="pg-frame"><img src="assets/rocks-jump2.heic" alt="玄武岩 · 再跳一次"></div>
+                            <div class="drv-cap">更多的玄武岩</div>
+                        </div>
+
+                        <!-- 追到島的最西邊，接上日落 -->
+                        <div class="drv-item drv-stop" data-at="0.750" data-win="0.045" data-label="島的最西邊">
+                            <div class="pg-frame"><img src="assets/sunset-jump.heic" alt="島的最西邊 · 夕陽下跳起來"></div>
+                            <div class="drv-cap">我們終於追著太陽，<br>來到了島的最西邊</div>
+                        </div>
+                    </div>
+
+                    <!-- the two of you, once the sun is down on the water -->
+                    <div class="drv-final" id="drvFinal">
+                        <div class="pg-frame">
+                            <img src="assets/sunset1.jpg" alt="08.13 · 島的最西邊 · 太陽掉進海裡">
+                        </div>
+                        <div class="pg-frame drv-final-b">
+                            <img src="assets/sunset%202.jpg" alt="08.13 · 島的最西邊 · 只有我們兩個">
+                        </div>
+                        <div class="drv-final-cap">島的最西邊，只有我們兩個</div>
+                    </div>
+
+                    <div class="pg-day-tag" id="drvTag" style="color: rgba(255,255,255,0.8);">08.13 · 環島</div>
+                    <div class="drv-odo" id="drvOdo">0 km</div>
+
+                    <p class="pg-line drv-closing" id="drvClosing">
+                        最後我們把車停在島的最西邊，<br>走到燈塔下，看它掉進海裡。
+                    </p>
+                </div>
+            </div>
+
+            <!-- ══════════ 08.13 夜 · 最後一個晚上 ══════════ -->
+            <div class="chapter dream-interlude" id="chap-penghu-lastnight">
+                <div class="dream-sky" aria-hidden="true">
+                    <i class="dream-cloud dc-1"></i>
+                    <i class="dream-cloud dc-2"></i>
+                    <i class="dream-cloud dc-3"></i>
+                    <i class="dream-star ds-1"></i>
+                    <i class="dream-star ds-2"></i>
+                    <i class="dream-star ds-3"></i>
+                    <i class="dream-star ds-4"></i>
+                </div>
+                <div class="dream-inner">
+                    <div class="dream-label">最後一個晚上</div>
+                    <p class="dream-text">
+                        本來說好要一起玩化妝、弄頭髮的，<br>
+                        結果我又睡著了...<br>
+                        對不起鼻😔
+                    </p>
+                    <div class="dream-photo">
+                        <img src="assets/sleeping.heic" alt="最後一晚 · 就這樣睡著了">
+                    </div>
+                    <p class="dream-note">（然後我就這樣漂漂亮亮的睡著了）</p>
+                </div>
+            </div>
+
+            <!-- 08.13 → 08.14: dusk out, morning in, so the light chapter below
+                 isn't a hard cut off the back of the sunset -->
+            <div class="pg-stage pg-bridge" id="br2Stage">
+                <div class="pg-sticky" id="br2Sticky">
+                    <div class="brg-date" id="br2Date">08.14</div>
+                </div>
+            </div>
+
+            <!-- ══════════ ACT 4 · 08.14 — 回程 · 第 1189 天 ══════════ -->
+            <div class="chapter" id="chap-penghu-d4">
+                <div class="time-badge">Aug 14 · 最後一天</div>
+                <p class="story-text">
+                    最後一天起床就差不多要弄弄回去了，<br>
+                    我們吃了早餐、還了車，<br>
+                    就準備拎著行李往機場去了。
+                </p>
+                <p class="lastday-aside">（結果飯店設施都沒玩到 QQ）</p>
+
+                <!-- no photos for this one — the phone that nearly stayed in 澎湖 -->
+                <div class="lost-phone">
+                    <svg class="lp-phone" viewBox="0 0 160 200" aria-hidden="true" focusable="false">
+                        <!-- ringing away, somewhere back at the hotel -->
+                        <g class="lp-buzz" fill="none" stroke="#c9b8a6" stroke-width="3" stroke-linecap="round">
+                            <path d="M30,76 C22,83 22,97 30,104"/>
+                            <path d="M16,66 C4,77 4,103 16,114"/>
+                            <path d="M130,76 C138,83 138,97 130,104"/>
+                            <path d="M144,66 C156,77 156,103 144,114"/>
+                        </g>
+                        <g class="lp-body">
+                            <rect x="44" y="30" width="72" height="142" rx="13" fill="#5c5348"/>
+                            <rect x="50" y="41" width="60" height="120" rx="6" fill="#f7f2e8"/>
+                            <rect x="69" y="35" width="22" height="3.4" rx="1.7" fill="#3f382f"/>
+                            <rect x="69" y="164" width="22" height="3" rx="1.5" fill="#3f382f"/>
+                            <text x="80" y="122" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif"
+                                  font-size="58" fill="#c9b096">?</text>
+                        </g>
+                    </svg>
+                    <p class="lp-line">結果到了機場才發現…<br><b>手機呢？</b></p>
+                    <p class="lp-resolve">又叫了一台計程車，<br>在最後關頭把手機救回來了 哈哈</p>
+                </div>
+            </div>
+
+            <div class="pg-stage d88-stage" id="d88Stage">
+                <div class="pg-sticky d88-sticky" id="d88Sticky">
+                    <div class="d88-date">2026.08.14 · 澎湖</div>
+                    <div class="d88-count" id="d88Count">0</div>
+                    <div class="d88-unit">三年三個月快樂</div>
+                    <p class="d88-note" id="d88Note">
+                        對不起鼻，這趟旅程被我排的不完美<br>
+                        但我很開心喔，因為又跟你留下了一輩子不會忘的回憶!
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08.14 · 回程 -->
+            <div class="chapter" id="chap-penghu-return">
+                <div class="time-badge">Aug 14, 2026 · 馬公</div>
+                <p class="story-text">
+                    又要準備登機了喔，<br>
+                    也算是平平安安的回家了。<br>
+                    希望吳雷霆下次還能有跟妳一起出來玩的機會👀
+                </p>
+
+                <div class="double-ticket-wrapper dp-wrap" id="penghuTicketBack" data-front="2" data-auto-reveal>
+                    <div class="flip-container dp-flip ticket-layer ticket-1" onclick="handleTicketStackClick(1, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">FRANK</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS814</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">14AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3A</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">02</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">11:30</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS814</span>
+                                    <span class="dp-stub-seat">3A</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <img src="assets/plane_sky_view.jpg" alt="回程航班 · 窗外的機翼與雲">
+                                <div class="dp-back-cap">回家嘍</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-container dp-flip ticket-layer ticket-2" onclick="handleTicketStackClick(2, this)">
+                        <div class="flip-inner">
+                            <div class="flip-front dp-front">
+                                <div class="dp-main">
+                                    <div class="dp-band">
+                                        <span class="dp-carrier">F&amp;S AIR · 登機證</span>
+                                        <span class="dp-sector">國內線 DOMESTIC</span>
+                                    </div>
+                                    <div class="dp-route">
+                                        <div><div class="dp-code">MZG</div><div class="dp-city">澎湖馬公</div></div>
+                                        <div class="dp-arrow">✈</div>
+                                        <div><div class="dp-code">TSA</div><div class="dp-city">台北松山</div></div>
+                                    </div>
+                                    <div class="dp-grid">
+                                        <div class="dp-cell"><span class="dp-lab">姓名 NAME</span><span class="dp-val">SYDNEY</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">航班 FLIGHT</span><span class="dp-val">FS814</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">日期 DATE</span><span class="dp-val">14AUG</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">座位 SEAT</span><span class="dp-val">3B</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機門 GATE</span><span class="dp-val">02</span></div>
+                                        <div class="dp-cell"><span class="dp-lab">登機 BOARDING</span><span class="dp-val">11:30</span></div>
+                                    </div>
+                                </div>
+                                <div class="dp-stub">
+                                    <span class="dp-stub-flight">FS814</span>
+                                    <span class="dp-stub-seat">3B</span>
+                                    <div class="dp-barcode"></div>
+                                </div>
+                            </div>
+                            <div class="flip-back dp-back">
+                                <img src="assets/us_airport.jpg" alt="回程航班 · 機艙裡的自拍">
+                                <div class="dp-back-cap">三年三個月快樂 ♡</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="interactive-hint">同一班機 · 同一天 · 同一個方向</span>
+            </div>
+
+            <!-- 馬公 → 松山：這三年來，第一次兩個人一起回家 -->
+            <div id="flight-mzg-tsa-area" class="flight-scroll-area">
+                <div class="flight-hint" id="flightHintMzgTsa">還不想回家耶~<br>太短了啦</div>
+            </div>
+
             <!-- Chapter 10 — Sliding Door Gallery -->
             <div class="chapter" id="chap9">
                 <div class="sd-stage" id="sdStage">
@@ -2558,7 +3831,7 @@
                         <!-- Year label: visible at p=0, fades as gallery begins -->
                         <div class="sd-year-label" id="sdYearLabel">
                             <div class="time-badge">2026 &amp; Beyond</div>
-                            <p class="sd-year-copy">現在，來到2026，<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
+                            <p class="sd-year-copy">今年突然就過得很快，一下就又要過去了。<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
                         </div>
 
                         <!-- Horizontal reveal track -->
@@ -3040,7 +4313,16 @@
         let curveSydPer, curvePerSyd, curveTpeSyd, curveSydTpe;
         let lineSydPer, linePerSyd, lineTpeSyd, lineSydTpe;
         let planeSydPer, planePerSyd, planeTpeSyd, planeSydTpe;
-        
+
+        // 澎湖：松山 (TSA) ⇄ 馬公 (MZG) — the shortest arc on the page.
+        // Uses its own Taipei pin rather than the generic taiwanPin: at this
+        // zoom the ~1.5° between "centre of Taiwan" and Songshan is the same
+        // order of magnitude as the whole flight, so it would visibly distort it.
+        let tsaPin, tsaRing, mzgPin, mzgRing;
+        let curveTsaMzg, curveMzgTsa;
+        let lineTsaMzg, lineMzgTsa;
+        let planeTsaMzg, planeMzgTsa;
+
         const GLOBE_RADIUS = 25;
         
         const TAIWAN_LAT = 23.6978;
@@ -3054,7 +4336,33 @@
         let targetCameraPosFlight = new THREE.Vector3();
         let targetCameraPosFlightTpe = new THREE.Vector3();
 
-        function createAirplaneSprite(direction) {
+        let penghuMid = new THREE.Vector3();
+        let penghuCamDir = new THREE.Vector3();
+        let targetCameraPosPenghu = new THREE.Vector3();
+
+        // The whole flight is ~1 unit long on a radius-25 globe, so its framing
+        // is driven by viewport shape rather than a mobile/desktop breakpoint:
+        // pull back far enough that the arc keeps roughly the same share of the
+        // screen width everywhere, and scale the marker + plane to match, or a
+        // wide window ends up with a hairline arc under a giant aeroplane.
+        function penghuCamDist() {
+            const aspect = window.innerWidth / Math.max(window.innerHeight, 1);
+            return Math.max(2.2, Math.min(2.5 / Math.max(aspect, 0.35), 6.5));
+        }
+        let penghuPinScale = 0.13;
+        let penghuPlaneScale = 0.5;
+        function updatePenghuFraming() {
+            const d = penghuCamDist();
+            penghuPinScale = 0.026 * d;
+            penghuPlaneScale = 0.095 * d;
+            if (planeTsaMzg) planeTsaMzg.scale.set(penghuPlaneScale, penghuPlaneScale, 1);
+            if (planeMzgTsa) planeMzgTsa.scale.set(penghuPlaneScale, penghuPlaneScale, 1);
+            if (penghuCamDir.lengthSq() > 0) {
+                targetCameraPosPenghu.copy(penghuMid).addScaledVector(penghuCamDir, d);
+            }
+        }
+
+        function createAirplaneSprite(direction, scale) {
             const canvas = document.createElement('canvas');
             canvas.width = 128; canvas.height = 128;
             const ctx = canvas.getContext('2d');
@@ -3076,8 +4384,24 @@
             const texture = new THREE.CanvasTexture(canvas);
             const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
             const sprite = new THREE.Sprite(spriteMat);
-            sprite.scale.set(4, 4, 1);
+            const s = scale || 4;
+            sprite.scale.set(s, s, 1);
             return sprite;
+        }
+
+        // The long-haul arcs bake the plane's heading into the sprite texture,
+        // which works because those arcs always cross the screen the same way.
+        // The Penghu hop is short and viewed from an angled camera, so its
+        // heading is derived from the projected tangent instead — the sprite is
+        // drawn pointing east and rotated in screen space each frame.
+        const _oA = new THREE.Vector3(), _oB = new THREE.Vector3();
+        function orientSpriteAlongCurve(sprite, curve, t) {
+            curve.getPoint(Math.max(0, t - 0.02), _oA).project(camera);
+            curve.getPoint(Math.min(1, t + 0.02), _oB).project(camera);
+            sprite.material.rotation = Math.atan2(
+                (_oB.y - _oA.y) * window.innerHeight,
+                (_oB.x - _oA.x) * window.innerWidth
+            );
         }
 
         function initGlobe() {
@@ -3161,6 +4485,32 @@
             taiwanRing.visible = false;
             globeGroup.add(taiwanRing);
 
+            // 松山 TSA
+            const tsaSph = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - 25.0694), THREE.MathUtils.degToRad(121.5519 + 90));
+            tsaPin = new THREE.Mesh(pinGeo, pinMat);
+            tsaPin.position.setFromSpherical(tsaSph);
+            tsaPin.visible = false;
+            globeGroup.add(tsaPin);
+
+            tsaRing = new THREE.Mesh(ringGeo, ringMat);
+            tsaRing.position.copy(tsaPin.position);
+            tsaRing.lookAt(tsaPin.position.clone().multiplyScalar(2));
+            tsaRing.visible = false;
+            globeGroup.add(tsaRing);
+
+            // 馬公 MZG
+            const mzgSph = new THREE.Spherical(GLOBE_RADIUS, THREE.MathUtils.degToRad(90 - 23.5655), THREE.MathUtils.degToRad(119.5630 + 90));
+            mzgPin = new THREE.Mesh(pinGeo, pinMat);
+            mzgPin.position.setFromSpherical(mzgSph);
+            mzgPin.visible = false;
+            globeGroup.add(mzgPin);
+
+            mzgRing = new THREE.Mesh(ringGeo, ringMat);
+            mzgRing.position.copy(mzgPin.position);
+            mzgRing.lookAt(mzgPin.position.clone().multiplyScalar(2));
+            mzgRing.visible = false;
+            globeGroup.add(mzgRing);
+
             // 航線曲線
             const vSyd = sydneyPin.position.clone();
             const vPerth = perthPin.position.clone();
@@ -3173,6 +4523,13 @@
             curvePerSyd = new THREE.QuadraticBezierCurve3(vPerth, vMidSydPer, vSyd);
             curveTpeSyd = new THREE.QuadraticBezierCurve3(vTpe, vMidTpeSyd, vSyd);
             curveSydTpe = new THREE.QuadraticBezierCurve3(vSyd, vMidTpeSyd, vTpe);
+
+            // 澎湖：整段弦長只有約 1 個單位，控制點抬得比例上高一些才看得出弧形
+            const vTsa = tsaPin.position.clone();
+            const vMzg = mzgPin.position.clone();
+            const vMidPenghu = vTsa.clone().add(vMzg).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + 0.8);
+            curveTsaMzg = new THREE.QuadraticBezierCurve3(vTsa, vMidPenghu, vMzg);
+            curveMzgTsa = new THREE.QuadraticBezierCurve3(vMzg, vMidPenghu, vTsa);
 
             const lineMatDashed = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.6, gapSize: 0.4 });
             
@@ -3188,19 +4545,42 @@
             lineSydTpe = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveSydTpe.getPoints(100)), lineMatDashed);
             lineSydTpe.computeLineDistances(); lineSydTpe.geometry.setDrawRange(0, 0); globeGroup.add(lineSydTpe);
 
+            // 澎湖航線用更細的虛線：0.6 的 dash 放在 1 單位長的弧線上只會畫出一段實線
+            const lineMatDashedFine = new THREE.LineDashedMaterial({ color: 0xd1bfae, linewidth: 2, dashSize: 0.055, gapSize: 0.04 });
+
+            lineTsaMzg = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveTsaMzg.getPoints(100)), lineMatDashedFine);
+            lineTsaMzg.computeLineDistances(); lineTsaMzg.geometry.setDrawRange(0, 0); globeGroup.add(lineTsaMzg);
+
+            lineMzgTsa = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curveMzgTsa.getPoints(100)), lineMatDashedFine);
+            lineMzgTsa.computeLineDistances(); lineMzgTsa.geometry.setDrawRange(0, 0); globeGroup.add(lineMzgTsa);
+
             // 飛機
             planeSydPer = createAirplaneSprite('west'); planeSydPer.visible = false; globeGroup.add(planeSydPer);
             planePerSyd = createAirplaneSprite('east'); planePerSyd.visible = false; globeGroup.add(planePerSyd);
             planeTpeSyd = createAirplaneSprite('southeast'); planeTpeSyd.visible = false; globeGroup.add(planeTpeSyd);
             planeSydTpe = createAirplaneSprite('northwest'); planeSydTpe.visible = false; globeGroup.add(planeSydTpe);
 
+            // 澎湖的兩架都畫成朝右，角度改由 orientSpriteAlongCurve 每幀計算
+            planeTsaMzg = createAirplaneSprite('east', 0.5); planeTsaMzg.visible = false; globeGroup.add(planeTsaMzg);
+            planeMzgTsa = createAirplaneSprite('east', 0.5); planeMzgTsa.visible = false; globeGroup.add(planeMzgTsa);
+
             globeGroup.rotation.set(0, 0, 0); 
             globeGroup.updateMatrixWorld();
 
-            targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33); 
-            let distFlight = window.innerWidth < 768 ? 58 : 45; 
-            targetCameraPosFlight = vMidSydPer.clone().normalize().multiplyScalar(distFlight); 
-            targetCameraPosFlightTpe = vMidTpeSyd.clone().normalize().multiplyScalar(distFlight + 5); 
+            targetCameraPosSyd = vSyd.clone().normalize().multiplyScalar(33);
+            let distFlight = window.innerWidth < 768 ? 58 : 45;
+            targetCameraPosFlight = vMidSydPer.clone().normalize().multiplyScalar(distFlight);
+            targetCameraPosFlightTpe = vMidTpeSyd.clone().normalize().multiplyScalar(distFlight + 5);
+
+            // 澎湖：從航線平面的側上方取景。若像其他段一樣從正上方俯視，
+            // 這段弧線的高度會正對鏡頭而被壓成一條直線，完全看不出是在飛。
+            // 距離是相對「弧線中點」而非地心 — 其他段的鏡頭都在數十單位外，
+            // 這段必須貼到幾單位內才看得見。
+            penghuMid.copy(curveTsaMzg.getPoint(0.5));
+            const penghuNormal = new THREE.Vector3().crossVectors(vTsa, vMzg).normalize();
+            penghuCamDir.copy(vMidPenghu).normalize().multiplyScalar(0.82)
+                .addScaledVector(penghuNormal, 0.57).normalize();
+            updatePenghuFraming();
 
             window.addEventListener('resize', onWindowResize, false);
             animateGlobe();
@@ -3211,9 +4591,10 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            let distFlight = window.innerWidth < 768 ? 58 : 45; 
+            let distFlight = window.innerWidth < 768 ? 58 : 45;
             targetCameraPosFlight.normalize().multiplyScalar(distFlight);
             targetCameraPosFlightTpe.normalize().multiplyScalar(distFlight + 5);
+            updatePenghuFraming();
         }
 
         function animateGlobe() {
@@ -3229,6 +4610,8 @@
             const p6Area      = document.getElementById('flight-syd-tpe-area');
             const militaryArea = document.getElementById('flight-syd-tpe-military');
             const reunionArea  = document.getElementById('flight-syd-tpe-reunion');
+            const penghuOutArea  = document.getElementById('flight-tsa-mzg-area');
+            const penghuBackArea = document.getElementById('flight-mzg-tsa-area');
             const yearSection = document.getElementById('year2022');
             const voidOverlay = document.getElementById('black-void-overlay');
 
@@ -3244,11 +4627,20 @@
             let p6Rect       = p6Area.getBoundingClientRect();
             let militaryRect = militaryArea ? militaryArea.getBoundingClientRect() : null;
             let reunionRect  = reunionArea  ? reunionArea.getBoundingClientRect()  : null;
+            let penghuOutRect  = penghuOutArea  ? penghuOutArea.getBoundingClientRect()  : null;
+            let penghuBackRect = penghuBackArea ? penghuBackArea.getBoundingClientRect() : null;
 
             planeSydPer.visible = false; planePerSyd.visible = false; planeTpeSyd.visible = false; planeSydTpe.visible = false;
             lineSydPer.geometry.setDrawRange(0, 0); linePerSyd.geometry.setDrawRange(0, 0); lineTpeSyd.geometry.setDrawRange(0, 0); lineSydTpe.geometry.setDrawRange(0, 0);
             if(perthPin) perthPin.visible = false; if(perthRing) perthRing.visible = false;
             if(taiwanPin) taiwanPin.visible = false; if(taiwanRing) taiwanRing.visible = false;
+            if(planeTsaMzg) planeTsaMzg.visible = false; if(planeMzgTsa) planeMzgTsa.visible = false;
+            if(lineTsaMzg) lineTsaMzg.geometry.setDrawRange(0, 0);
+            if(lineMzgTsa) lineMzgTsa.geometry.setDrawRange(0, 0);
+            if(tsaPin) { tsaPin.visible = false; tsaRing.visible = false; }
+            if(mzgPin) { mzgPin.visible = false; mzgRing.visible = false; }
+            const planeWindow = document.getElementById('planeWindow');
+            if(planeWindow) planeWindow.style.opacity = 0;
 
             let isExpandingVoid = false;
 
@@ -3353,6 +4745,60 @@
                 planeSydTpe.position.copy(curveSydTpe.getPoint(flightProg));
 
                 const hint = document.getElementById('flightHintSydTpe');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+            }
+            else if (penghuOutRect && penghuOutRect.top < window.innerHeight && penghuOutRect.bottom > 0) {
+                // 松山 → 馬公
+                let prog = (window.innerHeight - penghuOutRect.top) / (window.innerHeight + penghuOutRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosPenghu, 0.12);
+                camera.lookAt(penghuMid);
+
+                tsaPin.visible = true; tsaRing.visible = true;
+                mzgPin.visible = true; mzgRing.visible = true;
+                tsaPin.scale.setScalar(penghuPinScale);  tsaRing.scale.setScalar(penghuPinScale);
+                mzgPin.scale.setScalar(penghuPinScale);  mzgRing.scale.setScalar(penghuPinScale);
+
+                planeTsaMzg.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineTsaMzg.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeTsaMzg.position.copy(curveTsaMzg.getPoint(flightProg));
+                orientSpriteAlongCurve(planeTsaMzg, curveTsaMzg, flightProg);
+
+                const hint = document.getElementById('flightHintTsaMzg');
+                if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+
+                // the window fades in a touch earlier than the line, and holds
+                // until the plane is nearly down
+                if(planeWindow) planeWindow.style.opacity = (opacity > 0.25) ? 1 : 0;
+            }
+            else if (penghuBackRect && penghuBackRect.top < window.innerHeight && penghuBackRect.bottom > 0) {
+                // 馬公 → 松山
+                let prog = (window.innerHeight - penghuBackRect.top) / (window.innerHeight + penghuBackRect.height);
+                prog = Math.max(0, Math.min(prog, 1));
+                opacity = Math.sin(prog * Math.PI);
+
+                camera.position.lerp(targetCameraPosPenghu, 0.12);
+                camera.lookAt(penghuMid);
+
+                tsaPin.visible = true; tsaRing.visible = true;
+                mzgPin.visible = true; mzgRing.visible = true;
+                tsaPin.scale.setScalar(penghuPinScale);  tsaRing.scale.setScalar(penghuPinScale);
+                mzgPin.scale.setScalar(penghuPinScale);  mzgRing.scale.setScalar(penghuPinScale);
+
+                planeMzgTsa.visible = true;
+                let flightProg = (prog - 0.2) / 0.6;
+                flightProg = Math.max(0, Math.min(flightProg, 1));
+
+                lineMzgTsa.geometry.setDrawRange(0, Math.floor(flightProg * 101));
+                planeMzgTsa.position.copy(curveMzgTsa.getPoint(flightProg));
+                orientSpriteAlongCurve(planeMzgTsa, curveMzgTsa, flightProg);
+
+                const hint = document.getElementById('flightHintMzgTsa');
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
             }
             else if (p4Rect.top < window.innerHeight && p4Rect.bottom > 0) {
@@ -3518,7 +4964,8 @@
             const startDate = new Date(2023, 4, 14); 
             const currentDate = new Date(); 
             const timeDiff = currentDate.getTime() - startDate.getTime();
-            return Math.floor(timeDiff / (1000 * 3600 * 24));
+            // the first day together is day 1, not day 0 — so the elapsed count is +1
+            return Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
         }
 
         function animateValue(obj, start, end, duration) {
@@ -3589,6 +5036,11 @@
                             const dt = document.getElementById('doubleTicketReturn');
                             if(dt) dt.classList.add('revealed');
                         }, 1000);
+                    }
+                    // generic: any stack marked data-auto-reveal fans out on entry
+                    const autoStack = entry.target.querySelector('.double-ticket-wrapper[data-auto-reveal]');
+                    if (autoStack) {
+                        setTimeout(() => autoStack.classList.add('revealed'), 1000);
                     }
                     obs.unobserve(entry.target); 
                 }
@@ -3899,6 +5351,19 @@
             });
 
             applyStack();
+        }
+
+        // Same behaviour as handleDoubleTicketClick, but finds its own wrapper
+        // instead of hard-coding an id — so any .double-ticket-wrapper works.
+        function handleTicketStackClick(ticketNum, element) {
+            const wrapper = element.closest('.double-ticket-wrapper');
+            if (!wrapper || !wrapper.classList.contains('revealed')) return;
+            if (wrapper.getAttribute('data-front') !== String(ticketNum)) {
+                wrapper.setAttribute('data-front', String(ticketNum));
+            } else {
+                element.classList.toggle('flipped');
+            }
+            if (navigator.vibrate) navigator.vibrate(20);
         }
 
         function handleDoubleTicketClick(ticketNum, element) {
@@ -4256,6 +5721,541 @@
                 const aspect = sdAspectFromEl(img) || parseFloat(mask.dataset.aspect) || 1;
                 _sdOpenWidths[i] = aspect * 0.45 * window.innerHeight;
             });
+        });
+
+        // ==========================================
+        // 8. 澎湖 Acts 1–4
+        //    One rAF-throttled listener drives all four stages. Every
+        //    scroll-driven write is transform/opacity — the skies are
+        //    stacked fixed gradients that cross-fade, never re-serialised.
+        // ==========================================
+        const clamp01 = v => v < 0 ? 0 : (v > 1 ? 1 : v);
+        // remap v from [a,b] onto [0,1]
+        const rmap = (v, a, b) => clamp01((v - a) / (b - a));
+
+        // A moment's life across its window, where local runs -1 (arriving) →
+        // 0 (at rest) → +1 (leaving). EDGE is the share of each half-window
+        // spent moving, so the middle (1 - EDGE) is a dead-still plateau.
+        // That hold is what makes a moment feel landed instead of swept past,
+        // and it's what the snap targets land on.
+        const EDGE = 0.42;
+        function dwell(local) {
+            const a = Math.abs(local);
+            if (a <= 1 - EDGE) return 1;
+            if (a >= 1) return 0;
+            return 1 - (a - (1 - EDGE)) / EDGE;
+        }
+        // -1 = entry position, 0 = at rest and flat through the plateau, +1 = exit
+        function travel(local) {
+            if (local < -1 + EDGE) return (local + 1) / EDGE - 1;
+            if (local >  1 - EDGE) return (local - (1 - EDGE)) / EDGE;
+            return 0;
+        }
+
+        // All five stages go through one registry so the frame can do every
+        // layout read first and every write second. Reading a rect after a
+        // style write forces a synchronous layout; interleaving five stages
+        // would cost five of them per frame.
+        //
+        // The pin itself is JS-driven because CSS position:sticky is dead while
+        // html/body carry overflow-x:hidden — but unlike the older stages here,
+        // cssText is only written when the pin state actually changes.
+        const _pgStages = [];
+        function registerStage(stage, sticky, fn, snapAts, backdrop) {
+            if (stage && sticky) _pgStages.push({
+                stage: stage, sticky: sticky, fn: fn, snapAts: snapAts || null,
+                backdrop: backdrop || null,
+                mode: null, h: 0, p: null, q: 0, next: null, bo: -1, so: -1
+            });
+        }
+
+        // How far a stage's tone bleeds past its own block, as a share of the
+        // stage's scroll length. Neighbours overlap by 2×BLEED, which is what
+        // turns every seam into a cross-fade instead of a cut.
+        const BLEED = 0.16;
+        const bleedFade = q => rmap(q, -BLEED, BLEED * 0.35) * (1 - rmap(q, 1 - BLEED * 0.35, 1 + BLEED));
+
+        function updatePenghuActs() {
+            const vh = window.innerHeight;
+            // ---- read pass: no style writes in this loop ----
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (!s.h) s.h = s.stage.offsetHeight - vh;   // constant until resize
+                if (s.h <= 0) { s.p = null; s.next = null; continue; }
+                const top = s.stage.getBoundingClientRect().top;
+                s.next = top >= 0 ? 'before' : (-top >= s.h ? 'after' : 'pinned');
+                const scrolled = -top;
+                s.q = scrolled / s.h;                                  // unclamped, bleeds past both ends
+                s.p = (scrolled < -vh || scrolled > s.h + vh) ? null : clamp01(s.q);
+            }
+            // ---- write pass ----
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (s.next && s.next !== s.mode) {
+                    s.mode = s.next;
+                    // cssText replaces every inline style, so the fade below has
+                    // to be re-applied after it — same frame, so no flash.
+                    s.sticky.style.cssText = s.mode === 'pinned'
+                        ? 'position:fixed;top:0;left:0;right:0;height:100vh;overflow:hidden;'
+                        : 'position:absolute;top:' + (s.mode === 'after' ? s.h : 0) + 'px;left:0;width:100%;height:100vh;overflow:hidden;';
+                    s.so = -1;
+                }
+                if (s.p === null) {
+                    if (s.bo !== 0 && s.backdrop) { s.backdrop.style.opacity = 0; s.bo = 0; }
+                    continue;
+                }
+                const fade = bleedFade(s.q);
+                if (s.backdrop && fade !== s.bo) { s.backdrop.style.opacity = fade; s.bo = fade; }
+                if (fade !== s.so) { s.sticky.style.opacity = fade; s.so = fade; }
+                s.fn(s.p);
+            }
+        }
+
+        // ---------- Act 1: 花火 ----------
+        const fwStage   = document.getElementById('fwStage');
+        const fwSticky  = document.getElementById('fwSticky');
+        const fwCanvas  = document.getElementById('fwCanvas');
+        const fwTimerEl = document.getElementById('fwTimer');
+        const fwEscape  = document.getElementById('fwEscape');
+        const fwPhotos  = fwStage ? Array.from(fwStage.querySelectorAll('.fw-photo')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: -1
+        })) : [];
+        let fwCtx = null, fwParts = [], fwVisible = false, fwRunning = false;
+        let _fwLastShot = -1, _fwEscaped = false, fwAmbientTimer = null;
+        const FW_SHOW_SECONDS = 600; // a 10-minute show
+
+        // background show — smaller bursts scattered across the whole sky so it
+        // never goes dark between the scroll-triggered photo bursts
+        function fwAmbientBurst() {
+            if (!fwVisible || _fwEscaped) { fwAmbientTimer = null; return; }
+            fwBurst(fwCanvas.width * (0.06 + Math.random() * 0.88),
+                    fwCanvas.height * (0.06 + Math.random() * 0.6));
+            fwAmbientTimer = setTimeout(fwAmbientBurst, 480 + Math.random() * 620);
+        }
+
+        function fwResize() {
+            if (!fwCanvas) return;
+            fwCanvas.width  = fwCanvas.clientWidth;
+            fwCanvas.height = fwCanvas.clientHeight;
+        }
+
+        function fwBurst(x, y) {
+            // mostly warm gold/orange, occasionally a cool accent shell for variety
+            const hue = Math.random() < 0.72 ? 25 + Math.random() * 45 : 190 + Math.random() * 140;
+            const n = window.innerWidth < 768 ? 68 : 96;
+            for (let i = 0; i < n; i++) {
+                const a = (i / n) * Math.PI * 2 + Math.random() * 0.2;
+                const sp = 1.1 + Math.random() * 3.1;
+                fwParts.push({
+                    x: x, y: y,
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    life: 1, decay: 0.011 + Math.random() * 0.012, hue: hue
+                });
+            }
+            if (!fwRunning) { fwRunning = true; requestAnimationFrame(fwLoop); }
+        }
+
+        function fwLoop() {
+            if (!fwCtx || !fwVisible) { fwRunning = false; return; }
+            // trails rather than a hard clear
+            fwCtx.globalCompositeOperation = 'destination-out';
+            fwCtx.fillStyle = 'rgba(0,0,0,0.22)';
+            fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
+            fwCtx.globalCompositeOperation = 'lighter';
+
+            for (let i = fwParts.length - 1; i >= 0; i--) {
+                const p = fwParts[i];
+                p.x += p.vx; p.y += p.vy;
+                p.vy += 0.032;            // gravity
+                p.vx *= 0.987; p.vy *= 0.987;
+                p.life -= p.decay;
+                if (p.life <= 0) { fwParts.splice(i, 1); continue; }
+                fwCtx.fillStyle = 'hsla(' + p.hue + ',100%,' + (58 + p.life * 22) + '%,' + p.life + ')';
+                fwCtx.fillRect(p.x, p.y, 2, 2);
+            }
+            if (fwParts.length) { requestAnimationFrame(fwLoop); }
+            else { fwRunning = false; fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height); }
+        }
+
+        function updateAct1(p) {
+            // dusk hasn't finished falling when the stage opens — hold the light
+            // sky briefly so arriving from the hotpot chapter isn't a hard cut
+            document.getElementById('fwNight').style.opacity = rmap(p, 0.02, 0.16);
+
+            // the show runs 0 → 0.86; the last minute is the window to leave
+            const showProg = clamp01(p / 0.86);
+            const left = Math.max(0, Math.round(FW_SHOW_SECONDS * (1 - showProg)));
+            const mm = String(Math.floor(left / 60)).padStart(2, '0');
+            const ss = String(left % 60).padStart(2, '0');
+            fwTimerEl.textContent = '觀音亭 · 21:00 — 剩 ' + mm + ':' + ss;
+            fwTimerEl.classList.toggle('urgent', left <= 60);
+
+            // each photo holds through its plateau, then cross-fades to the next
+            let dominant = -1, bestO = 0.5;
+            for (let i = 0; i < fwPhotos.length; i++) {
+                const it = fwPhotos[i];
+                const local = (p - it.at) / it.win;
+                const o = (local <= -1 || local >= 1) ? 0 : dwell(local);
+                if (o !== it.o) {
+                    it.o = o;
+                    it.el.style.opacity = o;
+                    it.el.style.transform = 'scale(' + (0.94 + o * 0.06).toFixed(3) + ')';
+                }
+                if (o > bestO) { bestO = o; dominant = i; }
+            }
+            if (dominant !== _fwLastShot) {
+                if (fwVisible && dominant > _fwLastShot && dominant >= 0) {
+                    fwBurst(fwCanvas.width * (0.3 + Math.random() * 0.4),
+                            fwCanvas.height * (0.18 + Math.random() * 0.22));
+                    if (navigator.vibrate) navigator.vibrate(18);
+                }
+                _fwLastShot = dominant;
+            }
+
+            // T-01:00 — the prompt
+            fwEscape.classList.toggle('show', left <= 60 && !_fwEscaped);
+        }
+
+        function fwDoEscape() {
+            if (_fwEscaped) return;
+            _fwEscaped = true;
+            fwSticky.classList.add('escaped');
+            fwEscape.classList.remove('show');
+            if (fwAmbientTimer) { clearTimeout(fwAmbientTimer); fwAmbientTimer = null; }
+            if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+        }
+        if (fwEscape) fwEscape.addEventListener('click', fwDoEscape);
+
+        if (fwCanvas) {
+            fwCtx = fwCanvas.getContext('2d');
+            new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    fwVisible = e.isIntersecting;
+                    if (fwVisible) {
+                        fwResize();
+                        if (fwParts.length && !fwRunning) { fwRunning = true; requestAnimationFrame(fwLoop); }
+                        if (!fwAmbientTimer && !_fwEscaped) fwAmbientTimer = setTimeout(fwAmbientBurst, 200);
+                    } else {
+                        fwParts.length = 0;   // nothing left running offscreen
+                        if (fwAmbientTimer) { clearTimeout(fwAmbientTimer); fwAmbientTimer = null; }
+                    }
+                });
+            }, { threshold: 0.05 }).observe(fwStage);
+        }
+
+        // ---------- Act 2a: 天亮之前 ----------
+        const dawnStage = document.getElementById('dawnStage');
+        const dawnSticky = document.getElementById('dawnSticky');
+        function updateAct2Dawn(p) {
+            // cold, short, rising — the mirror of 08.13's long warm fall
+            document.getElementById('dawnB').style.opacity = rmap(p, 0.15, 0.55);
+            document.getElementById('dawnC').style.opacity = rmap(p, 0.50, 0.92);
+            const sun = document.getElementById('dawnSun');
+            const rise = rmap(p, 0.55, 1);
+            sun.style.opacity = rise;
+            sun.style.transform = 'translateY(' + (40 - rise * 52) + 'px)';
+            document.getElementById('dawnTag').style.opacity = rmap(p, 0.02, 0.12);
+            document.getElementById('dawnLine').classList.toggle('is-vis', p > 0.18 && p < 0.88);
+        }
+
+        // ---------- Act 2b: 跳島 ----------
+        const isoStage = document.getElementById('isoStage');
+        const isoSticky = document.getElementById('isoSticky');
+        const isoSway = document.getElementById('isoSway');
+        const isoBoat = document.getElementById('isoBoat');
+        const isoWake = document.getElementById('isoWake');
+        const isoItems = isoStage ? Array.from(isoStage.querySelectorAll('.iso-item')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: 0
+        })) : [];
+        // the one still moment (雙心石滬) the boat idles through
+        const _isoStill = isoItems.find(it => it.el.classList.contains('iso-still'))
+            || { at: 0.48, win: 0.13 };
+        function updateAct2Iso(p) {
+            // a whisper of roll on the photo group — the real motion is on the
+            // boat down below (its own CSS bob); the photos ride high and calm
+            const sway = Math.sin(p * 11) * 0.55;
+            const heave = Math.sin(p * 7.3 + 1.1) * 3;
+            isoSway.style.transform = 'translateY(' + heave.toFixed(2) + 'px) rotate(' + sway.toFixed(2) + 'deg)';
+
+            // the boat's own bob/rock is CSS — here we only tell the ticker how
+            // fast it's making way: full speed, easing to ~0 through 雙心石滬
+            const still = dwell((p - _isoStill.at) / _isoStill.win);
+            _vTgtIso = _reduceMotion ? 0 : (1 - still * 0.9);
+
+            for (let i = 0; i < isoItems.length; i++) {
+                const it = isoItems[i];
+                const local = (p - it.at) / it.win;
+                if (local <= -1 || local >= 1) {
+                    if (it.o !== 0) { it.el.style.opacity = 0; it.o = 0; }
+                    continue;
+                }
+                // rise into the top of the frame, hold dead still, drift back down
+                const away = Math.abs(travel(local));
+                const rise  = -24 + away * 62;
+                const scale = 1 - away * 0.28;
+                const op = dwell(local);
+                it.o = op;
+                it.el.style.opacity = op;
+                it.el.style.transform = 'translate(-50%, ' + rise.toFixed(1) + '%) scale(' + scale.toFixed(3) + ')';
+            }
+
+            document.getElementById('isoTag').style.opacity = rmap(p, 0.01, 0.08) * (1 - rmap(p, 0.88, 0.96));
+            document.getElementById('isoClosing').classList.toggle('is-vis', p > 0.93);
+        }
+
+        // ---------- bridges: the night between two days ----------
+        // lineId is optional — only 08.13 opens with a line about the day ahead
+        function makeBridge(bId, cId, dateId, lineId) {
+            const bEl = document.getElementById(bId);
+            const cEl = document.getElementById(cId);
+            const dEl = document.getElementById(dateId);
+            const lEl = lineId ? document.getElementById(lineId) : null;
+            return function (p) {
+                bEl.style.opacity = rmap(p, 0.04, 0.26);            // into the dark
+                cEl.style.opacity = rmap(p, 0.74, 0.97);            // out into morning
+                // the date holds through the long dark middle
+                dEl.style.opacity = rmap(p, 0.13, 0.29) * (1 - rmap(p, 0.70, 0.86));
+                // …and the day announces itself under it, on the way back up
+                if (lEl) lEl.classList.toggle('is-vis', p > 0.50 && p < 0.95);
+            };
+        }
+
+        // ---------- Act 3: 追著太陽往西開 ----------
+        const drvStage = document.getElementById('drvStage');
+        const drvSticky = document.getElementById('drvSticky');
+        const drvItems = drvStage ? Array.from(drvStage.querySelectorAll('.drv-item')).map(el => ({
+            el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win),
+            stop: el.classList.contains('drv-stop'), o: 0
+        })) : [];
+        const drvCar = document.getElementById('drvCar');
+        const drvCarTrack = document.getElementById('drvCarTrack');
+        const drvLighthouse = document.getElementById('drvLighthouse');
+        const drvWheels = drvCar ? Array.from(drvCar.querySelectorAll('.drv-wheel')) : [];
+        const drvRoadLines = document.getElementById('drvRoadLines');
+        let _drvRo = -1;
+        const DRV_TOTAL_KM = 58;
+        // ── end-of-drive choreography ─────────────────────────────────────
+        // Flexible: every .drv-item photo beat just has to resolve before
+        // DRV_BRAKE. How many photos/passes/stops there are upstream doesn't
+        // matter — the car-brake → car-exit → lighthouse-in → sunset-photos
+        // sequence below is anchored only to these breakpoints.
+        const DRV_BRAKE   = 0.80;   // wheels ease to a stop at the cliff
+        const DRV_SLIDE_A = 0.835;  // the parked car starts pushing off to the left
+        const DRV_SLIDE_B = 0.915;  // …and is fully gone
+        const DRV_LH_A    = 0.86;   // the lighthouse slides in from the right
+        const DRV_LH_B    = 0.945;  // …and is parked on the right
+        const DRV_FINAL_A = 0.925;  // the two sunset photos fade up in front of it
+        const DRV_FINAL_B = 0.99;
+        function updateAct3(p) {
+            // flat noon light until we turn west at p≈0.56, then the long fall
+            document.getElementById('drvB').style.opacity = rmap(p, 0.56, 0.68);
+            document.getElementById('drvC').style.opacity = rmap(p, 0.67, 0.80);
+            document.getElementById('drvD').style.opacity = rmap(p, 0.79, 0.94);
+
+            // reaching the west coast: the land band becomes water
+            document.getElementById('drvSea').style.opacity = rmap(p, 0.50, 0.66);
+
+            // fall = 0 at 20% height, 1 when the sun is half-swallowed by the sea
+            // (sea starts at 76%, so 62vh of travel puts its centre just under)
+            const fall = rmap(p, 0.56, 0.92);
+            const sun = document.getElementById('drvSun');
+            sun.style.opacity = rmap(p, 0.50, 0.60);
+            sun.style.transform = 'translateY(' + (fall * 62).toFixed(1) + 'vh) scale(' + (1 + fall * 0.5).toFixed(3) + ')';
+
+            // the bloom rides down with the sun, flattening and spreading wide
+            // across the water the closer it gets — that lateral spread is most
+            // of what sells a sunset over sea rather than a disc on a gradient
+            const glow = document.getElementById('drvGlow');
+            glow.style.opacity = rmap(p, 0.54, 0.70) * (1 - rmap(p, 0.94, 1.0) * 0.35);
+            glow.style.transform = 'translateY(' + (fall * 62).toFixed(1) + 'vh) scale('
+                + (0.34 + fall * 0.72).toFixed(3) + ',' + (0.30 + fall * 0.34).toFixed(3) + ')';
+
+            // reflection column: grows down the water as the sun settles onto it
+            const pillar = document.getElementById('drvPillar');
+            const glitter = document.getElementById('drvGlitter');
+            const refl = rmap(p, 0.68, 0.93);
+            pillar.style.opacity = refl * 0.95;
+            pillar.style.transform = 'scale(' + (0.55 + refl * 0.75).toFixed(3) + ',' + (0.22 + refl * 0.78).toFixed(3) + ')';
+            glitter.style.opacity = refl * 0.7;
+            glitter.style.transform = 'scale(' + (0.5 + refl * 0.6).toFixed(3) + ',' + (0.3 + refl * 0.7).toFixed(3) + ')';
+            document.getElementById('drvHaze').style.opacity = rmap(p, 0.62, 0.78);
+
+            // the two photos land last, in front of the lighthouse
+            const fin = document.getElementById('drvFinal');
+            const finP = rmap(p, DRV_FINAL_A, DRV_FINAL_B);
+            fin.style.opacity = finP;
+            fin.style.transform = 'translateY(' + ((1 - finP) * 16).toFixed(1) + 'px)';
+
+            for (let i = 0; i < drvItems.length; i++) {
+                const it = drvItems[i];
+                const local = (p - it.at) / it.win;
+                if (local <= -1 || local >= 1) {
+                    if (it.o !== 0) { it.el.style.opacity = 0; it.o = 0; }
+                    continue;
+                }
+                // enters right, exits left. A stop holds dead centre through its
+                // plateau; a pass has a much shorter window so it just streaks by.
+                const x = -travel(local) * (it.stop ? 108 : 124);
+                const op = dwell(local);
+                it.o = op;
+                it.el.style.opacity = op;
+                it.el.style.transform = 'translate(' + x.toFixed(1) + 'vw, -50%)';
+            }
+
+            // ── the car: drives (wheels/lane-lines via the rAF ticker), brakes
+            //    at the cliff, then eases left and parks — its front tip stays
+            //    poking in at the left edge, so you can see we left it there ──
+            if (drvCarTrack) {
+                let stopHold = 0;
+                for (let i = 0; i < drvItems.length; i++) {
+                    if (drvItems[i].stop && drvItems[i].o > stopHold) stopHold = drvItems[i].o;
+                }
+                const brake = rmap(p, DRV_BRAKE, DRV_SLIDE_A);     // 0→1 decel at the cliff
+                const slide = rmap(p, DRV_SLIDE_A, DRV_SLIDE_B);   // 0→1 ease to its parked spot
+                let sp = (1 - stopHold * 0.95) * (1 - brake);      // ease to a halt
+                if (slide > 0 && slide < 1) sp = Math.max(sp, 0.24); // a slow roll while repositioning
+                _vTgtDrv = _reduceMotion ? 0 : sp;
+                // park just off-screen left, nose (right edge of the car) ≈ 7vw in
+                const halfVw = Math.min(108, window.innerWidth * 0.24) / window.innerWidth * 100;
+                const parkedEx = 7 - 40 - halfVw;
+                const ease = slide >= 1 ? 1 : 1 - Math.pow(1 - slide, 2);
+                drvCarTrack.style.transform =
+                    'translateX(-50%) translateX(' + (ease * parkedEx).toFixed(1) + 'vw)';
+                if (drvRoadLines) {
+                    const ro = +(rmap(p, 0.02, 0.08) * (1 - rmap(p, 0.50, 0.68)) * 0.5).toFixed(3);
+                    if (ro !== _drvRo) { drvRoadLines.style.opacity = ro; _drvRo = ro; }
+                }
+            }
+
+            // ── the lighthouse: slides in from the right, then stays put ──
+            if (drvLighthouse) {
+                const lh = 1 - Math.pow(1 - rmap(p, DRV_LH_A, DRV_LH_B), 3);   // ease-out
+                drvLighthouse.style.transform = 'translateX(' + ((1 - lh) * 48).toFixed(1) + 'vw)';
+                drvLighthouse.style.opacity = (rmap(p, DRV_LH_A, DRV_LH_A + 0.025) * (1 - finP * 0.2)).toFixed(3);
+            }
+
+            // a road trip is measured in distance, not time
+            const km = Math.round(clamp01(p / 0.92) * DRV_TOTAL_KM);
+            const active = drvItems.find(it => it.stop && it.o > 0.85);
+            document.getElementById('drvOdo').textContent =
+                active ? active.el.dataset.label : km + ' km';
+
+            document.getElementById('drvTag').style.opacity = rmap(p, 0.01, 0.08) * (1 - rmap(p, 0.55, 0.66));
+            document.getElementById('drvClosing').classList.toggle('is-vis', p > 0.80 && p < 0.99);
+        }
+
+        // ---------- Act 4: 第 1189 天 ----------
+        const d88Stage = document.getElementById('d88Stage');
+        const d88Sticky = document.getElementById('d88Sticky');
+        const d88Count = document.getElementById('d88Count');
+        // derived from the same start date as the counter at the top of the page
+        const PENGHU_DAY = Math.floor(
+            (new Date(2026, 7, 14) - new Date(2023, 4, 14)) / 86400000
+        ) + 1;   // same convention as calculateDays: the first day is day 1
+        let _d88Last = -1;
+        function updateAct4(p) {
+            const eased = 1 - Math.pow(1 - rmap(p, 0.08, 0.62), 3);
+            const n = Math.floor(eased * PENGHU_DAY);
+            if (n !== _d88Last) { d88Count.textContent = n; _d88Last = n; }
+            document.getElementById('d88Note').classList.toggle('is-vis', p > 0.66);
+        }
+
+        // ---------- vehicles: their own wall-clock motion ----------
+        // The body bob/rock is a CSS keyframe loop. This ticker only advances
+        // the wheels, the lane markings and the wake — on real time, not scroll
+        // — easing their speed toward the target the scroll updates set
+        // (~1 making way, ~0 parked). It runs only while a stage is on screen.
+        let _vTgtIso = 1, _vSpdIso = 1, _vTgtDrv = 1, _vSpdDrv = 1;
+        let _vWheel = 0, _vRoad = 0, _vTs = 0, _vRAF = 0, _vIsoOn = false, _vDrvOn = false;
+        function vehicleTick(ts) {
+            const dt = _vTs ? Math.min(50, ts - _vTs) : 16;
+            _vTs = ts;
+            _vSpdIso += (_vTgtIso - _vSpdIso) * 0.05;
+            _vSpdDrv += (_vTgtDrv - _vSpdDrv) * 0.05;
+
+            if (_vDrvOn && drvCar) {
+                _vWheel = (_vWheel + dt * 0.5 * _vSpdDrv) % 360;
+                const t = 'rotate(' + _vWheel.toFixed(1) + 'deg)';
+                for (let i = 0; i < drvWheels.length; i++) drvWheels[i].style.transform = t;
+                if (drvRoadLines) {
+                    _vRoad = (_vRoad + dt * 0.22 * _vSpdDrv) % 90;
+                    drvRoadLines.style.backgroundPositionX = (-_vRoad).toFixed(1) + 'px';
+                }
+            }
+            if (_vIsoOn && isoWake) {
+                isoWake.style.opacity = (0.16 + _vSpdIso * 0.5).toFixed(3);
+            }
+
+            if (_vIsoOn || _vDrvOn) { _vRAF = requestAnimationFrame(vehicleTick); }
+            else { _vRAF = 0; _vTs = 0; }
+        }
+        function vehicleWake() {
+            if (!_vRAF && (_vIsoOn || _vDrvOn)) _vRAF = requestAnimationFrame(vehicleTick);
+        }
+        if (isoStage) new IntersectionObserver(es => {
+            for (const e of es) _vIsoOn = e.isIntersecting;
+            vehicleWake();
+        }, { threshold: 0 }).observe(isoStage);
+        if (drvStage) new IntersectionObserver(es => {
+            for (const e of es) _vDrvOn = e.isIntersecting;
+            vehicleWake();
+        }, { threshold: 0 }).observe(drvStage);
+
+        // ---------- gentle position snap ----------
+        // Only in the two photo galleries, and in 08.13 only on the stops — you
+        // settle where the car actually parked, never mid-drive. Fires on scroll
+        // idle, so it never fights an in-progress gesture or momentum.
+        const _reduceMotion = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let _snapTimer = null, _snapLock = false;
+
+        function trySnap() {
+            if (_snapLock || _reduceMotion) return;
+            const y = window.scrollY, vh = window.innerHeight;
+            let best = null, bestD = Infinity;
+            for (let i = 0; i < _pgStages.length; i++) {
+                const s = _pgStages[i];
+                if (!s.snapAts || s.p === null || s.mode !== 'pinned') continue;
+                const stageTop = s.stage.getBoundingClientRect().top + y;
+                for (let j = 0; j < s.snapAts.length; j++) {
+                    const target = stageTop + s.snapAts[j] * s.h;
+                    const d = Math.abs(target - y);
+                    if (d < bestD) { bestD = d; best = target; }
+                }
+            }
+            // already settled, or too far away to be what the reader meant
+            if (best === null || bestD < 6 || bestD > vh * 0.5) return;
+            _snapLock = true;
+            window.scrollTo({ top: Math.round(best), behavior: 'smooth' });
+            setTimeout(() => { _snapLock = false; }, 750);
+        }
+
+        // ---------- one listener for all five ----------
+        const $ = id => document.getElementById(id);
+        registerStage(fwStage,   fwSticky,   updateAct1,     null, $('pgbFw'));
+        registerStage(dawnStage, dawnSticky, updateAct2Dawn, null, $('pgbDawn'));
+        registerStage(isoStage,  isoSticky,  updateAct2Iso,
+                      isoItems.map(it => it.at), $('pgbIso'));
+        registerStage($('br1Stage'), $('br1Sticky'), makeBridge('br1B', 'br1C', 'br1Date', 'br1Line'), null, $('pgbBr1'));
+        registerStage(drvStage,  drvSticky,  updateAct3,
+                      drvItems.filter(it => it.stop).map(it => it.at), $('pgbDrv'));
+        registerStage($('br2Stage'), $('br2Sticky'), makeBridge('br2B', 'br2C', 'br2Date'), null, $('pgbBr2'));
+        registerStage(d88Stage,  d88Sticky,  updateAct4,     null, $('pgbD88'));
+
+        let _pgTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!_pgTicking) {
+                _pgTicking = true;
+                requestAnimationFrame(() => { updatePenghuActs(); _pgTicking = false; });
+            }
+            clearTimeout(_snapTimer);
+            _snapTimer = setTimeout(trySnap, 170);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            fwResize();
+            // heights are vh-based, so both the cache and the pin state are stale
+            for (let i = 0; i < _pgStages.length; i++) { _pgStages[i].h = 0; _pgStages[i].mode = null; }
+            updatePenghuActs();
         });
 
         // ── Captcha + 2025 Story ──

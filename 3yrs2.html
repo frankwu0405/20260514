@@ -1946,7 +1946,7 @@
         .lp-resolve { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 18px; color: #8b8474;
             margin-top: 14px; line-height: 1.5; }
 
-        /* ── 第 1188 天 ── */
+        /* ── 第 1189 天 ── */
         .d88-stage  { height: 240vh; }
         .d88-a { background: linear-gradient(180deg, #fdfbf8 0%, #fbf8f4 55%, #f7f2ec 100%); }
         .d88-sticky { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 30px; }
@@ -3689,7 +3689,7 @@
                 </div>
             </div>
 
-            <!-- ══════════ ACT 4 · 08.14 — 回程 · 第 1188 天 ══════════ -->
+            <!-- ══════════ ACT 4 · 08.14 — 回程 · 第 1189 天 ══════════ -->
             <div class="chapter" id="chap-penghu-d4">
                 <div class="time-badge">Aug 14 · 最後一天</div>
                 <p class="story-text">
@@ -4964,7 +4964,8 @@
             const startDate = new Date(2023, 4, 14); 
             const currentDate = new Date(); 
             const timeDiff = currentDate.getTime() - startDate.getTime();
-            return Math.floor(timeDiff / (1000 * 3600 * 24));
+            // the first day together is day 1, not day 0 — so the elapsed count is +1
+            return Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
         }
 
         function animateValue(obj, start, end, duration) {
@@ -6143,14 +6144,14 @@
             document.getElementById('drvClosing').classList.toggle('is-vis', p > 0.80 && p < 0.99);
         }
 
-        // ---------- Act 4: 第 1188 天 ----------
+        // ---------- Act 4: 第 1189 天 ----------
         const d88Stage = document.getElementById('d88Stage');
         const d88Sticky = document.getElementById('d88Sticky');
         const d88Count = document.getElementById('d88Count');
         // derived from the same start date as the counter at the top of the page
         const PENGHU_DAY = Math.floor(
             (new Date(2026, 7, 14) - new Date(2023, 4, 14)) / 86400000
-        );
+        ) + 1;   // same convention as calculateDays: the first day is day 1
         let _d88Last = -1;
         function updateAct4(p) {
             const eased = 1 - Math.pow(1 - rmap(p, 0.08, 0.62), 3);
