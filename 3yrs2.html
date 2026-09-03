@@ -1402,6 +1402,40 @@
         }
 
         /* ============================================================
+           特別篇章 · 澎湖 — the divider that opens the trip.
+           The archipelago sits behind the type as a watermark; it is a
+           stylised silhouette for tone, not a survey-accurate map.
+           ============================================================ */
+        .special-intro { position: relative; padding: 30px 0 20px; text-align: center; }
+        .si-inner { position: relative; z-index: 2; }
+        .si-label {
+            font-family: 'Noto Serif TC', serif; font-size: 13px;
+            letter-spacing: 10px; text-indent: 10px; color: #a89b8c;
+        }
+        /* thin rule with a tilted plane sitting in the gap */
+        .si-rule { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 18px 0 16px; }
+        .si-rule span { display: block; width: 52px; height: 1px; background: linear-gradient(90deg, transparent, #d9cec0); }
+        .si-rule span:last-child { background: linear-gradient(90deg, #d9cec0, transparent); }
+        .si-rule i { font-style: normal; font-size: 13px; color: #c4b4a4; transform: rotate(45deg); }
+        .si-name {
+            font-family: 'Noto Serif TC', serif; font-weight: 400;
+            font-size: 36px; letter-spacing: 8px; text-indent: 8px;
+            color: #5c5348; line-height: 1.35;
+            text-shadow: 0 0 30px rgba(255,255,255,0.95);
+        }
+        .si-latin {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 14px; letter-spacing: 3px; color: #a89b8c; margin-top: 14px;
+        }
+        .si-islands {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -44%);
+            width: min(300px, 80%); height: auto;
+            z-index: 1; pointer-events: none;
+            fill: #cbb9a8; opacity: 0.18;
+        }
+
+        /* ============================================================
            澎湖 · 國內線登機證
            Deliberately unlike the international F&S passes: thermal
            paper instead of gloss, monospace ink instead of bold sans,
@@ -1411,8 +1445,8 @@
         /* Same stack machinery as the international pairs — .double-ticket-wrapper,
            .ticket-layer, .flip-container, .flip-inner all reused unchanged.
            Only the face styling below differs. */
-        .double-ticket-wrapper.dp-wrap { height: 232px; }
-        .dp-flip { height: 152px; }
+        .double-ticket-wrapper.dp-wrap { height: 270px; }
+        .dp-flip { height: 190px; }
 
         /* --- front: thermal-printed pass, torn vertically at the stub --- */
         .flip-front.dp-front {
@@ -1426,37 +1460,39 @@
             font-family: 'Courier New', Courier, monospace;
             color: #4d4840;
         }
-        .dp-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; padding: 9px 11px; }
+        /* type scale is tuned to fill .dp-flip's height — if that height changes,
+           these step with it, otherwise the pass reads as a half-empty card */
+        .dp-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; padding: 12px 14px; }
         .dp-band {
             display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
-            border-bottom: 1px solid #cfc7b5; padding-bottom: 5px;
+            border-bottom: 1px solid #cfc7b5; padding-bottom: 7px;
         }
-        .dp-carrier { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #6d6656; white-space: nowrap; }
-        .dp-sector  { font-size: 7px; letter-spacing: 1.2px; color: #9a9382; white-space: nowrap; }
+        .dp-carrier { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; color: #6d6656; white-space: nowrap; }
+        .dp-sector  { font-size: 8px; letter-spacing: 1.2px; color: #9a9382; white-space: nowrap; }
 
-        .dp-route { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0 6px; }
-        .dp-code  { font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; color: #3d3931; }
-        .dp-city  { font-size: 7px; letter-spacing: 1px; color: #8b8474; margin-top: 3px; white-space: nowrap; }
-        .dp-arrow { font-size: 11px; color: #b6ac97; transform: rotate(45deg); margin-top: 7px; }
+        .dp-route { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0 9px; }
+        .dp-code  { font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; color: #3d3931; }
+        .dp-city  { font-size: 8.5px; letter-spacing: 1px; color: #8b8474; margin-top: 4px; white-space: nowrap; }
+        .dp-arrow { font-size: 13px; color: #b6ac97; transform: rotate(45deg); margin-top: 9px; }
 
         .dp-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 8px;
-            border-top: 1px solid #e3ddcf; padding-top: 6px; margin-top: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px 10px;
+            border-top: 1px solid #e3ddcf; padding-top: 9px; margin-top: auto;
         }
         .dp-cell { display: flex; flex-direction: column; min-width: 0; }
-        .dp-lab  { font-size: 6px; letter-spacing: 0.5px; color: #a49c8a; line-height: 1.3; white-space: nowrap; }
-        .dp-val  { font-size: 11px; font-weight: 700; color: #3d3931; line-height: 1.3; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dp-lab  { font-size: 7px; letter-spacing: 0.5px; color: #a49c8a; line-height: 1.3; white-space: nowrap; }
+        .dp-val  { font-size: 12.5px; font-weight: 700; color: #3d3931; line-height: 1.3; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* vertical perforation + tear-off stub */
         .dp-stub {
-            flex: 0 0 62px; border-left: 1px dashed #c3bbaa;
+            flex: 0 0 74px; border-left: 1px dashed #c3bbaa;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2px; padding: 9px 6px; background: rgba(90,80,60,0.015);
+            gap: 3px; padding: 11px 7px; background: rgba(90,80,60,0.015);
         }
-        .dp-stub-flight { font-size: 8.5px; letter-spacing: 0.5px; color: #8b8474; }
-        .dp-stub-seat   { font-size: 20px; font-weight: 700; color: #3d3931; line-height: 1; }
+        .dp-stub-flight { font-size: 9.5px; letter-spacing: 0.5px; color: #8b8474; }
+        .dp-stub-seat   { font-size: 25px; font-weight: 700; color: #3d3931; line-height: 1; }
         .dp-barcode {
-            width: 100%; height: 34px; margin-top: 4px; opacity: 0.5;
+            width: 100%; height: 46px; margin-top: 6px; opacity: 0.5;
             background-image: repeating-linear-gradient(0deg,
                 #3d3931 0 1px, transparent 1px 3px,
                 #3d3931 3px 4px, transparent 4px 7px,
@@ -1480,10 +1516,11 @@
         }
 
         /* real photos dropped into any Penghu frame — cover-fill the fixed aspect box */
-        .pg-frame img, .fw-after .pg-frame img, .drv-final .pg-frame img {
+        .pg-frame img, .drv-final .pg-frame img,
+        .pg-frame video, .drv-final .pg-frame video {
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
-        .fw-photo > img {
+        .fw-photo > img, .fw-photo > video {
             position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
         }
         .dp-back > img {
@@ -1537,9 +1574,32 @@
                        opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .pg-line.is-vis { opacity: 1; transform: translateY(0); }
 
+        /* ── 松山 → 馬公 · 貼上去的窗 ──
+           The clip sits in the flow directly under the hint, and the pair sticks
+           together through the leg. The hint's own sticky is dropped here — the
+           stack does that job now, otherwise the two fight each other.
+           Opacity is driven from the same scroll handler as .flight-hint. */
+        .tsa-mzg-stack {
+            position: sticky; top: 30vh;
+            display: flex; flex-direction: column; align-items: center; gap: 22px;
+        }
+        .tsa-mzg-stack .flight-hint { position: static; }
+        .plane-window {
+            width: min(200px, 54vw); aspect-ratio: 4 / 5;
+            border-radius: 42% / 32%;
+            overflow: hidden; background: #0d1218;
+            border: 7px solid #fdfbf6;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.26);
+            transform: rotate(-5deg);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        .plane-window video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
         /* ── 08.11 夜 · 火鍋 ── */
         .pg-hotpot { max-width: 340px; margin: 30px auto 0; }
-        .pg-hotpot .pg-frame { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.16); }
+        .pg-hotpot .pg-frame { width: 100%; overflow: hidden; border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.16); }
+        .pg-hotpot .pg-frame img { width: 100%; height: auto; object-fit: unset; display: block; }
         .pg-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 19px; color: #8d8375; text-align: center; margin-top: 10px; line-height: 1.3; }
 
         /* ── 08.11 夜 · 花火 ── */
@@ -1571,22 +1631,23 @@
         }
         .fw-timer.urgent { color: #ffb347; }
         .fw-escape {
-            position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%) translateY(10px);
-            z-index: 40; padding: 10px 26px; border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 30px; background: rgba(0,0,0,0.45);
-            font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 4px; color: #fff;
+            position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%) translateY(10px);
+            z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 14px;
             cursor: pointer; -webkit-tap-highlight-color: transparent;
             opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .fw-escape.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; animation: breathe 2s infinite; }
+        .fw-escape-vid { width: min(300px, 78vw); aspect-ratio: 3 / 4; border-radius: 3px; overflow: hidden; box-shadow: 0 18px 45px rgba(0,0,0,0.6); }
+        .fw-escape-vid video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fw-escape-text {
+            padding: 10px 22px; border: 1px solid rgba(255,255,255,0.5); border-radius: 22px;
+            background: rgba(0,0,0,0.45); max-width: 260px;
+            font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 2px; line-height: 1.6;
+            color: #fff; text-align: center;
+        }
         /* the escape itself: sky slides away, the two of you are already moving */
         .fw-sky-group { position: absolute; inset: 0; z-index: 5; transition: transform 1.1s cubic-bezier(0.4,0,0.2,1), opacity 1.1s ease, filter 1.1s ease; }
         .fw-sticky.escaped .fw-sky-group { transform: translateX(-22%) scale(1.08); opacity: 0.35; filter: blur(6px); }
-        .fw-after { position: absolute; inset: 0; z-index: 12; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 18px; padding: 0 32px; opacity: 0; pointer-events: none; transition: opacity 1.1s ease 0.25s; }
-        .fw-sticky.escaped .fw-after { opacity: 1; }
-        .fw-after .pg-frame { width: min(280px, 74vw); aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; box-shadow: 0 18px 45px rgba(0,0,0,0.6); }
-        .fw-after p { font-family: 'Noto Serif TC', serif; font-size: 14px; color: rgba(255,255,255,0.9); text-align: center; letter-spacing: 1.5px; line-height: 2.1; }
 
         /* ── 08.12 · 天亮之前 ── */
         .dawn-stage { height: 200vh; }
@@ -2836,7 +2897,7 @@
                     <div class="cex-row">
                         <div class="cex-text-wrap">
                             <div class="cex-date">2024 · December</div>
-                            <div class="cex-caption">這是聖誕節的時候我們憶起在信義走走，坐在階梯上兩個人努力底與寒風的樣子哈哈。(寶貝這天很漂亮呦~)</div>
+                            <div class="cex-caption">這是聖誕節的時候我們一起在信義走走，坐在階梯上兩個人努力抵禦寒風的樣子哈哈。(寶貝這天很漂亮呦~)</div>
                         </div>
                         <div class="cex-pic-wrap"><img src="assets/IMG_1137.jpeg" alt="記憶二"></div>
                     </div>
@@ -2943,6 +3004,43 @@
                 <div class="year-sub">Together & Beyond...</div>
             </div>
 
+            <!-- ══════════ 特別篇章 · 澎湖 ══════════ -->
+            <div class="chapter special-intro" id="chap-penghu-intro">
+                <svg class="si-islands" viewBox="0 0 300 290" aria-hidden="true" focusable="false">
+                    <g>
+                        <!-- 吉貝 -->
+                        <path d="M146,38 C154,33 165,35 168,41 C170,46 164,51 156,51 C148,51 142,44 146,38 Z"/>
+                        <!-- 白沙 -->
+                        <path d="M120,80 C129,70 144,66 156,70 C166,73 173,80 177,89 C180,96 176,103 169,101
+                                 C161,99 155,94 147,94 C138,94 129,101 122,97 C115,93 114,86 120,80 Z"/>
+                        <!-- 西嶼 -->
+                        <path d="M112,102 C107,111 105,124 104,136 C103,151 100,165 95,177 C91,187 84,194 77,195
+                                 C71,196 68,190 70,183 C74,170 79,159 84,146 C90,129 93,113 100,103
+                                 C104,97 110,96 112,102 Z"/>
+                        <!-- 澎湖本島 -->
+                        <path d="M160,112 C174,105 190,105 203,111 C216,117 227,127 233,139 C238,150 235,162 226,167
+                                 C217,172 206,169 197,173 C188,177 182,187 172,190 C161,193 150,187 147,177
+                                 C144,168 148,158 152,149 C156,140 153,130 153,122 C153,116 155,114 160,112 Z"/>
+                        <!-- 望安 -->
+                        <path d="M126,232 C135,226 147,229 150,236 C152,242 146,248 137,248 C128,248 121,238 126,232 Z"/>
+                        <!-- 七美 -->
+                        <path d="M158,264 C165,260 174,262 176,267 C178,272 172,277 165,276 C158,275 153,268 158,264 Z"/>
+                        <!-- 散落的小島 -->
+                        <circle cx="196" cy="93"  r="5"/>
+                        <circle cx="212" cy="99"  r="3.4"/>
+                        <circle cx="92"  cy="209" r="3.8"/>
+                        <circle cx="228" cy="190" r="4.2"/>
+                        <circle cx="108" cy="60"  r="3"/>
+                    </g>
+                </svg>
+                <div class="si-inner">
+                    <div class="si-label">特別篇章</div>
+                    <div class="si-rule"><span></span><i>✈</i><span></span></div>
+                    <h2 class="si-name">澎湖之旅</h2>
+                    <div class="si-latin">PENGHU · 2026.08.11 — 08.14</div>
+                </div>
+            </div>
+
             <!-- ============================================================
                  澎湖 · 2026.08.11 – 08.14
                  Bookended by the domestic boarding passes and the two
@@ -2952,11 +3050,11 @@
 
             <!-- 08.11 · 出發 -->
             <div class="chapter" id="chap-penghu-depart">
-                <div class="time-badge">Aug 11, 2026 · 台北松山</div>
+                <div class="time-badge">Aug 11, 2026 · 台北車站</div>
                 <p class="story-text">
-                    八月十一號，我們各自下了班，在台北車站會合。<br>
-                    第一次去松山機場，也是第一次一起搭國內線。<br>
-                    沒有護照、沒有轉機、沒有時差 —— 只有一張薄薄的登機證，和五十分鐘。
+                    八月十一號，我下了班，我們養個拖著行李在台北車站碰了面<br>
+                    第一次進到松山機場，也是第一次一起搭國內線。<br>
+                    未知的離島之旅真令人期待~
                 </p>
 
                 <div class="double-ticket-wrapper dp-wrap" id="penghuTicketOut" data-front="2" data-auto-reveal>
@@ -2989,8 +3087,8 @@
                                 </div>
                             </div>
                             <div class="flip-back dp-back">
-                                <img src="assets/pochacco_airport.jpg" alt="松山機場 · 舉著波奇狗看飛機">
-                                <div class="dp-back-cap">第一次飛國內線</div>
+                                <img src="assets/pochacco_airport.jpg" alt="松山機場 · 舉著波奇狗看飛機" style="object-position: 50% 80%;">
+                                <div class="dp-back-cap">小狗也第一次飛國內線</div>
                             </div>
                         </div>
                     </div>
@@ -3035,7 +3133,13 @@
 
             <!-- 松山 → 馬公：本頁最短的一段航線 -->
             <div id="flight-tsa-mzg-area" class="flight-scroll-area">
-                <div class="flight-hint" id="flightHintTsaMzg">以前每一條線，都是一個人飛向另一個人。<br>這次，我們一起上飛機。</div>
+                <!-- text + takeoff clip ride together through the leg -->
+                <div class="tsa-mzg-stack">
+                    <div class="flight-hint" id="flightHintTsaMzg">也算是第二次一起搭飛機了，<br>只不過這次是一起去我們都不熟悉的地方~</div>
+                    <div class="plane-window" id="planeWindow" aria-hidden="true">
+                        <video src="assets/plane-takeoff.mov" autoplay loop muted playsinline></video>
+                    </div>
+                </div>
             </div>
 
             <!-- Every Penghu sky lives here, outside the stages, so the days
@@ -3068,15 +3172,31 @@
             <div class="chapter" id="chap-penghu-d1">
                 <div class="time-badge">Aug 11 · 馬公的第一個晚上</div>
                 <p class="story-text">
-                    落地的時候天已經半黑了。<br>
-                    我們在一間完全沒聽過的店吃了鍋，湯很燙，冷氣很強，<br>
-                    然後看了一下時間 —— 還來得及。
+                    落地澎湖喽!<br>
+                    我們扛著行李，上了飆車大哥的計程車就直直前往飯店去了。<br>
+                    你看，是東京鐵塔ㄟ 哈哈哈~
                 </p>
                 <div class="pg-hotpot">
                     <div class="pg-frame">
                         <img src="assets/landed.jpg" alt="落地那晚 · 往市區的路上，天已經半黑">
                     </div>
                     <p class="pg-cap">落地那晚，往市區的路上</p>
+                </div>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <img src="assets/hotel1.jpg" alt="抵達飯店">
+                    </div>
+                    <p class="pg-cap">終於到了，先躺個30秒😴</p>
+                </div>
+                <p class="story-text">
+                    到了飯店了~<br>
+                    又餓又累的，等等要準備弄弄出門完成今天最大的任務了。
+                </p>
+                <div class="pg-hotpot">
+                    <div class="pg-frame">
+                        <img src="assets/hotel2.jpg" alt="整裝出門看花火">
+                    </div>
+                    <p class="pg-cap">休息完畢，出發看煙火喽！</p>
                 </div>
             </div>
 
@@ -3085,35 +3205,24 @@
                     <div class="fw-sky-group">
                         <canvas class="fw-canvas" id="fwCanvas"></canvas>
                         <div class="fw-photo-wrap" id="fwPhotos">
-                            <div class="fw-photo" data-at="0.14" data-win="0.13">
+                            <div class="fw-photo" data-at="0.22" data-win="0.21">
+                                <video src="assets/fireworks-view.mov" autoplay loop muted playsinline></video>
+                                <div class="fw-photo-cap">開始了</div>
+                            </div>
+                            <div class="fw-photo" data-at="0.65" data-win="0.21">
                                 <img src="assets/firework.jpg" alt="觀音亭 · 花火節">
-                                <div class="fw-photo-cap">說好要拍好看的</div>
-                            </div>
-                            <div class="fw-photo" data-at="0.40" data-win="0.13">
-                                <!-- REPLACE: assets/penghu/d1-fw-02.jpg -->
-                                <div class="ph">08.11 · 花火 02 · 3:4</div>
-                                <div class="fw-photo-cap">結果沒有一張是正常的</div>
-                            </div>
-                            <div class="fw-photo" data-at="0.66" data-win="0.13">
-                                <!-- REPLACE: assets/penghu/d1-fw-03.jpg -->
-                                <div class="ph">08.11 · 花火 03 · 3:4</div>
-                                <div class="fw-photo-cap">你笑到眼睛都不見了</div>
+                                <div class="fw-photo-cap">以為很好看，喜得一張長輩觀光照</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="fw-timer" id="fwTimer">觀音亭 · 21:00 — 剩 10:00</div>
-                    <div class="fw-escape" id="fwEscape">現 在 走</div>
 
-                    <div class="fw-after">
-                        <div class="pg-frame">
-                            <!-- REPLACE: assets/penghu/d1-escape.jpg -->
-                            <div class="ph">08.11 · 撤退 · 4:3</div>
+                    <div class="fw-escape" id="fwEscape">
+                        <div class="fw-escape-vid">
+                            <video src="assets/firework-leave.mov" autoplay loop muted playsinline></video>
                         </div>
-                        <p>
-                            我們算好了，在最後一分鐘離開。<br>
-                            煙火還在放，我們已經在路上了。
-                        </p>
+                        <div class="fw-escape-text">趁還有一分鐘，趕快落跑！</div>
                     </div>
                 </div>
             </div>
@@ -3125,7 +3234,7 @@
                     <div class="dawn-sea"></div>
                     <div class="pg-day-tag" id="dawnTag" style="color: rgba(255,255,255,0.75);">08.12</div>
                     <p class="pg-line" id="dawnLine" style="top: 62%; color: rgba(255,255,255,0.92); text-shadow: 0 2px 12px rgba(0,0,0,0.6);">
-                        四點半的鬧鐘。<br>天還是黑的，我們就已經在往碼頭的路上了。
+                        五點半的鬧鐘。<br>扒了飯店早餐十分鐘，馬上就搭計程車去準備開始今天的冒險了!
                     </p>
                 </div>
             </div>
@@ -4321,6 +4430,8 @@
             if(lineMzgTsa) lineMzgTsa.geometry.setDrawRange(0, 0);
             if(tsaPin) { tsaPin.visible = false; tsaRing.visible = false; }
             if(mzgPin) { mzgPin.visible = false; mzgRing.visible = false; }
+            const planeWindow = document.getElementById('planeWindow');
+            if(planeWindow) planeWindow.style.opacity = 0;
 
             let isExpandingVoid = false;
 
@@ -4451,6 +4562,10 @@
 
                 const hint = document.getElementById('flightHintTsaMzg');
                 if(hint) hint.style.opacity = (opacity > 0.5) ? 1 : 0;
+
+                // the window fades in a touch earlier than the line, and holds
+                // until the plane is nearly down
+                if(planeWindow) planeWindow.style.opacity = (opacity > 0.25) ? 1 : 0;
             }
             else if (penghuBackRect && penghuBackRect.top < window.innerHeight && penghuBackRect.bottom > 0) {
                 // 馬公 → 松山
@@ -5496,8 +5611,17 @@
             el: el, at: parseFloat(el.dataset.at), win: parseFloat(el.dataset.win), o: -1
         })) : [];
         let fwCtx = null, fwParts = [], fwVisible = false, fwRunning = false;
-        let _fwLastShot = -1, _fwEscaped = false;
+        let _fwLastShot = -1, _fwEscaped = false, fwAmbientTimer = null;
         const FW_SHOW_SECONDS = 600; // a 10-minute show
+
+        // background show — smaller bursts scattered across the whole sky so it
+        // never goes dark between the scroll-triggered photo bursts
+        function fwAmbientBurst() {
+            if (!fwVisible || _fwEscaped) { fwAmbientTimer = null; return; }
+            fwBurst(fwCanvas.width * (0.06 + Math.random() * 0.88),
+                    fwCanvas.height * (0.06 + Math.random() * 0.6));
+            fwAmbientTimer = setTimeout(fwAmbientBurst, 480 + Math.random() * 620);
+        }
 
         function fwResize() {
             if (!fwCanvas) return;
@@ -5506,8 +5630,9 @@
         }
 
         function fwBurst(x, y) {
-            const hue = 25 + Math.random() * 45;          // warm gold/orange
-            const n = window.innerWidth < 768 ? 54 : 78;
+            // mostly warm gold/orange, occasionally a cool accent shell for variety
+            const hue = Math.random() < 0.72 ? 25 + Math.random() * 45 : 190 + Math.random() * 140;
+            const n = window.innerWidth < 768 ? 68 : 96;
             for (let i = 0; i < n; i++) {
                 const a = (i / n) * Math.PI * 2 + Math.random() * 0.2;
                 const sp = 1.1 + Math.random() * 3.1;
@@ -5586,6 +5711,7 @@
             _fwEscaped = true;
             fwSticky.classList.add('escaped');
             fwEscape.classList.remove('show');
+            if (fwAmbientTimer) { clearTimeout(fwAmbientTimer); fwAmbientTimer = null; }
             if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
         }
         if (fwEscape) fwEscape.addEventListener('click', fwDoEscape);
@@ -5598,8 +5724,10 @@
                     if (fwVisible) {
                         fwResize();
                         if (fwParts.length && !fwRunning) { fwRunning = true; requestAnimationFrame(fwLoop); }
+                        if (!fwAmbientTimer && !_fwEscaped) fwAmbientTimer = setTimeout(fwAmbientBurst, 200);
                     } else {
                         fwParts.length = 0;   // nothing left running offscreen
+                        if (fwAmbientTimer) { clearTimeout(fwAmbientTimer); fwAmbientTimer = null; }
                     }
                 });
             }, { threshold: 0.05 }).observe(fwStage);
