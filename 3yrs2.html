@@ -1660,7 +1660,7 @@
             background: linear-gradient(180deg, rgba(10,18,32,0.55) 0%, #060a12 100%); }
 
         /* ── 08.12 · 跳島 ── */
-        .iso-stage  { height: 420vh; }
+        .iso-stage  { height: 520vh; }
         .iso-a { background: linear-gradient(180deg, #bcd6e6 0%, #dcebf2 52%, #eaf3f6 100%); }
         .iso-horizon { position: absolute; left: 0; top: 55%; width: 100%; height: 45%; z-index: 2;
             background: linear-gradient(180deg, #7fa8bd 0%, #4d7d99 45%, #305d77 100%); }
@@ -1673,11 +1673,17 @@
         .iso-item .pg-frame { width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,0.35); }
         .iso-time { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.85);
             text-align: center; margin-top: 7px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .iso-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 17px; color: #fff;
+            text-align: center; margin-top: 5px; line-height: 1.45; padding: 0 4px;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.75); }
+        /* portrait sources would lose their subject in the 3:2 frame — give them
+           a taller box, narrowed so the item keeps the same footprint */
+        .iso-portrait .pg-frame { aspect-ratio: 3 / 4; width: 70%; margin: 0 auto; }
         .iso-still { z-index: 8; }
         .iso-closing { position: absolute; left: 0; bottom: 12%; width: 100%; z-index: 20; color: #eaf3f6; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
 
         /* ── 08.13 · 追著太陽往西開 ── */
-        .drv-stage  { height: 480vh; }
+        .drv-stage  { height: 820vh; }
         .drv-a { background: linear-gradient(180deg, #9dc6dd 0%, #cfe3ea 58%, #e6eff0 100%); }
         .drv-b { background: linear-gradient(180deg, #a7bcd0 0%, #e6cfa8 55%, #f6dfae 100%); }
         .drv-c { background: linear-gradient(180deg, #8f7f9c 0%, #e08c5a 52%, #f7b26a 100%); }
@@ -1772,6 +1778,12 @@
         .drv-pass .pg-frame { width: 62vw; max-width: 300px; aspect-ratio: 3 / 2; }
         /* a real stop: portrait, centred, still */
         .drv-stop .pg-frame { width: 46vw; max-width: 210px; aspect-ratio: 3 / 4; }
+        /* a stop whose photo happens to be landscape — keeps the long dwell,
+           takes the wider frame so it isn't cropped to a letterbox */
+        .drv-stop.drv-wide .pg-frame { width: 62vw; max-width: 300px; aspect-ratio: 3 / 2; }
+        .drv-cap { font-family: 'ChenYuluoyan', 'Caveat', cursive; font-size: 17px; color: #fff;
+            text-align: center; margin-top: 8px; line-height: 1.45; padding: 0 18px; max-width: 330px;
+            text-shadow: 0 1px 7px rgba(0,0,0,0.8); }
         .drv-odo { position: absolute; bottom: 8%; left: 0; width: 100%; text-align: center; z-index: 20;
             font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.82);
             text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
@@ -3296,44 +3308,71 @@
                     </div>
 
                     <div class="iso-sway" id="isoSway">
-                        <!-- 七美 cluster — brisk, that's the "hectic" part -->
-                        <div class="iso-item" data-at="0.08" data-win="0.085">
+                        <!-- 上船 → 東吉嶼 → 再上船 → 七美 → 晚餐. Beats are evenly
+                             spaced 0.135 apart so the day reads at one pace. -->
+                        <div class="iso-item" data-at="0.075" data-win="0.075">
                             <div class="pg-frame"><img src="assets/boat1.jpg" alt="08.12 · 跳島的船上"></div>
-                            <div class="iso-time">07:40 · 七美</div>
-                        </div>
-                        <div class="iso-item" data-at="0.24" data-win="0.085">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-qimei-02.jpg --><div class="ph">08.12 · 七美 02 · 3:2</div></div>
-                            <div class="iso-time">08:15 · 七美</div>
+                            <div class="iso-time">登船</div>
+                            <div class="iso-cap">上船囉，今天要去跳島！</div>
                         </div>
 
-                        <!-- 雙心石滬 — the one still moment, ~1.6× the dwell -->
-                        <div class="iso-item iso-still" data-at="0.48" data-win="0.13">
+                        <!-- 第一站 · 東吉嶼 -->
+                        <div class="iso-item" data-at="0.21" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/pier-bb.jpeg" alt="08.12 · 東吉嶼的碼頭"></div>
+                            <div class="iso-time">東吉嶼</div>
+                            <div class="iso-cap">第一站，東吉嶼</div>
+                        </div>
+
+                        <div class="iso-item" data-at="0.345" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/boat2.jpg" alt="08.12 · 再次上船 · 比 YA"></div>
+                            <div class="iso-time">再次登船</div>
+                            <div class="iso-cap">再上船，前往下一座島</div>
+                        </div>
+
+                        <!-- 七美 · 冰店的肥貓 -->
+                        <div class="iso-item iso-portrait" data-at="0.48" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/cat-pic.jpeg" alt="七美 · 冰店遇到的肥貓"></div>
+                            <div class="iso-time">七美 · 冰店</div>
+                            <div class="iso-cap">島上好熱，我們去吃冰<br>遇見了這隻肥貓貓</div>
+                        </div>
+
+                        <!-- 環島 — the one still moment, ~1.5× the dwell -->
+                        <div class="iso-item iso-still" data-at="0.615" data-win="0.11">
                             <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-twinheart.jpg --><div class="ph">08.12 · 雙心石滬 · 3:2</div></div>
-                            <div class="iso-time">08:40 · 雙心石滬 — 退潮</div>
+                            <div class="iso-time">七美 · 環島</div>
+                            <div class="iso-cap">遊覽車載我們繞了島一圈，<br>看了望夫石、小台灣，<br>還有妳最想看的雙心石滬</div>
                         </div>
 
-                        <!-- 東吉嶼 cluster -->
-                        <div class="iso-item" data-at="0.72" data-win="0.085">
-                            <div class="pg-frame"><img src="assets/boat2.jpg" alt="08.12 · 跳島的船上 · 比 YA"></div>
-                            <div class="iso-time">10:20 · 東吉嶼</div>
+                        <div class="iso-item iso-portrait" data-at="0.75" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/small-taiwan.heic" alt="七美 · 小台灣"></div>
+                            <div class="iso-time">小台灣</div>
+                            <div class="iso-cap">看！我住這裡喔~</div>
                         </div>
-                        <div class="iso-item" data-at="0.85" data-win="0.075">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d2-dongji-02.jpg --><div class="ph">08.12 · 東吉嶼 02 · 3:2</div></div>
-                            <div class="iso-time">11:02 · 東吉嶼</div>
+
+                        <!-- 收尾 · 一天的最後 -->
+                        <div class="iso-item" data-at="0.855" data-win="0.075">
+                            <div class="pg-frame"><img src="assets/takoyaki.jpeg" alt="08.12 · 宵夜 · 章魚燒"></div>
+                            <div class="iso-time">晚上 · 宵夜</div>
+                            <div class="iso-cap">雖然晚餐壽喜燒吃飽飽的，<br>還是點了好多垃圾食物，吃得好多呦~<br>（章魚燒好吃🙂‍↕️）</div>
                         </div>
                     </div>
 
                     <div class="pg-day-tag" id="isoTag" style="color: rgba(255,255,255,0.8);">08.12 · 跳島</div>
                     <p class="pg-line iso-closing" id="isoClosing">
-                        島跟島看起來是分開的，<br>可是海面下，它們本來就連在一起。
+                        又熱又累的一天<br>但是很充實，阿鼻下次還想一起來跳島嗎哈哈?
                     </p>
                 </div>
             </div>
 
-            <!-- 08.12 → 08.13: the night between them, and the palette reset -->
+            <!-- 08.12 → 08.13: the night between them, and the palette reset.
+                 The date holds through the dark, then the day announces itself
+                 as the bridge comes up into morning. -->
             <div class="pg-stage pg-bridge" id="br1Stage">
                 <div class="pg-sticky" id="br1Sticky">
                     <div class="brg-date" id="br1Date">08.13</div>
+                    <p class="pg-line" id="br1Line" style="top: 62%; color: rgba(255,255,255,0.9); text-shadow: 0 2px 14px rgba(0,0,0,0.75);">
+                        今天是我們的公路環島之旅！<br>租了一台小車，沿著海岸線一路往西開。
+                    </p>
                 </div>
             </div>
 
@@ -3446,26 +3485,62 @@
                     </div>
 
                     <div class="drv-frame" id="drvFrame">
-                        <!-- landscape + short dwell = still driving, never a snap point -->
-                        <div class="drv-item drv-pass" data-at="0.05" data-win="0.05">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-01.jpg --><div class="ph">08.13 · 掠過 01 · 3:2</div></div>
+                        <!-- 風櫃洞 → 天堂路 → 跨海大橋 → 玄武岩 → 最西邊.
+                             Beats sit 0.071 apart and all resolve before
+                             DRV_BRAKE (0.80), so the ending choreography below
+                             is untouched. Frames are portrait unless the source
+                             photo is landscape (.drv-wide). -->
+                        <div class="drv-item drv-stop" data-at="0.04" data-win="0.045" data-label="風櫃洞">
+                            <div class="pg-frame"><!-- REPLACE: 風櫃洞 --><div class="ph">08.13 · 風櫃洞 · 3:4</div></div>
+                            <div class="drv-cap">第一站，風櫃洞</div>
                         </div>
-                        <!-- portrait + long dwell = we actually parked; these are the snap points -->
-                        <div class="drv-item drv-stop" data-at="0.17" data-win="0.075" data-label="跨海大橋 · 11km">
-                            <div class="pg-frame"><img src="assets/bridge1.jpg" alt="08.13 · 跨海大橋 · 兩個人的影子"></div>
+
+                        <!-- 天堂路 -->
+                        <div class="drv-item drv-stop" data-at="0.111" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><video src="assets/beach-view.mov" autoplay loop muted playsinline></video></div>
+                            <div class="drv-cap">千辛萬苦走到天堂路，<br>然後就看到這片海</div>
                         </div>
-                        <div class="drv-item drv-pass" data-at="0.29" data-win="0.05">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-02.jpg --><div class="ph">08.13 · 掠過 02 · 3:2</div></div>
+                        <div class="drv-item drv-stop" data-at="0.182" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/beach-me.heic" alt="天堂路 · 海邊"></div>
+                            <div class="drv-cap">美得有點不真實，<br>怎麼拍都好看</div>
                         </div>
-                        <div class="drv-item drv-stop" data-at="0.41" data-win="0.075" data-label="大菓葉玄武岩 · 19km">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-02.jpg --><div class="ph">08.13 · 停 02 · 3:4</div></div>
+                        <div class="drv-item drv-stop" data-at="0.253" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><video src="assets/finding-crabs.mov" autoplay loop muted playsinline></video></div>
+                            <div class="drv-cap">咦? 鼻在沙子裡找到了甚麼?</div>
                         </div>
-                        <div class="drv-item drv-stop" data-at="0.55" data-win="0.075" data-label="二崁聚落 · 26km">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-stop-03.jpg --><div class="ph">08.13 · 停 03 · 3:4</div></div>
+                        <div class="drv-item drv-stop" data-at="0.324" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/crabs.jpeg" alt="天堂路 · 迷你寄居蟹"></div>
+                            <div class="drv-cap">哇!是迷你寄居蟹!</div>
                         </div>
-                        <!-- past the turn west the stops end — we just drove -->
-                        <div class="drv-item drv-pass" data-at="0.72" data-win="0.06">
-                            <div class="pg-frame"><!-- REPLACE: assets/penghu/d3-pass-03.jpg --><div class="ph">08.13 · 往西 · 3:2</div></div>
+                        <div class="drv-item drv-stop drv-wide" data-at="0.395" data-win="0.045" data-label="天堂路">
+                            <div class="pg-frame"><img src="assets/cart-us.heic" alt="天堂路 · 準備繼續上路"></div>
+                            <div class="drv-cap">太漂亮了，在這裡待了好久，<br>要準備繼續前進喽~</div>
+                        </div>
+
+                        <!-- 澎湖跨海大橋 -->
+                        <div class="drv-item drv-stop" data-at="0.466" data-win="0.045" data-label="跨海大橋">
+                            <div class="pg-frame"><img src="assets/bridge1.jpg" alt="08.13 · 跨海大橋"></div>
+                            <div class="drv-cap">是跨海大橋耶~阿那個是...</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.537" data-win="0.045" data-label="跨海大橋">
+                            <div class="pg-frame"><img src="assets/bridge-jump.heic" alt="跨海大橋 · 跳起來"></div>
+                            <div class="drv-cap">是哪來的觀光客怪人...</div>
+                        </div>
+
+                        <!-- 玄武岩 -->
+                        <div class="drv-item drv-stop" data-at="0.608" data-win="0.045" data-label="玄武岩">
+                            <div class="pg-frame"><img src="assets/rocks-jump.heic" alt="玄武岩 · 跳起來"></div>
+                            <div class="drv-cap">玄武岩</div>
+                        </div>
+                        <div class="drv-item drv-stop" data-at="0.679" data-win="0.045" data-label="玄武岩">
+                            <div class="pg-frame"><img src="assets/rocks-jump2.heic" alt="玄武岩 · 再跳一次"></div>
+                            <div class="drv-cap">更多的玄武岩</div>
+                        </div>
+
+                        <!-- 追到島的最西邊，接上日落 -->
+                        <div class="drv-item drv-stop" data-at="0.750" data-win="0.045" data-label="島的最西邊">
+                            <div class="pg-frame"><img src="assets/sunset-jump.heic" alt="島的最西邊 · 夕陽下跳起來"></div>
+                            <div class="drv-cap">我們終於追著太陽，<br>來到了島的最西邊</div>
                         </div>
                     </div>
 
@@ -3622,7 +3697,7 @@
                         <!-- Year label: visible at p=0, fades as gallery begins -->
                         <div class="sd-year-label" id="sdYearLabel">
                             <div class="time-badge">2026 &amp; Beyond</div>
-                            <p class="sd-year-copy">現在，來到2026，<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
+                            <p class="sd-year-copy">今年突然就，<br>我們的每天依舊是一樣的忙碌和充滿各種意料之外的事。<br>不過，因為彼此的陪伴而幸福的瞬間，好像也沒有因此變少...</p>
                         </div>
 
                         <!-- Horizontal reveal track -->
@@ -5794,15 +5869,19 @@
         }
 
         // ---------- bridges: the night between two days ----------
-        function makeBridge(bId, cId, dateId) {
+        // lineId is optional — only 08.13 opens with a line about the day ahead
+        function makeBridge(bId, cId, dateId, lineId) {
             const bEl = document.getElementById(bId);
             const cEl = document.getElementById(cId);
             const dEl = document.getElementById(dateId);
+            const lEl = lineId ? document.getElementById(lineId) : null;
             return function (p) {
                 bEl.style.opacity = rmap(p, 0.04, 0.26);            // into the dark
                 cEl.style.opacity = rmap(p, 0.74, 0.97);            // out into morning
                 // the date holds through the long dark middle
                 dEl.style.opacity = rmap(p, 0.13, 0.29) * (1 - rmap(p, 0.70, 0.86));
+                // …and the day announces itself under it, on the way back up
+                if (lEl) lEl.classList.toggle('is-vis', p > 0.50 && p < 0.95);
             };
         }
 
@@ -6022,7 +6101,7 @@
         registerStage(dawnStage, dawnSticky, updateAct2Dawn, null, $('pgbDawn'));
         registerStage(isoStage,  isoSticky,  updateAct2Iso,
                       isoItems.map(it => it.at), $('pgbIso'));
-        registerStage($('br1Stage'), $('br1Sticky'), makeBridge('br1B', 'br1C', 'br1Date'), null, $('pgbBr1'));
+        registerStage($('br1Stage'), $('br1Sticky'), makeBridge('br1B', 'br1C', 'br1Date', 'br1Line'), null, $('pgbBr1'));
         registerStage(drvStage,  drvSticky,  updateAct3,
                       drvItems.filter(it => it.stop).map(it => it.at), $('pgbDrv'));
         registerStage($('br2Stage'), $('br2Sticky'), makeBridge('br2B', 'br2C', 'br2Date'), null, $('pgbBr2'));
