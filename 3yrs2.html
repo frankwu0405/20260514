@@ -2020,7 +2020,8 @@
         .nav-row.is-current .nav-row-title { color: #c9a0a0; }
         .nav-row.is-sealed { position: relative; }
         .nav-row-open  { flex: none; font-size: 11px; color: #b8a58e; letter-spacing: 1px; font-family: -apple-system, sans-serif; }
-        .nav-row.is-sealed .nav-row-title { color: #c8bca8; font-size: 13px; letter-spacing: 3px; }
+        .nav-row.is-sealed .nav-row-title,
+        .nav-row.is-locked .nav-row-title { color: #c8bca8; font-size: 13px; letter-spacing: 3px; }
         .nav-row-seal {
             position: absolute; left: 4px; top: 50%; margin-top: -9px; width: 18px; height: 18px; border-radius: 50%;
             background: #d1bfae; color: #fff; font-size: 6px; line-height: 18px; text-align: center; letter-spacing: 0;
@@ -6468,7 +6469,6 @@
                 prompt.style.color = '#3a7a3a';
                 btn.disabled = true;
                 footer.style.pointerEvents = 'none';
-                document.dispatchEvent(new CustomEvent('captcha:passed'));
 
                 setTimeout(() => {
                     const introEl   = document.getElementById('captchaIntro');
@@ -6607,22 +6607,6 @@
 
                 observer.observe(document.getElementById('chap-2025-story'));
             }
-
-            // Returning reader: the nav remembers a passed captcha, so skip
-            // straight to the revealed state instead of asking again
-            window.revealStory2025Now = function () {
-                if (phase === 3) return;
-                phase = 3;
-                chapCaptcha.style.display = 'none';
-                const year2025El = document.getElementById('year2025');
-                if (year2025El) {
-                    year2025El.style.opacity = '1';
-                    year2025El.style.pointerEvents = '';
-                }
-                chapStory.style.display = 'flex';
-                chapStory.style.opacity = '1';
-                initStory2025();
-            };
         })();
 
         // ==========================================
@@ -6630,7 +6614,7 @@
         // ==========================================
         (function () {
             const KEY = 'fs3yrs.nav';
-            let store = { visited: [], gate: false };
+            let store = { visited: [] };
             try {
                 if (/[?&]fresh\b/.test(location.search)) localStorage.removeItem(KEY);
                 Object.assign(store, JSON.parse(localStorage.getItem(KEY)) || {});
@@ -6638,20 +6622,26 @@
             function save() {
                 try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
             }
+            // Older builds also saved a passed captcha and the last chapter. The captcha
+            // must be solved on every visit, so drop both.
+            if ('gate' in store || 'last' in store) {
+                delete store.gate;
+                delete store.last;
+                save();
+            }
 
             const targets = Array.from(document.querySelectorAll('[data-nav-title]'));
             if (!targets.length) return;
             const ids = targets.map(el => el.id);
             const visited = new Set(store.visited.filter(id => ids.includes(id)));
             const maxVisited = () => Math.max(-1, ...[...visited].map(id => ids.indexOf(id)));
-            // The 2025 story is display:none until the captcha is passed, but the nav
-            // can open it directly. The captcha is gone once it has been passed or skipped,
-            // so it drops out of the index then.
+            // The 2025 story stays display:none until the captcha is solved on this visit,
+            // so its row is locked until then and sends the reader to the captcha. Once
+            // solved, the captcha itself is hidden and drops out of the index.
             const STORY_ID = 'chap-2025-story';
-            const isListed = i => ids[i] === STORY_ID || targets[i].getClientRects().length > 0;
-
-            if (store.gate && window.revealStory2025Now) window.revealStory2025Now();
-            document.addEventListener('captcha:passed', () => { store.gate = true; save(); });
+            const CAPTCHA_ID = 'chap-captcha';
+            const isLocked = i => ids[i] === STORY_ID && !targets[i].getClientRects().length;
+            const isListed = i => isLocked(i) || targets[i].getClientRects().length > 0;
 
             // ---------- DOM ----------
             const pill = document.createElement('button');
@@ -6772,6 +6762,12 @@
                     const rows = g.rows.map(i => {
                         const el = targets[i];
                         const date = esc(el.dataset.navDate);
+                        if (isLocked(i)) {
+                            return '<button type="button" class="nav-row is-locked" data-i="' + i + '">' +
+                                '<span class="nav-row-date">' + date + '</span>' +
+                                '<span class="nav-row-title">通過驗證後解鎖</span>' +
+                                '<span class="nav-row-open">去驗證 →</span></button>';
+                        }
                         if (i > reach) {
                             // title stays hidden, but the row still jumps — tapping it is the unsealing
                             return '<button type="button" class="nav-row is-sealed" data-i="' + i + '" aria-label="' + date + '，尚未拆封，點一下拆開">' +
@@ -6827,7 +6823,12 @@
 
             list.addEventListener('click', e => {
                 const row = e.target.closest('button.nav-row');
-                if (row) jumpTo(+row.dataset.i);
+                if (!row) return;
+                const i = +row.dataset.i;
+                if (!isLocked(i)) return jumpTo(i);
+                // the captcha is the only way into 2025
+                const gate = ids.indexOf(CAPTCHA_ID);
+                if (gate >= 0 && targets[gate].getClientRects().length) jumpTo(gate);
             });
 
             // ---------- jump: fade to cream, land instantly, fade back ----------
@@ -6841,12 +6842,6 @@
                 setPill();
                 veil.classList.add('is-on');
                 setTimeout(() => {
-                    // jumping into 2025 opens it the same way passing the captcha would
-                    if (el.id === STORY_ID && !el.getClientRects().length && window.revealStory2025Now) {
-                        window.revealStory2025Now();
-                        store.gate = true;
-                        save();
-                    }
                     // reveal every chapter up to the target, so scrolling back up
                     // never finds one the one-shot observer skipped
                     document.querySelectorAll('.chapter').forEach(ch => {
