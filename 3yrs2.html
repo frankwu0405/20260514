@@ -2030,12 +2030,6 @@
         .nav-veil { position: fixed; inset: 0; z-index: 9990; background: #fdf8f0; opacity: 0; pointer-events: none; transition: opacity 0.38s ease; }
         .nav-veil.is-on { opacity: 1; pointer-events: auto; }
 
-        .nav-resume {
-            margin-top: 28px; padding: 10px 18px; min-height: 44px; background: none;
-            border: 1px solid #e0d6c4; border-radius: 22px; color: #8a7560; cursor: pointer;
-            font: inherit; font-size: 13px; letter-spacing: 1.5px;
-        }
-        .nav-resume em { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #b8a58e; }
 
         @media (prefers-reduced-motion: reduce) {
             .nav-pill, .nav-sheet, .nav-backdrop, .nav-veil { transition: none; }
@@ -6636,7 +6630,7 @@
         // ==========================================
         (function () {
             const KEY = 'fs3yrs.nav';
-            let store = { visited: [], last: null, gate: false };
+            let store = { visited: [], gate: false };
             try {
                 if (/[?&]fresh\b/.test(location.search)) localStorage.removeItem(KEY);
                 Object.assign(store, JSON.parse(localStorage.getItem(KEY)) || {});
@@ -6740,10 +6734,9 @@
                     else {
                         const el = targets[idx];
                         setLabel(el.dataset.navDate, false);
-                        if (!visited.has(el.id) || store.last !== el.id) {
+                        if (!visited.has(el.id)) {
                             visited.add(el.id);
                             store.visited = [...visited];
-                            store.last = el.id;
                             save();
                         }
                     }
@@ -6877,23 +6870,6 @@
                         setTimeout(() => { _snapLock = false; jumping = false; tick(); }, 450);
                     }));
                 }, 380);
-            }
-
-            // ---------- 繼續閱讀 on the counter screen ----------
-            const counter = document.getElementById('counterSection');
-            if (counter) {
-                const hint = counter.querySelector('.scroll-down-hint');
-                // 繼續閱讀 only for someone who has been here before
-                const lastIdx = ids.indexOf(store.last);
-                if (lastIdx > 0) {
-                    const el = targets[lastIdx];
-                    const resume = document.createElement('button');
-                    resume.type = 'button';
-                    resume.className = 'nav-resume';
-                    resume.innerHTML = '繼續閱讀 · <em>' + esc(el.dataset.navDate) + '</em> ' + esc(el.dataset.navTitle) + ' →';
-                    resume.addEventListener('click', () => jumpTo(lastIdx));
-                    counter.insertBefore(resume, hint);
-                }
             }
         })();
 
