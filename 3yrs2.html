@@ -2017,7 +2017,8 @@
         .nav-row-title { flex: 1; font-size: 15px; letter-spacing: 1.5px; }
         .nav-row-here  { flex: none; font-size: 11px; color: #c9a0a0; letter-spacing: 1px; font-family: -apple-system, sans-serif; }
         .nav-row.is-current .nav-row-title { color: #c9a0a0; }
-        .nav-row.is-sealed { cursor: default; position: relative; }
+        .nav-row.is-sealed { position: relative; }
+        .nav-row-open  { flex: none; font-size: 11px; color: #b8a58e; letter-spacing: 1px; font-family: -apple-system, sans-serif; }
         .nav-row.is-sealed .nav-row-title,
         .nav-row.is-locked .nav-row-title { color: #c8bca8; font-size: 13px; letter-spacing: 3px; }
         .nav-row-seal {
@@ -6658,7 +6659,9 @@
             const gateIdx = ids.indexOf('chap-captcha');
             const visited = new Set(store.visited.filter(id => ids.includes(id)));
             const maxVisited = () => Math.max(-1, ...[...visited].map(id => ids.indexOf(id)));
-            const isLocked = i => !store.gate && gateIdx >= 0 && i > gateIdx;
+            // Only what the captcha actually hides (the display:none 2025 story) is locked;
+            // chapters past it are already reachable by scrolling, so the index can reach them too
+            const isLocked = i => !store.gate && gateIdx >= 0 && i > gateIdx && !targets[i].getClientRects().length;
 
             if (store.gate && window.revealStory2025Now) window.revealStory2025Now();
             document.addEventListener('captcha:passed', () => { store.gate = true; save(); });
@@ -6793,10 +6796,12 @@
                                 '<span class="nav-row-title">通過驗證後解鎖</span></button>';
                         }
                         if (i > reach) {
-                            return '<div class="nav-row is-sealed" aria-disabled="true">' +
+                            // title stays hidden, but the row still jumps — tapping it is the unsealing
+                            return '<button type="button" class="nav-row is-sealed" data-i="' + i + '" aria-label="' + date + '，尚未拆封，點一下拆開">' +
                                 '<span class="nav-row-seal">F&amp;S</span>' +
                                 '<span class="nav-row-date">' + date + '</span>' +
-                                '<span class="nav-row-title">尚未拆封</span></div>';
+                                '<span class="nav-row-title">尚未拆封</span>' +
+                                '<span class="nav-row-open">拆開 →</span></button>';
                         }
                         return '<button type="button" class="nav-row' + (i === current ? ' is-current' : '') + '" data-i="' + i + '">' +
                             '<span class="nav-row-date">' + date + '</span>' +
@@ -6884,7 +6889,9 @@
                     _snapLock = true;
                     // pinned stages start on their first frame; chapters keep their badge in view
                     const pad = el.classList.contains('pg-stage') ? 0 : 60;
-                    const top = el.getBoundingClientRect().top + window.scrollY - pad;
+                    // offsetTop ignores the chapter's mid-transition translateY(40px) fade-in
+                    let top = -pad;
+                    for (let n = el; n; n = n.offsetParent) top += n.offsetTop;
                     // html has scroll-behavior:smooth; override it for this one jump
                     const root = document.documentElement;
                     root.style.scrollBehavior = 'auto';
