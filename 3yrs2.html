@@ -2019,8 +2019,7 @@
         .nav-row.is-current .nav-row-title { color: #c9a0a0; }
         .nav-row.is-sealed { position: relative; }
         .nav-row-open  { flex: none; font-size: 11px; color: #b8a58e; letter-spacing: 1px; font-family: -apple-system, sans-serif; }
-        .nav-row.is-sealed .nav-row-title,
-        .nav-row.is-locked .nav-row-title { color: #c8bca8; font-size: 13px; letter-spacing: 3px; }
+        .nav-row.is-sealed .nav-row-title { color: #c8bca8; font-size: 13px; letter-spacing: 3px; }
         .nav-row-seal {
             position: absolute; left: 4px; top: 50%; margin-top: -9px; width: 18px; height: 18px; border-radius: 50%;
             background: #d1bfae; color: #fff; font-size: 6px; line-height: 18px; text-align: center; letter-spacing: 0;
@@ -2030,23 +2029,26 @@
         .nav-veil { position: fixed; inset: 0; z-index: 9990; background: #fdf8f0; opacity: 0; pointer-events: none; transition: opacity 0.38s ease; }
         .nav-veil.is-on { opacity: 1; pointer-events: auto; }
 
-        .nav-toast {
-            position: fixed; left: 50%; bottom: max(76px, calc(env(safe-area-inset-bottom) + 60px)); z-index: 9995;
-            transform: translate(-50%, 8px); max-width: calc(100vw - 32px); padding: 10px 16px;
-            background: rgba(90, 74, 58, 0.92); color: #fdf8f0; border-radius: 18px; font-size: 13px; letter-spacing: 1px;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+        .nav-quick { margin-top: 26px; display: flex; flex-direction: column; align-items: center; }
+        .nav-quick-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #b8a58e; letter-spacing: 2px; margin-bottom: 10px; }
+        .nav-quick-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(300px, calc(100vw - 32px)); }
+        .nav-chip {
+            min-height: 44px; padding: 0 10px; border: 1px solid #e0d6c4; border-radius: 22px;
+            background: rgba(253, 248, 240, 0.8); color: #8a7560; cursor: pointer;
+            font-family: 'Cormorant Garamond', serif; font-size: 18px; letter-spacing: 1px;
         }
-        .nav-toast.is-shown { opacity: 1; transform: translate(-50%, 0); }
+        .nav-chip:active { background: #f3eadc; }
+        .nav-chip-all { font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 2px; }
 
         .nav-resume {
-            margin-top: 28px; padding: 10px 18px; min-height: 44px; background: none;
+            margin-top: 18px; padding: 10px 18px; min-height: 44px; background: none;
             border: 1px solid #e0d6c4; border-radius: 22px; color: #8a7560; cursor: pointer;
             font: inherit; font-size: 13px; letter-spacing: 1.5px;
         }
         .nav-resume em { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #b8a58e; }
 
         @media (prefers-reduced-motion: reduce) {
-            .nav-pill, .nav-sheet, .nav-backdrop, .nav-veil, .nav-toast { transition: none; }
+            .nav-pill, .nav-sheet, .nav-backdrop, .nav-veil { transition: none; }
         }
 
     </style>
@@ -3914,7 +3916,7 @@
             </div>
 
             <!-- Chapter 10 — Sliding Door Gallery -->
-            <div class="chapter" id="chap9">
+            <div class="chapter" id="chap9" data-nav-year="2026" data-nav-date="2026 &amp; Beyond" data-nav-title="Together &amp; Beyond">
                 <div class="sd-stage" id="sdStage">
                     <div class="sd-sticky" id="sdSticky">
 
@@ -6656,12 +6658,13 @@
             const targets = Array.from(document.querySelectorAll('[data-nav-title]'));
             if (!targets.length) return;
             const ids = targets.map(el => el.id);
-            const gateIdx = ids.indexOf('chap-captcha');
             const visited = new Set(store.visited.filter(id => ids.includes(id)));
             const maxVisited = () => Math.max(-1, ...[...visited].map(id => ids.indexOf(id)));
-            // Only what the captcha actually hides (the display:none 2025 story) is locked;
-            // chapters past it are already reachable by scrolling, so the index can reach them too
-            const isLocked = i => !store.gate && gateIdx >= 0 && i > gateIdx && !targets[i].getClientRects().length;
+            // The 2025 story is display:none until the captcha is passed, but the nav
+            // can open it directly. The captcha is gone once it has been passed or skipped,
+            // so it drops out of the index then.
+            const STORY_ID = 'chap-2025-story';
+            const isListed = i => ids[i] === STORY_ID || targets[i].getClientRects().length > 0;
 
             if (store.gate && window.revealStory2025Now) window.revealStory2025Now();
             document.addEventListener('captcha:passed', () => { store.gate = true; save(); });
@@ -6695,10 +6698,7 @@
             const veil = document.createElement('div');
             veil.className = 'nav-veil';
 
-            const toast = document.createElement('div');
-            toast.className = 'nav-toast';
-
-            document.body.append(pill, backdrop, sheet, veil, toast);
+            document.body.append(pill, backdrop, sheet, veil);
 
             // ---------- where are we ----------
             // display:none targets (captcha after passing, story before) report a
@@ -6783,18 +6783,13 @@
                 targets.forEach((el, i) => {
                     const y = el.dataset.navYear;
                     if (!groups.length || groups[groups.length - 1].year !== y) groups.push({ year: y, rows: [] });
-                    groups[groups.length - 1].rows.push(i);
+                    if (isListed(i)) groups[groups.length - 1].rows.push(i);
                 });
                 list.innerHTML = groups.map(g => {
                     const label = g.year;
                     const rows = g.rows.map(i => {
                         const el = targets[i];
                         const date = esc(el.dataset.navDate);
-                        if (isLocked(i)) {
-                            return '<button type="button" class="nav-row is-locked" data-i="' + i + '">' +
-                                '<span class="nav-row-date">' + date + '</span>' +
-                                '<span class="nav-row-title">通過驗證後解鎖</span></button>';
-                        }
                         if (i > reach) {
                             // title stays hidden, but the row still jumps — tapping it is the unsealing
                             return '<button type="button" class="nav-row is-sealed" data-i="' + i + '" aria-label="' + date + '，尚未拆封，點一下拆開">' +
@@ -6850,23 +6845,8 @@
 
             list.addEventListener('click', e => {
                 const row = e.target.closest('button.nav-row');
-                if (!row) return;
-                const i = +row.dataset.i;
-                if (isLocked(i)) {
-                    showToast('先完成 2024 的驗證，才能繼續喔');
-                    jumpTo(gateIdx);
-                } else {
-                    jumpTo(i);
-                }
+                if (row) jumpTo(+row.dataset.i);
             });
-
-            let toastTimer = null;
-            function showToast(text) {
-                toast.textContent = text;
-                toast.classList.add('is-shown');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => toast.classList.remove('is-shown'), 2600);
-            }
 
             // ---------- jump: fade to cream, land instantly, fade back ----------
             // Smooth-scrolling across dozens of viewports would drive every scroll
@@ -6879,6 +6859,12 @@
                 setPill();
                 veil.classList.add('is-on');
                 setTimeout(() => {
+                    // jumping into 2025 opens it the same way passing the captcha would
+                    if (el.id === STORY_ID && !el.getClientRects().length && window.revealStory2025Now) {
+                        window.revealStory2025Now();
+                        store.gate = true;
+                        save();
+                    }
                     // reveal every chapter up to the target, so scrolling back up
                     // never finds one the one-shot observer skipped
                     document.querySelectorAll('.chapter').forEach(ch => {
@@ -6904,18 +6890,42 @@
                 }, 380);
             }
 
-            // ---------- 繼續閱讀 on the counter screen ----------
-            const lastIdx = ids.indexOf(store.last);
+            // ---------- quick access on the counter screen: always there ----------
             const counter = document.getElementById('counterSection');
-            if (counter && lastIdx > 0 && !isLocked(lastIdx)) {
-                const el = targets[lastIdx];
-                const resume = document.createElement('button');
-                resume.type = 'button';
-                resume.className = 'nav-resume';
-                resume.innerHTML = '繼續閱讀 · <em>' + esc(el.dataset.navDate) + '</em> ' + esc(el.dataset.navTitle) + ' →';
-                resume.addEventListener('click', () => jumpTo(lastIdx));
+            if (counter) {
                 const hint = counter.querySelector('.scroll-down-hint');
-                counter.insertBefore(resume, hint);
+                const quick = document.createElement('div');
+                quick.className = 'nav-quick';
+                const years = [];
+                targets.forEach((el, i) => {
+                    const y = el.dataset.navYear;
+                    if (!years.some(v => v.year === y)) years.push({ year: y, i });
+                });
+                quick.innerHTML =
+                    '<div class="nav-quick-label">Quick Access</div>' +
+                    '<div class="nav-quick-chips">' +
+                        years.map(v => '<button type="button" class="nav-chip" data-i="' + v.i + '">' + esc(v.year) + '</button>').join('') +
+                        '<button type="button" class="nav-chip nav-chip-all">目錄 ︿</button>' +
+                    '</div>';
+                quick.addEventListener('click', e => {
+                    const chip = e.target.closest('.nav-chip');
+                    if (!chip) return;
+                    if (chip.classList.contains('nav-chip-all')) openSheet();
+                    else jumpTo(+chip.dataset.i);
+                });
+                counter.insertBefore(quick, hint);
+
+                // 繼續閱讀 only for someone who has been here before
+                const lastIdx = ids.indexOf(store.last);
+                if (lastIdx > 0) {
+                    const el = targets[lastIdx];
+                    const resume = document.createElement('button');
+                    resume.type = 'button';
+                    resume.className = 'nav-resume';
+                    resume.innerHTML = '繼續閱讀 · <em>' + esc(el.dataset.navDate) + '</em> ' + esc(el.dataset.navTitle) + ' →';
+                    resume.addEventListener('click', () => jumpTo(lastIdx));
+                    counter.insertBefore(resume, hint);
+                }
             }
         })();
 
