@@ -1975,6 +1975,7 @@
         .nav-pill-dot  { width: 7px; height: 7px; border-radius: 50%; background: #d1bfae; flex: none; }
         .nav-pill-date { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; letter-spacing: 1px;
                          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nav-pill-date.is-cjk { font-family: 'Noto Serif TC', serif; font-style: normal; font-size: 14px; letter-spacing: 3px; }
         .nav-pill-chev { font-size: 11px; color: #b8a58e; flex: none; }
         .nav-pill-prog { position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: #d1bfae;
                          transform: scaleX(0); transform-origin: left; }
@@ -2029,19 +2030,8 @@
         .nav-veil { position: fixed; inset: 0; z-index: 9990; background: #fdf8f0; opacity: 0; pointer-events: none; transition: opacity 0.38s ease; }
         .nav-veil.is-on { opacity: 1; pointer-events: auto; }
 
-        .nav-quick { margin-top: 26px; display: flex; flex-direction: column; align-items: center; }
-        .nav-quick-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: #b8a58e; letter-spacing: 2px; margin-bottom: 10px; }
-        .nav-quick-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(300px, calc(100vw - 32px)); }
-        .nav-chip {
-            min-height: 44px; padding: 0 10px; border: 1px solid #e0d6c4; border-radius: 22px;
-            background: rgba(253, 248, 240, 0.8); color: #8a7560; cursor: pointer;
-            font-family: 'Cormorant Garamond', serif; font-size: 18px; letter-spacing: 1px;
-        }
-        .nav-chip:active { background: #f3eadc; }
-        .nav-chip-all { font-family: 'Noto Serif TC', serif; font-size: 14px; letter-spacing: 2px; }
-
         .nav-resume {
-            margin-top: 18px; padding: 10px 18px; min-height: 44px; background: none;
+            margin-top: 28px; padding: 10px 18px; min-height: 44px; background: none;
             border: 1px solid #e0d6c4; border-radius: 22px; color: #8a7560; cursor: pointer;
             font: inherit; font-size: 13px; letter-spacing: 1.5px;
         }
@@ -6714,8 +6704,8 @@
                 return idx;
             }
 
-            // Stretches where the pill would sit on top of something that owns the screen
-            const quietIds = ['counterSection', 'globe-scroll-area', 'facetimeBox', 'captchaBox', 'chap-2025-story', 'zoom-tpe-area'];
+            // Only step aside where the pill would sit on top of a control
+            const quietIds = ['facetimeBox', 'captchaBox'];
             const quietEls = quietIds.map(id => document.getElementById(id)).filter(Boolean);
             const vmOverlay = document.getElementById('viewmaster-overlay');
             const voidOverlay = document.getElementById('black-void-overlay');
@@ -6731,28 +6721,25 @@
                 });
             }
 
-            // ---------- pill visibility: hide while reading down, back on pause / scroll up ----------
-            let lastY = window.scrollY, idleTimer = null, scrolledAway = false, sheetOpen = false, jumping = false;
+            // ---------- pill visibility: always there once the envelope is open ----------
+            let sheetOpen = false, jumping = false;
             function setPill() {
-                const show = !sheetOpen && !jumping && current >= 0 && !scrolledAway && !inQuietZone();
+                const show = !sheetOpen && !jumping && !inQuietZone();
                 pill.classList.toggle('is-shown', show);
             }
 
+            // 目錄 is set upright; the pill's italic serif only suits the Latin dates
+            function setLabel(text, cjk) { pillDate.textContent = text; pillDate.classList.toggle('is-cjk', cjk); }
+            setLabel('目錄', true);
             function tick() {
                 const y = window.scrollY;
-                const dy = y - lastY;
-                lastY = y;
-                if (dy > 4) scrolledAway = true;
-                else if (dy < -4) scrolledAway = false;
-                clearTimeout(idleTimer);
-                idleTimer = setTimeout(() => { scrolledAway = false; setPill(); }, 1200);
-
                 const idx = findCurrent();
                 if (idx !== current) {
                     current = idx;
-                    if (idx >= 0) {
+                    if (idx < 0) setLabel('目錄', true);
+                    else {
                         const el = targets[idx];
-                        pillDate.textContent = el.dataset.navDate;
+                        setLabel(el.dataset.navDate, false);
                         if (!visited.has(el.id) || store.last !== el.id) {
                             visited.add(el.id);
                             store.visited = [...visited];
@@ -6771,6 +6758,8 @@
                 ticking = true;
                 requestAnimationFrame(() => { tick(); ticking = false; });
             }, { passive: true });
+            // the envelope opening doesn't scroll, so catch it by body class instead
+            new MutationObserver(tick).observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
             // ---------- index sheet ----------
             function esc(s) {
@@ -6885,36 +6874,15 @@
                     root.style.scrollBehavior = '';
                     requestAnimationFrame(() => requestAnimationFrame(() => {
                         veil.classList.remove('is-on');
-                        setTimeout(() => { _snapLock = false; jumping = false; scrolledAway = true; tick(); }, 450);
+                        setTimeout(() => { _snapLock = false; jumping = false; tick(); }, 450);
                     }));
                 }, 380);
             }
 
-            // ---------- quick access on the counter screen: always there ----------
+            // ---------- 繼續閱讀 on the counter screen ----------
             const counter = document.getElementById('counterSection');
             if (counter) {
                 const hint = counter.querySelector('.scroll-down-hint');
-                const quick = document.createElement('div');
-                quick.className = 'nav-quick';
-                const years = [];
-                targets.forEach((el, i) => {
-                    const y = el.dataset.navYear;
-                    if (!years.some(v => v.year === y)) years.push({ year: y, i });
-                });
-                quick.innerHTML =
-                    '<div class="nav-quick-label">Quick Access</div>' +
-                    '<div class="nav-quick-chips">' +
-                        years.map(v => '<button type="button" class="nav-chip" data-i="' + v.i + '">' + esc(v.year) + '</button>').join('') +
-                        '<button type="button" class="nav-chip nav-chip-all">目錄 ︿</button>' +
-                    '</div>';
-                quick.addEventListener('click', e => {
-                    const chip = e.target.closest('.nav-chip');
-                    if (!chip) return;
-                    if (chip.classList.contains('nav-chip-all')) openSheet();
-                    else jumpTo(+chip.dataset.i);
-                });
-                counter.insertBefore(quick, hint);
-
                 // 繼續閱讀 only for someone who has been here before
                 const lastIdx = ids.indexOf(store.last);
                 if (lastIdx > 0) {
