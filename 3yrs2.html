@@ -6688,28 +6688,10 @@
                 return idx;
             }
 
-            // Only step aside where the pill would sit on top of a control
-            const quietIds = ['facetimeBox', 'captchaBox'];
-            const quietEls = quietIds.map(id => document.getElementById(id)).filter(Boolean);
-            const vmOverlay = document.getElementById('viewmaster-overlay');
-            const voidOverlay = document.getElementById('black-void-overlay');
-            function inQuietZone() {
-                if (document.body.classList.contains('no-scroll')) return true;
-                if (vmOverlay && vmOverlay.classList.contains('is-active')) return true;
-                if (voidOverlay && voidOverlay.classList.contains('is-in-void')) return true;
-                const vh = window.innerHeight;
-                return quietEls.some(el => {
-                    if (!el.getClientRects().length) return false;
-                    const r = el.getBoundingClientRect();
-                    return r.top < vh * 0.85 && r.bottom > vh * 0.15;
-                });
-            }
-
             // ---------- pill visibility: always there once the envelope is open ----------
             let sheetOpen = false, jumping = false;
             function setPill() {
-                const show = !sheetOpen && !jumping && !inQuietZone();
-                pill.classList.toggle('is-shown', show);
+                pill.classList.toggle('is-shown', !document.body.classList.contains('no-scroll'));
             }
 
             // 目錄 is set upright; the pill's italic serif only suits the Latin dates
@@ -6820,6 +6802,14 @@
                 if (touchY !== null && e.changedTouches[0].clientY - touchY > 50) closeSheet();
                 touchY = null;
             });
+
+            // one year open at a time: opening a year folds the others
+            // (toggle doesn't bubble, so listen in the capture phase)
+            list.addEventListener('toggle', e => {
+                const d = e.target;
+                if (!d.matches('details.nav-year') || !d.open) return;
+                list.querySelectorAll('details.nav-year[open]').forEach(o => { if (o !== d) o.open = false; });
+            }, true);
 
             list.addEventListener('click', e => {
                 const row = e.target.closest('button.nav-row');
